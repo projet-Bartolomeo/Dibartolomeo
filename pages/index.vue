@@ -1,3 +1,5 @@
 <template>
-  <div>home</div>
+<div>
+<DatatableS></DatatableS>
+</div>
 </template>

@@ -1,6 +1,5 @@
 <template>
   <v-app dark>
-    <SideBar />
     <v-main>
       <v-container>
         <Nuxt />
