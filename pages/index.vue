@@ -1,5 +1,5 @@
 <template>
 <div>
-<DatatableS></DatatableS>
+<NewDatatable></NewDatatable>
 </div>
 </template>
