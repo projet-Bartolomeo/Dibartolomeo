@@ -1,19 +1,18 @@
 const mongoose = require('mongoose')
 const schema   = mongoose.Schema
 
-// https://mongoosejs.com/docs/schematypes.html
+
 const Lesson = new schema({
-    studentliste : { type:Array, required:'un nom est obligatoire:)' },
-    maximumStudents : { type:Number, required:'un nom est obligatoire:)' },
+    studentliste : { type:Array },
+    maximumStudents : { type:Number },
     recurrence: { type:String },
    recurrenceid: { type:String },
     ageRange:{ type:String },
-    price:{ type: Number, default: Date.now },
-    descritpion:{ type: String, default: false },
-    teacherNote:{ type: String, default: false },
+    price:{ type: Number },
+    descritpion:{ type: String },
+    teacherNote:{ type: String },
     startDate:{ type: Date, default: false },
     EndDate:{type:Date},
 })
+module.exports = Lesson =mongoose.model('Lesson', Lesson)
 
-module.exports = Utilisateur =mongoose.model('utilisateur', UtilisateurSchema)
-module.exports = Utilisateur = mongoose.model('utilisateur', UtilisateurSchema)

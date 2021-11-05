@@ -93,19 +93,6 @@
               <v-toolbar-title v-html="selectedEvent.name" ><v-btn icon>
                 
               <v-icon>mdi-pencil</v-icon>
-               <v-col
-            cols="12"
-            sm="4"
-            md="4"
-            
-          >
-          </v-col>
-              <v-btn
-                color="teal"
-                @click="selectedOpen = false"
-              >
-                Modifier le cour
-              </v-btn>
               <v-col
             cols="12"
             sm="4"

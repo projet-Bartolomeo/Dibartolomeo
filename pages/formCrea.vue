@@ -104,6 +104,28 @@
         
           </v-col>
            <v-col
+            cols="24"
+            sm="4"
+            md="1"
+          >
+       <v-select
+          :items="heure"
+          label="Heure de début"
+        ></v-select>
+        
+        </v-col>
+          <v-col
+            cols="24"
+            sm="4"
+            md="1"
+          >
+      <v-select
+          :items="heure"
+          label="Heure de fin"
+        ></v-select>
+        
+        </v-col>
+           <v-col
             cols="12"
             sm="4"
             md="4"
