@@ -57,7 +57,6 @@
               </v-list-item>
               <v-list-item @click="type = '4day'">
                 <v-list-item-title>4 days</v-list-item-title>
-
               </v-list-item>
             </v-list>
           </v-menu>
@@ -106,7 +105,6 @@
               <v-text>15/20</v-text>
               
               
-
                <v-spacer></v-spacer>
            <v-card flat>
     <v-card-text>
@@ -118,7 +116,6 @@
             md="4"
             
           >
-
 
             <v-toolbar-title>Recurence chaque semaine  <v-btn icon>
               <v-icon>mdi-pencil</v-icon>
@@ -197,7 +194,6 @@
           >
            <DataTableuser />
               </v-col>
-
         </v-row>
       </v-container>
     </v-card-text>
@@ -210,7 +206,6 @@
             
           >
           </v-col>
-
               <v-btn
                 color="teal"
                 @click="selectedOpen = false"
@@ -235,11 +230,9 @@
                 color="error"
                 @click="selectedOpen = false"
               >
-
                 Suprimer
               </v-btn>
               </v-col>
-
             </v-card-actions>
           </v-card>
         </v-dialog>
