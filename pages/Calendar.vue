@@ -47,16 +47,17 @@
             </template>
             <v-list>
               <v-list-item @click="type = 'day'">
-                <v-list-item-title>Jours</v-list-item-title>
+                <v-list-item-title>Day</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = 'week'">
-                <v-list-item-title>Semaine</v-list-item-title>
+                <v-list-item-title>Week</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = 'month'">
-                <v-list-item-title>Mois</v-list-item-title>
+                <v-list-item-title>Month</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = '4day'">
-                <v-list-item-title>4 jours</v-list-item-title>
+                <v-list-item-title>4 days</v-list-item-title>
+
               </v-list-item>
             </v-list>
           </v-menu>
@@ -91,10 +92,21 @@
           sm="6"
         >
               <v-toolbar-title v-html="selectedEvent.name" ><v-btn icon>
+                
               <v-icon>mdi-pencil</v-icon>
+              <v-col
+            cols="12"
+            sm="4"
+            md="4"
+            
+          >
+              </v-col>
               </v-btn></v-toolbar-title>
               </v-col>
               <v-text>15/20</v-text>
+              
+              
+
                <v-spacer></v-spacer>
            <v-card flat>
     <v-card-text>
@@ -104,8 +116,10 @@
             cols="12"
             sm="4"
             md="4"
- 
+            
           >
+
+
             <v-toolbar-title>Recurence chaque semaine  <v-btn icon>
               <v-icon>mdi-pencil</v-icon>
               </v-btn></v-toolbar-title> 
@@ -170,27 +184,62 @@
                   @click:clear="clearMessage"
                 ></v-text-field>
           </v-col>
+          <v-col
+            cols="12"
+            sm="40"
+            md="3"
+          >
+          </v-col>
+              <v-col
+            cols="12"
+            sm="45"
+            md="7"
+          >
            <DataTableuser />
+              </v-col>
+
         </v-row>
       </v-container>
     </v-card-text>
   </v-card>
             <v-card-actions>
+               <v-col
+            cols="12"
+            sm="4"
+            md="4"
+            
+          >
+          </v-col>
+
               <v-btn
                 color="teal"
                 @click="selectedOpen = false"
               >
-                Modifier le courq
+                Modifier le cour
               </v-btn>
-               <v-flex class="text-xs-right">
-               <spacer></spacer>
+                <v-col
+            cols="12"
+            sm="4"
+            md="4"
+            
+          >
+             </v-col>  
+                <v-col
+            cols="12"
+            sm="4"
+            md="4"
+            
+          >
+               
               <v-btn
                 color="error"
                 @click="selectedOpen = false"
               >
-                Supprimer
+
+                Suprimer
               </v-btn>
-              </v-flex>
+              </v-col>
+
             </v-card-actions>
           </v-card>
         </v-dialog>
