@@ -47,16 +47,16 @@
             </template>
             <v-list>
               <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
+                <v-list-item-title>Jours</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
+                <v-list-item-title>Semaine</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
+                <v-list-item-title>Mois</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = '4day'">
-                <v-list-item-title>4 days</v-list-item-title>
+                <v-list-item-title>4 jours</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -104,9 +104,8 @@
             cols="12"
             sm="4"
             md="4"
-            
+ 
           >
-
             <v-toolbar-title>Recurence chaque semaine  <v-btn icon>
               <v-icon>mdi-pencil</v-icon>
               </v-btn></v-toolbar-title> 
@@ -181,7 +180,7 @@
                 color="teal"
                 @click="selectedOpen = false"
               >
-                Modifier le cour
+                Modifier le courq
               </v-btn>
                <v-flex class="text-xs-right">
                <spacer></spacer>
@@ -189,7 +188,7 @@
                 color="error"
                 @click="selectedOpen = false"
               >
-                Suprimer
+                Supprimer
               </v-btn>
               </v-flex>
             </v-card-actions>

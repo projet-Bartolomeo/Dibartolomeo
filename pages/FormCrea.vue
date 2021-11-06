@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row align="center">
-    <v-btn>Annumler</v-btn>
+    <v-btn>Annuler</v-btn>
     <v-col
           cols="12"
           sm="6"
@@ -11,7 +11,7 @@
             :rules="rules"
             counter="5"
             hint="This field uses counter prop"
-            label="Nom du cour"
+            label="Nom du cours"
           ></v-text-field>
 </v-col>
       <v-col
@@ -21,7 +21,7 @@
       >
         <v-select
           :items="items"
-          label="Répétiton"
+          label="Récurrence"
         ></v-select>
       </v-col>
             <v-col
