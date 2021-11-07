@@ -32,7 +32,6 @@
       id="message-vide"
       elevation="7"
       color = green
-      v-on:click="say('Erreur: message vide')"
       class="send-button"
     >Envoyer</v-btn>
       </v-col>
@@ -43,10 +42,10 @@
 
 <script>
 export default({
-  methods: {
+/*   methods: {
     say: function (message) {
       alert(message)
     }
-  }
+  } */
 })
 </script>

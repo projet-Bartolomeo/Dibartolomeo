@@ -52,7 +52,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-dialog v-model="dialogDelete" max-width="550px">
           <v-card>
             <v-card-title class="text-h5"
               >Est-vous sur de vouloir supprimer ce cours ?</v-card-title
@@ -70,10 +70,18 @@
           </v-card>
         </v-dialog>
       </v-toolbar>
+       <v-overlay :value="open">
+      <div class="d-flex justify-end">
+        <button @click="open = !open" class="popup-close">
+          <v-icon>mdi-close</v-icon>
+        </button>
+      </div>
+      <send-message /> 
+      </v-overlay>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-      <v-icon small> mdi-message-text </v-icon>
+      <v-icon small @click="open = !open"> mdi-message-text </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -85,6 +93,7 @@ export default Vue.extend({
   name: 'DataTable',
   data: () => {
     return {
+      open: false,
       show: false,
       marker: true,
       iconIndex: 0,

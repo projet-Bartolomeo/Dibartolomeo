@@ -3,12 +3,21 @@
       <div id="flex">
         <div id="title"><h1>Listes des cours</h1></div>
         <div id="btnAjouterCours">
-            <boutton class="btnCours" type="button">Ajouter un cours</boutton>
+           <router-link to="/formCrea"> <boutton class="btnCours" type="button">Ajouter un cours</boutton></router-link>
+            
         </div>
       </div>
       <div id="sendMail">
-        <button  class="btnMail" type="button">Envoyer un mail</button>
+        <button @click="open = !open"  class="btnMail" type="button">Nouveau message</button>
       </div>
+    <v-overlay :value="open">
+      <div class="d-flex justify-end">
+        <button @click="open = !open" class="popup-close">
+          <v-icon>mdi-close</v-icon>
+        </button>
+      </div>
+      <send-message />
+    </v-overlay>
       <div id="table">
         <DataTableClasses/>
       </div>
@@ -17,6 +26,11 @@
 
 <script>
 export default {
+    data() {
+    return {
+      open: false,
+    }
+  },
 }
 </script>
 
@@ -52,7 +66,6 @@ export default {
   text-align: center;
   font-size: 15px;
   padding: 5px;
-  width: 120px;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
   -o-transition: all 0.5s;

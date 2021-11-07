@@ -61,10 +61,11 @@
               <v-toolbar-title v-html="selectedEvent.name"
                 ><v-btn icon>
                   <v-icon>mdi-pencil</v-icon>
-                </v-btn></v-toolbar-title
-              >
-              <v-text>15/20</v-text>
+                  <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
+              ></v-toolbar-title>
             </v-col>
+            <v-text>15/20</v-text>
+
             <v-spacer></v-spacer>
             <v-card flat>
               <v-card-text>
@@ -106,9 +107,17 @@
                     </v-col>
 
                     <v-col cols="12" sm="4" md="4">
-                      <v-btn color="blue-grey" @click="selectedOpen = false">
+                      <v-btn color="blue-grey" @click="open = !open">
                         Envoyer message
                       </v-btn>
+                      <v-overlay :value="open">
+                        <div class="d-flex justify-end">
+                          <button @click="open = !open" class="popup-close">
+                            <v-icon>mdi-close</v-icon>
+                          </button>
+                        </div>
+                        <send-message />
+                      </v-overlay>
                     </v-col>
                     <v-col cols="12" sm="4" md="4">
                       <v-text-field
@@ -120,21 +129,26 @@
                         @click:clear="clearMessage"
                       ></v-text-field>
                     </v-col>
-                    <DataTableuser />
+                    <v-col cols="12" sm="40" md="3"> </v-col>
+                    <v-col cols="12" sm="45" md="7">
+                      <datatable-students />
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
             </v-card>
             <v-card-actions>
+              <v-col cols="12" sm="4" md="4"> </v-col>
+
               <v-btn color="teal" @click="selectedOpen = false">
                 Modifier le cour
               </v-btn>
-              <v-flex class="text-xs-right">
-                <spacer></spacer>
+              <v-col cols="12" sm="4" md="4"> </v-col>
+              <v-col cols="12" sm="4" md="4">
                 <v-btn color="error" @click="selectedOpen = false">
                   Suprimer
                 </v-btn>
-              </v-flex>
+              </v-col>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -144,8 +158,11 @@
 </template>
 
 <script>
+import DatatableStudents from '~/components/DatatableStudents.vue'
 export default {
+  components: { DatatableStudents },
   data: () => ({
+    open: false,
     focus: '',
     type: 'month',
     typeToLabel: {
