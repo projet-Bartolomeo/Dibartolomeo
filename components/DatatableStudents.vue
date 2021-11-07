@@ -70,18 +70,21 @@
           </v-card>
         </v-dialog>
       </v-toolbar>
-       <v-overlay :value="open">
-      <div class="d-flex justify-end">
-        <button @click="open = !open" class="popup-close">
-          <v-icon>mdi-close</v-icon>
-        </button>
-      </div>
-      <send-message /> 
-      </v-overlay>
+    <v-dialog v-model="dialog" width="700">
+      <v-card>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-actions>
+        <send-message />
+      </v-card>
+    </v-dialog>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-      <v-icon small @click="open = !open"> mdi-message-text </v-icon>
+      <v-icon small @click="dialog = !dialog"> mdi-message-text </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -93,7 +96,6 @@ export default Vue.extend({
   name: 'DataTable',
   data: () => {
     return {
-      open: false,
       show: false,
       marker: true,
       iconIndex: 0,
