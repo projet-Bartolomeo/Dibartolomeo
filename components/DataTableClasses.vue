@@ -10,48 +10,10 @@
     sort-by="calories"
   >
     <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title>COURS</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-form>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="search"
-                  hide-actions
-                  :append-outer-icon="recherche ? 'mdi-send' : 'mdi-microphone'"
-                  filled
-                  clear-icon="mdi-close-circle"
-                  clearable
-                  outlined
-                  type="text"
-                  @click:clear="clearMessage"
-                  label="Search"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-<!--     <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Annuler </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog> -->
         <v-dialog v-model="dialogDelete" max-width="550px">
           <v-card>
             <v-card-title class="text-h5"
-              >Est-vous sur de vouloir supprimer ce cours ?</v-card-title
+              >Êtes-vous sûr de vouloir supprimer ce cours ?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -65,7 +27,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-toolbar>
     <v-dialog v-model="dialog" width="700">
       <v-card>
         <v-card-actions>
@@ -79,8 +40,8 @@
     </v-dialog>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       <v-icon small @click="dialog = !dialog"> mdi-message-text </v-icon>
+      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
   </v-data-table>
 </template>

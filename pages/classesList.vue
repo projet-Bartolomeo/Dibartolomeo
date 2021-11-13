@@ -1,20 +1,50 @@
 <template>
   <div>
-    <div id="flex">
-      <div id="title"><h1>Listes des cours</h1></div>
+    <v-row class="my-4 justify-space-between">
+      <div id="title"><h2>Listes des cours</h2></div>
       <div id="btnAjouterCours">
-        <router-link to="/formClasses">
-          <boutton class="btnCours" type="button"
-            >Ajouter un cours</boutton
+        <router-link class="text-decoration-none" to="/formClasses">
+          <v-btn       color="success"
+
+            >Ajouter un cours
+            </v-btn  
           ></router-link
         >
       </div>
-    </div>
-    <div id="sendMail">
-      <button @click="dialog = !dialog" class="btnMail" type="button">
-        Nouveau message
-      </button>
-    </div>
+    </v-row>
+
+
+   <v-row class="ma-0 justify-center align-center">
+                <v-col cols="12" sm="4" md="4">
+                  <v-btn disabled color="blue-grey" @click="open = !open">
+                    Envoyer message
+                  </v-btn>
+                  <v-dialog v-model="open" width="700">
+                    <v-card>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text @click="open = false">
+                          <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                      </v-card-actions>
+                      <send-message />
+                    </v-card>
+                  </v-dialog>
+                </v-col>
+
+                <v-col  cols="12"
+          sm="6"
+          md="3">
+                  <v-text-field
+                    outlined
+                    dense
+                    v-model="recherche"
+                    label="Recherche"
+                    type="text"
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
     <v-dialog v-model="dialog" width="700">
       <v-card>
         <v-card-actions>

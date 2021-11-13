@@ -1,331 +1,194 @@
 <template>
-<v-container fluid>
-        <v-row align="center" >
-          <v-col
-            cols="12"
-            sm="4"
-            md="4"
-            
-          >
+  <div>
+    <v-row class="justify-space-between ma-5">
+      <v-col class="pa-0">
+        <h2>Cours de dessin fantastique</h2>
+        <p>15/20 élèves</p>
+      </v-col>
+      <v-btn color="error"> Supprimer le cours</v-btn>
+    </v-row>
+    <v-col>
+      <v-row class="justify-center">
+        <v-card width="450" class="ma-6">
+          <v-col>
+            <v-row class="justify-center align-center">
+              <p class="ma-0 pr-10">Récurence :</p>
+              <div style="width: 15vw">
+                <v-select
+                  v-model="selectRec"
+                  :items="recurence"
+                  item-text="recurence"
+                  item-value="recurence"
+                ></v-select>
+              </div>
+            </v-row>
+            <v-row class="justify-center align-center">
+              <p class="ma-0 pr-10">Age :</p>
+              <div style="width: 15vw">
+                <v-select
+                  v-model="selectAge"
+                  :items="Age"
+                  item-text="Age"
+                  item-value="Age"
+                ></v-select>
+              </div>
+            </v-row>
+            <v-row class="justify-center align-center">
+              <p class="ma-0 pr-10">Prix :</p>
+              <div class="flex-column" style="width: 15vw">
+                <v-text-field></v-text-field>
+              </div>
+              €
+            </v-row>
           </v-col>
-            <v-col
-            cols="12"
-            sm=""
-            md="6"
-          >
-          </v-col>
-           <v-btn
-                color="error"
-                @click="selectedOpen = false"
+        </v-card>
+        <v-card width="450" class="ma-6 pa-6">
+          <v-col>
+            <v-row class="justify-space-around align-center">
+              <div style="width: 10vw">
+                <v-select :items="jour" label="Jour"></v-select>
+              </div>
+              de
+              <div style="width: 5vw">
+                <input type="time" />
+              </div>
+              à
+              <div style="width: 5vw">
+                <input type="time" />
+              </div>
+            </v-row>
+            <v-row class="justify-space-around align-center">
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
               >
-                Suprimer
-              </v-btn>
-      
-        </v-row>
-
-        <v-row class="mt-12">
-        <v-col
-            cols="12"
-            sm="4"
-            md="4"
-          >
+                <template v-slot:activator="{ on, attrs }">
+                  <div style="width: 10vw">
+                    <v-text-field
+                      v-model="date"
+                      label="Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </div>
+                </template>
+                <v-date-picker v-model="date" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="menu = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn text color="primary" @click="$refs.menu.save(date)">
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
+              de
+              <div style="width: 5vw">
+                <input type="time" />
+              </div>
+              à
+              <div style="width: 5vw">
+                <input type="time" />
+              </div>
+            </v-row>
           </v-col>
-          <v-col
+        </v-card>
+      </v-row>
+      <v-row class="justify-center">
+        <v-card width="450" class="ma-6 pa-4">
+          Description
+          <v-textarea
+            class="px-6 pt-4"
             cols="10"
-            sm="4"
-            md="2"
-          >
-           <v-text-field
-            label="Nom du cour"
-          ></v-text-field>
-          </v-col>
-         
-          <v-col
-            cols="12"
-            sm="4"
-            md="4"
-          >
-          </v-col>
-           <v-col
-            cols="12"
-            sm="4"
-            md="4"
-          >
-          </v-col>
-          <v-col
-            cols="12"
-            sm="4"
-            md="2"
-          >
-          
-            <v-select
-          :items="recurence"
-          label="Recurence"
-        ></v-select>
-        </v-col>
-         <v-col
-            cols="24"
-            sm="4"
-            md="1"
-          >
-         </v-col>
-         <v-col
-            cols="12"
-            sm="4"
-            md="2"
-          >
-        <v-menu
-          ref="menu1"
-          v-model="menu1"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          max-width="290px"
-          min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="dateFormatted"
-              label="Horraire"
-              hint="MM/DD/YYYY format"
-              persistent-hint
-              prepend-icon="mdi-calendar"
-              v-bind="attrs"
-              @blur="date = parseDate(dateFormatted)"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="date"
-            no-title
-            @input="menu1 = false"
-          ></v-date-picker>
-        </v-menu>
-        
-          </v-col>
-           <v-col
-            cols="24"
-            sm="4"
-            md="1"
-          >
-       <v-select
-          :items="heure"
-          label="Heure de début"
-        ></v-select>
-        
-        </v-col>
-          <v-col
-            cols="24"
-            sm="4"
-            md="1"
-          >
-      <v-select
-          :items="heure"
-          label="Heure de fin"
-        ></v-select>
-        
-        </v-col>
-           <v-col
-            cols="12"
-            sm="4"
-            md="4"
-          >
-          </v-col>
-           <v-col
-            cols="12"
-            sm="4"
-            md="1"
-          >
-       <v-select
-          :items="Age"
-          label="personne"
-        ></v-select>
-       </v-col>
-        <v-col
-            cols="12"
-            sm="4"
-            md="4"
-          >
-          </v-col>
-           <v-col
-            cols="24"
-            sm="4"
-            md="4"
-          >
-          </v-col>
-           <v-col
-            cols="12"
-            sm="4"
-            md="2"
-          >
+            rows="5"
+            name="Description"
+            id="Description"
+            filled
+            label="Entrez votre description ici"
+          ></v-textarea>
+        </v-card>
+        <v-card width="450" class="ma-6 pa-4">
+          Note pour la professeure
+          <v-textarea
+            class="px-6 pt-4"
+            cols="10"
+            rows="5"
+            name="Note"
+            id="Note"
+            filled
+            label="Entrez votre note ici"
+          ></v-textarea>
+        </v-card>
+      </v-row>
+    </v-col>
+
+    <v-row class="ma-0 justify-space-around align-center">
+      <v-col class="flex-grow-0" >
+        <v-btn disabled color="blue-grey" @click="open = !open">
+          Envoyer message
+        </v-btn>
+        <v-dialog v-model="open" width="700">
+          <v-card>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="open = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-card-actions>
+            <send-message />
+          </v-card>
+        </v-dialog>
+      </v-col>
+
+      <v-col cols="12" sm="4" md="4">
         <v-text-field
-            label="Prix"
-          ></v-text-field>
-        </v-col>
-         <v-col
-            cols="24"
-            sm="4"
-            md="1"
-          >
-          </v-col>
-         <v-col
-            cols="24"
-            sm="5"
-            md="1"
-          >
-       <v-select
-          :items="jour"
-          label="jour"
-        ></v-select>
-        
-        </v-col>
-        <v-col
-            cols="24"
-            sm="4"
-            md="1"
-          >
-       <v-select
-          :items="heure"
-          label="Heure de début"
-        ></v-select>
-        
-        </v-col>
-          <v-col
-            cols="24"
-            sm="4"
-            md="1"
-          >
-      <v-select
-          :items="heure"
-          label="Heure de fin"
-        ></v-select>
-        
-        </v-col>
-         <v-col
-            cols="12"
-            sm="4"
-            md="4"
-          >
-         </v-col>
-         <v-col
-            cols="12"
-            sm="4"
-            md="2"
-          >
-          <v-label>Description</v-label>
-        <v-textarea
-          filled
-          name="input-7-4"
-          label="Mesage"
-          value="Mesage"
-        ></v-textarea>
-
-        </v-col>
-         <v-col
-            cols="24"
-            sm="4"
-            md="1"
-          >
-          </v-col>
-         <v-col
-            cols="12"
-            sm="4"
-            md="2"
-          >
-          <v-label>Notes pour la professeur</v-label>
-        <v-textarea
-          filled
-          name="input-7-4"
-          label="Mesage"
-          value="Mesage"
-        ></v-textarea>
-
-        </v-col>
-         <v-col
-            cols="24"
-            sm="4"
-            md="3"
-          >
-          </v-col>
-         <v-col
-            cols="12"
-            sm="4"
-            md="3"
-          >
-          <v-checkbox
-              v-model="ex4"
-              label="Tous cocher"
-            ></v-checkbox>
-
-        </v-col>
-         <v-col
-            cols="12"
-            sm="4"
-            md="3"
-          >
-          <v-btn>Envoyer un message</v-btn>
-
-        </v-col>
-         <v-col
-            cols="12"
-            sm="3"
-            md="3"
-          >
-             <v-text-field
-                  v-model="recherche"
-                  label="Recherche"
-                  outlined
-                  type="text"
-                  @keyup="search"
-                  @click:clear="clearMessage"
-                ></v-text-field>
-          </v-col>
-          <v-col
-            cols="12"
-            sm="4"
-            md="3"
-          >
-          <v-btn>Ajouter un éléve</v-btn>
-
-        </v-col>
-          <v-col
-            cols="12"
-            sm="40"
-            md="3"
-          >
-          </v-col>
-              <v-col
-            cols="12"
-            sm="45"
-            md="7"
-          >
-           <DataTableuser />
-            </v-col>
-             <v-col
-            cols="24"
-            sm="4"
-            md="32"
-          >
-          </v-col>
-         <v-col
-            cols="12"
-            sm="4"
-            md="8"
-          >
-         <v-btn color="green">Enregistrer</v-btn>
-
-        </v-col>
-        </v-row>
-      </v-container>
-    
+          outlined
+          dense
+          label="Recherche"
+          type="text"
+          hide-details
+        ></v-text-field>
+      </v-col>
+      <v-btn class="my-5" color="green">Ajouter des élèves</v-btn>
+    </v-row>
+    <v-col class="mt-5">
+      <datatable-students />
+    </v-col>
+    <v-row class="ma-0 justify-space-around align-center">
+      <v-btn class="my-5" color="green">Enregistrer</v-btn>
+    </v-row>
+  </div>
 </template>
 <script>
-  export default {
-    data: () => ({
-      recurence: ['Chaque semaine', 'Chaque jour', 'chaque mois','unique'],
-       Age: ['Senior', 'Jeune', 'Semie'],
-       heure:['1h', '2h', '3h','4h','5h','6h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h'],
-        jour:['Lundi', 'mardi', 'Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],
-    }),
-  }
+export default {
+  data: () => ({
+    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .substr(0, 10),
+    menu: false,
+    time: null,
+    menu2: false,
+    modal2: false,
+    selectRec: { recurence: 'Unique' },
+    selectAge: { Age: 'Jeune' },
+    recurence: ['Unique', 'Chaque jour', 'Chaque semaine', 'Chaque mois'],
+    Age: ['Jeune', 'Semie', 'Senior'],
+    jour: [
+      'Lundi',
+      'Mardi',
+      'Mercredi',
+      'Jeudi',
+      'Vendredi',
+      'Samedi',
+      'Dimanche',
+    ],
+  }),
+}
 </script>

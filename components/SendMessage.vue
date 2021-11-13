@@ -1,6 +1,6 @@
 <template>
-  <div ma-16>
-    <v-container fluid d-flex justify-center style="width: 40vw">
+  <div>
+    <v-container class="pt-0" style="width: 40vw">
       <v-col class="d-flex flex-column align-center">
         <p class="mb-10">Envoyer un Message</p>
         <v-textarea

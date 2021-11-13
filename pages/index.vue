@@ -1,37 +1,41 @@
 <template>
   <v-row class="fill-height">
     <v-col>
+      <h2>Planning</h2>
       <v-sheet height="64">
         <v-toolbar flat>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
-            Today
+            Aujourd'hui
+          </v-btn>
+          <v-btn fab text small color="grey darken-2" @click="prev">
+            <v-icon small> mdi-chevron-left </v-icon>
+          </v-btn>
+          <v-btn fab text small color="grey darken-2" @click="next">
+            <v-icon small> mdi-chevron-right </v-icon>
           </v-btn>
           <v-toolbar-title v-if="$refs.calendar">
             {{ $refs.calendar.title }}
           </v-toolbar-title>
-          <v-btn fab text small color="grey darken-2" @click="next">
-            <v-icon small> mdi-chevron-right </v-icon>
-          </v-btn>
           <v-spacer></v-spacer>
           <v-menu bottom right>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
                 <span>{{ typeToLabel[type] }}</span>
                 <v-icon right> mdi-menu-down </v-icon>
               </v-btn>
             </template>
             <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
+              <v-list-item @click="type = 'month'">
+                <v-list-item-title>Mois</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
+                <v-list-item-title>Semaine</v-list-item-title>
               </v-list-item>
               <v-list-item @click="type = '4day'">
-                <v-list-item-title>4 days</v-list-item-title>
+                <v-list-item-title>4 Jours</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="type = 'day'">
+                <v-list-item-title>Jour</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -43,7 +47,6 @@
           v-model="focus"
           color="primary"
           :events="events"
-          :event-color="getEventColor"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
@@ -55,101 +58,95 @@
           :close-on-content-click="false"
           :activator="selectedElement"
           offset-x
+          width="1000"
         >
-          <v-card color="grey lighten-4" min-width="350px" flat
-            ><v-col cols="12" sm="6">
-              <v-toolbar-title v-html="selectedEvent.name"
-                ><v-btn icon>
-                  <v-icon>mdi-pencil</v-icon>
-                  <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
-              ></v-toolbar-title>
-            </v-col>
-            <v-text>15/20</v-text>
-
+          <v-card color="grey lighten-4" min-width="350px" flat>
+            <v-row class="ma-0">
+              <v-col cols="12" sm="6">
+                <v-toolbar-title v-html="selectedEvent.name"
+                  ><v-btn icon>
+                    <v-icon>mdi-pencil</v-icon>
+                    <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
+                ></v-toolbar-title>
+                <v-text>15/20 élèves</v-text>
+              </v-col>
+              <v-row class="ma-0 pa-5 justify-end">
+                <v-btn text @click="selectedOpen = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-row>
+            </v-row>
             <v-spacer></v-spacer>
+
             <v-card flat>
               <v-card-text>
                 <v-container fluid>
                   <v-row align="center">
                     <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title
-                        >Recurence chaque semaine
+                      <v-toolbar-title class="d-flex justify-center"
+                        >Recurence : chaque semaine
                         <v-btn icon>
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn></v-toolbar-title
-                      >
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                      </v-toolbar-title>
                     </v-col>
                     <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title
-                        >Age senior
+                      <v-toolbar-title class="d-flex justify-center"
+                        >Age : senior
+                        <v-btn icon>
+                          <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
+                      </v-toolbar-title>
+                    </v-col>
+                    <v-col cols="12" sm="4" md="4">
+                      <v-toolbar-title class="d-flex justify-center"
+                        >Prix : 20 €
                         <v-btn icon>
                           <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                       </v-toolbar-title>
                     </v-col>
-                    <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title
-                        >Prix : 20
-                        <v-btn icon>
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn></v-toolbar-title
-                      >
-                    </v-col>
-                  </v-row>
-
-                  <v-row class="mt-12">
-                    <v-col cols="12" sm="4" md="4">
-                      <v-checkbox
-                        v-model="checkbox"
-                        label="tous cocher"
-                        hide-details
-                      ></v-checkbox>
-                    </v-col>
-
-                    <v-col cols="12" sm="4" md="4">
-                      <v-btn color="blue-grey" @click="open = !open">
-                        Envoyer message
-                      </v-btn>
-                      <v-overlay :value="open">
-                        <div class="d-flex justify-end">
-                          <button @click="open = !open" class="popup-close">
-                            <v-icon>mdi-close</v-icon>
-                          </button>
-                        </div>
-                        <send-message />
-                      </v-overlay>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="4">
-                      <v-text-field
-                        v-model="recherche"
-                        label="Recherche"
-                        outlined
-                        type="text"
-                        @keyup="search"
-                        @click:clear="clearMessage"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="40" md="3"> </v-col>
-                    <v-col cols="12" sm="45" md="7">
-                      <datatable-students />
-                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
-            </v-card>
-            <v-card-actions>
-              <v-col cols="12" sm="4" md="4"> </v-col>
+              <v-row class="ma-0 justify-center align-center">
+                <v-col cols="12" sm="4" md="4">
+                  <v-btn disabled color="blue-grey" @click="open = !open">
+                    Envoyer message
+                  </v-btn>
+                  <v-dialog v-model="open" width="700">
+                    <v-card>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text @click="open = false">
+                          <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                      </v-card-actions>
+                      <send-message />
+                    </v-card>
+                  </v-dialog>
+                </v-col>
 
-              <v-btn color="teal" @click="selectedOpen = false">
-                Modifier le cour
-              </v-btn>
-              <v-col cols="12" sm="4" md="4"> </v-col>
-              <v-col cols="12" sm="4" md="4">
-                <v-btn color="error" @click="selectedOpen = false">
-                  Suprimer
-                </v-btn>
+                <v-col cols="12" sm="4" md="4">
+                  <v-text-field
+                    outlined
+                    dense
+                    label="Recherche"
+                    type="text"
+                    hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-col class="mt-5">
+                <datatable-students />
               </v-col>
-            </v-card-actions>
+              <v-row class="ma-0 justify-space-around align-center">
+                <router-link class="text-decoration-none" to="/formClasses">
+                  <v-btn class="my-5" color="teal"> Modifier le cours </v-btn>
+                </router-link>
+                <v-btn class="my-5" color="error"> Supprimer le cours </v-btn>
+              </v-row>
+            </v-card>
           </v-card>
         </v-dialog>
       </v-sheet>
@@ -158,25 +155,29 @@
 </template>
 
 <script>
-import DatatableStudents from '~/components/DatatableStudents.vue'
 export default {
-  components: { DatatableStudents },
   data: () => ({
+    colors: ['grey', 'green'],
     open: false,
     focus: '',
     type: 'month',
     typeToLabel: {
-      month: 'Month',
-      week: 'Week',
-      day: 'Day',
-      '4day': '4 Days',
+      month: 'Mois',
+      week: 'Semaine',
+      day: 'Jour',
+      '4day': '4 jours',
     },
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
-    events: [],
-    colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green'],
-    names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event'],
+    events: [
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-11-12 09:00',
+        end: '2021-11-12 10:00',
+        color: 'green',
+      },
+    ],
   }),
   mounted() {
     this.$refs.calendar.checkChange()
@@ -186,9 +187,7 @@ export default {
       this.focus = date
       this.type = 'day'
     },
-    getEventColor(event) {
-      return event.color
-    },
+
     setToday() {
       this.focus = ''
     },
@@ -202,35 +201,32 @@ export default {
       const open = () => {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => (this.selectedOpen = true))
-        )
+        setTimeout(() => {
+          this.selectedOpen = true
+        }, 10)
       }
 
       if (this.selectedOpen) {
         this.selectedOpen = false
-        requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        setTimeout(open, 10)
       } else {
         open()
       }
-
       nativeEvent.stopPropagation()
     },
+
     updateRange({ start, end }) {
       const events = []
-
       const min = new Date(`${start.date}T00:00:00`)
       const max = new Date(`${end.date}T23:59:59`)
       const days = (max.getTime() - min.getTime()) / 86400000
       const eventCount = this.rnd(days, days + 20)
-
       for (let i = 0; i < eventCount; i++) {
         const allDay = this.rnd(0, 3) === 0
         const firstTimestamp = this.rnd(min.getTime(), max.getTime())
         const first = new Date(firstTimestamp - (firstTimestamp % 900000))
         const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
         const second = new Date(first.getTime() + secondTimestamp)
-
         events.push({
           name: this.names[this.rnd(0, this.names.length - 1)],
           start: first,
@@ -239,11 +235,7 @@ export default {
           timed: !allDay,
         })
       }
-
       this.events = events
-    },
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a
     },
   },
 }

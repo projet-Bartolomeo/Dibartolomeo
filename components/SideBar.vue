@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer absolute permanent left style="background: #122132">
+  <v-navigation-drawer absolute permanent left style="background: #621321">
     <template v-slot:prepend>
       <v-list-item>
         <v-list-item-content>
@@ -10,7 +10,7 @@
       </v-list-item>
     </template>
 
-    <v-divider></v-divider>
+    <v-spacer></v-spacer>
     <v-list dense nav>
       <v-list-item v-for="item in items" :key="item.title"  :to="item.route" class="my-5">
         <v-list-item-icon>
