@@ -1,8 +1,8 @@
 <template>
   <v-row class="fill-height">
     <v-col>
-      <h2>Planning</h2>
-      <v-sheet height="64">
+      <h2 class="ma-4">Planning</h2>
+      <v-sheet elevation="7" height="64">
         <v-toolbar flat>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
             Aujourd'hui
@@ -41,7 +41,7 @@
           </v-menu>
         </v-toolbar>
       </v-sheet>
-      <v-sheet height="600">
+      <v-sheet elevation="7" height="600">
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -111,7 +111,7 @@
               </v-card-text>
               <v-row class="ma-0 justify-center align-center">
                 <v-col cols="12" sm="4" md="4">
-                  <v-btn disabled color="blue-grey" @click="open = !open">
+                  <v-btn  style="color: white" disabled color="blue-grey" @click="open = !open">
                     Envoyer message
                   </v-btn>
                   <v-dialog v-model="open" width="700">
@@ -142,7 +142,9 @@
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
                 <router-link class="text-decoration-none" to="/formClasses">
-                  <v-btn class="my-5" color="teal"> Modifier le cours </v-btn>
+                  <v-btn class="my-5"  style="color: white" color="teal lighten-2">
+                    Modifier le cours
+                  </v-btn>
                 </router-link>
                 <v-btn class="my-5" color="error"> Supprimer le cours </v-btn>
               </v-row>

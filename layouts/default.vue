@@ -1,5 +1,5 @@
 <template>
-  <v-app style="background: #FFFAF1">
+  <v-app style="background: #F5F5F5">
   <v-navigation-drawer app>
     <side-bar />
   </v-navigation-drawer>

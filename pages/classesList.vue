@@ -4,47 +4,40 @@
       <div id="title"><h2>Listes des cours</h2></div>
       <div id="btnAjouterCours">
         <router-link class="text-decoration-none" to="/formClasses">
-          <v-btn       color="success"
-
-            >Ajouter un cours
-            </v-btn  
-          ></router-link
+          <v-btn  style="color: white" color="teal lighten-2">Ajouter un cours </v-btn></router-link
         >
       </div>
     </v-row>
 
+    <v-row class="ma-0 justify-center align-center">
+      <v-col cols="12" sm="4" md="4">
+        <v-btn disabled  style="color: white" color="teal lighten-2" @click="open = !open">
+          Envoyer message
+        </v-btn>
+        <v-dialog v-model="open" width="700">
+          <v-card>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="open = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-card-actions>
+            <send-message />
+          </v-card>
+        </v-dialog>
+      </v-col>
 
-   <v-row class="ma-0 justify-center align-center">
-                <v-col cols="12" sm="4" md="4">
-                  <v-btn disabled color="blue-grey" @click="open = !open">
-                    Envoyer message
-                  </v-btn>
-                  <v-dialog v-model="open" width="700">
-                    <v-card>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn text @click="open = false">
-                          <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                      </v-card-actions>
-                      <send-message />
-                    </v-card>
-                  </v-dialog>
-                </v-col>
-
-                <v-col  cols="12"
-          sm="6"
-          md="3">
-                  <v-text-field
-                    outlined
-                    dense
-                    v-model="recherche"
-                    label="Recherche"
-                    type="text"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+      <v-col cols="12" sm="6" md="3">
+        <v-text-field
+          outlined
+          dense
+          v-model="recherche"
+          label="Recherche"
+          type="text"
+          hide-details
+        ></v-text-field>
+      </v-col>
+    </v-row>
     <v-dialog v-model="dialog" width="700">
       <v-card>
         <v-card-actions>

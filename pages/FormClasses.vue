@@ -130,8 +130,8 @@
     </v-col>
 
     <v-row class="ma-0 justify-space-around align-center">
-      <v-col class="flex-grow-0" >
-        <v-btn disabled color="blue-grey" @click="open = !open">
+      <v-col class="flex-grow-0">
+        <v-btn disabled color="teal lighten-2" @click="open = !open">
           Envoyer message
         </v-btn>
         <v-dialog v-model="open" width="700">
@@ -156,14 +156,13 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-btn class="my-5" color="green">Ajouter des élèves</v-btn>
+      <v-btn class="my-5" style="color: white" color="teal lighten-2"
+        >Ajouter des élèves</v-btn
+      >
     </v-row>
     <v-col class="mt-5">
       <datatable-students />
     </v-col>
-    <v-row class="ma-0 justify-space-around align-center">
-      <v-btn class="my-5" color="green">Enregistrer</v-btn>
-    </v-row>
   </div>
 </template>
 <script>
