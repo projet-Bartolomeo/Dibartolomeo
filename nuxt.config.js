@@ -1,4 +1,11 @@
-import colors from 'vuetify/es5/util/colors'
+import dotenv from 'dotenv'
+
+let path =
+  process.env.NODE_ENV === 'production'
+    ? '.env' + process.env.NODE_ENV
+    : '.env.' + process.env.NODE_ENV
+
+dotenv.config({ path })
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
