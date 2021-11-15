@@ -9,6 +9,6 @@ const Message = new schema({
    lessonid: { type:String },
     
 })
-module.exports = Message =mongoose.model('Meesage', Message)
+module.exports = message =mongoose.model('Meesage', Message)
 
 

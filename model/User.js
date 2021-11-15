@@ -8,4 +8,4 @@ const User = new schema({
    type: { type:String },
     banned:{ type:Boolean ,default:false },
 })
-module.exports = User =mongoose.model('utilisateur', User)
+module.exports = user =mongoose.model('utilisateur', User)

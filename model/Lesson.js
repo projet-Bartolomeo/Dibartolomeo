@@ -14,5 +14,5 @@ const Lesson = new schema({
     startDate:{ type: Date, default: false },
     EndDate:{type:Date},
 })
-module.exports = Lesson =mongoose.model('Lesson', Lesson)
+module.exports = lesson =mongoose.model('Lesson', Lesson)
 
