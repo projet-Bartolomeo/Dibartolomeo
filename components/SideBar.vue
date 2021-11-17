@@ -1,34 +1,24 @@
 <template>
   <v-navigation-drawer
-    absolute
-    permanent
-    left
-    style="background: linear-gradient(90deg, rgba(108,20,36,1) 18%, rgba(91,16,29,1) 91%);"
-
+    v-model="drawer"
+    :mini-variant="miniVariant"
+    :clipped="clipped"
+    fixed
+    app
   >
-    <template v-slot:prepend>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="text-center" style="color: white">
-            Di Bartolomeo
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </template>
-
-    <v-spacer></v-spacer>
-    <v-list dense nav>
+    <v-list>
       <v-list-item
-        v-for="item in items"
-        :key="item.title"
-        :to="item.route"
-        class="my-5"
+        v-for="(item, i) in items"
+        :key="i"
+        :to="item.to"
+        router
+        exact
       >
-        <v-list-item-icon>
-          <v-icon style="color: white">{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content style="color: white">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        <v-list-item-action>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title v-text="item.title" />
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -36,19 +26,22 @@
 </template>
 
 <script>
+
 export default {
-  data() {
+  data () {
     return {
+      clipped: false,
+      drawer: false,
+      fixed: false,
       items: [
-        { title: 'Planning', icon: 'mdi-bulletin-board', route: '/' },
-        { title: 'Liste des cours', icon: 'mdi-image', route: '/classesList' },
         {
-          title: 'Liste des éleves',
-          icon: 'mdi-account',
-          route: '/StudentList',
+          icon: 'mdi-apps',
+          title: 'Welcome',
+          to: '/'
         },
-        { title: 'Administration du site', icon: 'mdi-pencil-box-outline' },
       ],
+      miniVariant: false,
+      title: 'Vuetify.js'
     }
   },
 }

@@ -5,14 +5,57 @@
     :items="emploi_du_temps"
     :search="search"
     show-select
-    item-key="id"
+    item-key="name"
     class="elevation-1"
+    sort-by="calories"
   >
     <template v-slot:top>
-        <v-dialog v-model="dialogDelete" max-width="680px">
+      <v-toolbar flat>
+        <!-- <v-toolbar-title>COURS</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider> -->
+        <v-spacer></v-spacer>
+        <v-form>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="search"
+                  hide-actions
+                  :append-outer-icon="recherche ? 'mdi-send' : 'mdi-microphone'"
+                  filled
+                  clear-icon="mdi-close-circle"
+                  clearable
+                  outlined
+                  type="text"
+                  @click:clear="clearMessage"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Annuler </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
-              >Êtes-vous sûr de vouloir supprimer cet élève d'un cours ?</v-card-title
+              >Est-vous sur de vouloir supprimer ce cours ?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -26,21 +69,11 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-    <v-dialog v-model="dialog" width="700">
-      <v-card>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-actions>
-        <send-message />
-      </v-card>
-    </v-dialog>
+      </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small @click="dialog = !dialog"> mdi-message-text </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <v-icon small> mdi-message-text </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -92,31 +125,6 @@ export default Vue.extend({
     initialize() {
       this.emploi_du_temps = [
         {
-          id : 1,
-          display: false,
-          name: 'Beaugendre',
-          prenom: 'Mattis',
-          mail: 'mattis.beaugendre@gmail.com',
-          telephone: '07 77 77 77 77',
-        },
-        {
-          id : 2,
-          display: false,
-          name: 'Beaugendre',
-          prenom: 'Mattis',
-          mail: 'mattis.beaugendre@gmail.com',
-          telephone: '07 77 77 77 77',
-        },    
-        {
-          id : 3,
-          display: false,
-          name: 'Beaugendre',
-          prenom: 'Mattis',
-          mail: 'mattis.beaugendre@gmail.com',
-          telephone: '07 77 77 77 77',
-        },    
-        {
-          id : 4,
           display: false,
           name: 'Beaugendre',
           prenom: 'Mattis',

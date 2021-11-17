@@ -1,0 +1,17 @@
+{
+  "Datatable": {
+    "description": "Auto imported from components/Datatable.vue"
+  },
+  "DataTableClasses": {
+    "description": "Auto imported from components/DataTableClasses.vue"
+  },
+  "DatatableStudents": {
+    "description": "Auto imported from components/DatatableStudents.vue"
+  },
+  "SendMessage": {
+    "description": "Auto imported from components/SendMessage.vue"
+  },
+  "SideBar": {
+    "description": "Auto imported from components/SideBar.vue"
+  }
+}
