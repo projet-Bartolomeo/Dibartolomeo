@@ -1,7 +1,7 @@
 <template>
   <v-row class="fill-height">
     <v-col>
-      <h2 class="ma-4">Planning</h2>
+      <h1 class="ma-4">Planning</h1>
       <v-sheet elevation="7" height="64">
         <v-toolbar flat>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">

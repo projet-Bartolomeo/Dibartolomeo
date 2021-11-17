@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="my-4 justify-space-between">
-      <div id="title"><h2>Listes des cours</h2></div>
+      <div id="title"><h1>Listes des cours</h1></div>
       <div id="btnAjouterCours">
         <router-link class="text-decoration-none" to="/formClasses">
           <v-btn  style="color: white" color="teal lighten-2">Ajouter un cours </v-btn></router-link

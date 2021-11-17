@@ -8,7 +8,6 @@
               </v-btn>
   </v-row>
     <div>
-        <v-app id="inspire">
             <v-row class="ma-4 justify-space-around">
             <v-col cols="12" sm="4" md="4">
                         <v-btn 
@@ -26,9 +25,10 @@
             </v-text-field>
             </v-col>
             </v-row>
-            
-        </v-app>
-    </div>
+                </div>
+
+                <DatatableStudents />
+
     </div>
 </template>
 
