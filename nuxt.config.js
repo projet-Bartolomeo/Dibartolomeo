@@ -21,6 +21,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  plugins: ['~/plugins/firebase.js'],
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -42,11 +43,39 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
   ],
+  router:{
+    middleware:['auth']
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: "AIzaSyBhRAC7baDijuXXzx-loNjDlbDHYTBNOuE",
+          authDomain: "dibartolomeo-a7ae7.firebaseapp.com",
+          projectId: "dibartolomeo-a7ae7",
+          storageBucket: "dibartolomeo-a7ae7.appspot.com",
+          messagingSenderId: "985214376604",
+          appId: "1:985214376604:web:c1ece4796e82078556ab59",
+          measurementId: "G-T22TK9XJ6Q"
+        },
+        services: {
+          auth: {
+            persistence: 'local', // default
+            initialize: {
+              onAuthStateChangedAction: 'onAuthStateChangedAction',
+              subscribeManually: false
+            },
+            ssr: false,
+          }
+
+        }
+      }
+    ]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
