@@ -59,9 +59,11 @@
 export default {
   data() {
     return {
+      recherche: '',
+      open: false,
       dialog: false,
     }
-  },
+  }
 }
 </script>
 
