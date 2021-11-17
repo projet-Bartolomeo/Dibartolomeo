@@ -1,11 +1,4 @@
-import dotenv from 'dotenv'
-
-let path =
-  process.env.NODE_ENV === 'production'
-    ? '.env' + process.env.NODE_ENV
-    : '.env.' + process.env.NODE_ENV
-
-dotenv.config({ path })
+import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -54,29 +47,6 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    ['@nuxtjs/firebase',
-      {
-        config: {
-          apiKey: "AIzaSyBhRAC7baDijuXXzx-loNjDlbDHYTBNOuE",
-          authDomain: "dibartolomeo-a7ae7.firebaseapp.com",
-          projectId: "dibartolomeo-a7ae7",
-          storageBucket: "dibartolomeo-a7ae7.appspot.com",
-          messagingSenderId: "985214376604",
-          appId: "1:985214376604:web:c1ece4796e82078556ab59",
-          measurementId: "G-T22TK9XJ6Q"
-        },
-        services: {
-          auth: true,
-          firestore: true,
-          functions: true,
-          storage: true,
-          database: true,
-          messaging: true,
-          performance: true,
-          analytics: true,
-          remoteConfig: true
-        }
-      }]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -86,16 +56,16 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      light: true,
+      dark: true,
       themes: {
         dark: {
-          primary: '#1976D2',
-          secondary: '#424242',
-          accent: '#82B1FF',
-          error: '#FF5252',
-          info: '#2196F3',
-          success: '#4CAF50',
-          warning: '#FFC107'
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
         }
       }
     }
