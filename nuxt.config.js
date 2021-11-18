@@ -1,4 +1,11 @@
-import colors from 'vuetify/es5/util/colors'
+import dotenv from 'dotenv'
+
+let path =
+  process.env.NODE_ENV === 'production'
+    ? '.env' + process.env.NODE_ENV
+    : '.env.' + process.env.NODE_ENV
+
+dotenv.config({ path })
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -71,7 +78,8 @@ export default {
               subscribeManually: false
             },
             ssr: false,
-          }
+          },
+          firestore: true
 
         }
       }
@@ -88,14 +96,13 @@ export default {
       light: true,
       themes: {
         dark: {
-            primary: '#1976D2',
-            secondary: '#424242',
-            accent: '#82B1FF',
-            error: '#FF5252',
-            info: '#2196F3',
-            success: '#4CAF50',
-            warning: '#FFC107',
-          
+          primary: '#1976D2',
+          secondary: '#424242',
+          accent: '#82B1FF',
+          error: '#FF5252',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FFC107'
         }
       }
     }
