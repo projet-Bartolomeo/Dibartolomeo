@@ -8,47 +8,46 @@
     item-key="id"
     class="elevation-1"
   >
-    <template v-slot:top>
-        <v-dialog v-model="dialogDelete" max-width="680px">
-          <v-card>
-            <v-card-title class="text-h5"
-              >Êtes-vous sûr de vouloir supprimer cet élève d'un cours ?</v-card-title
+    <template #top>
+      <v-dialog v-model="dialogDelete" class="dialog">
+        <v-card>
+          <v-card-title class="text-h5"
+            >Êtes-vous sûr de vouloir supprimer cet élève d'un cours
+            ?</v-card-title
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeDelete"
+              >Annuler</v-btn
             >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Annuler</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-    <v-dialog v-model="dialog" width="700">
-      <v-card>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-actions>
-        <send-message />
-      </v-card>
-    </v-dialog>
+            <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              >OK</v-btn
+            >
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small @click="dialog = !dialog"> mdi-message-text </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+    <template #[`item.actions`]="{ item }">
+      <div class="d-flex">
+        <SendMessage buttonTitle="mdi-message-text">
+          <v-textarea
+            class="text-area"
+            filled
+            auto-grow
+            name="input-7-4"
+            label="Entrez votre message ici"
+          ></v-textarea>
+        </SendMessage>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </div>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import Vue from 'vue'
 
-export default Vue.extend({
+export default {
   name: 'DataTable',
   data: () => {
     return {
@@ -92,7 +91,7 @@ export default Vue.extend({
     initialize() {
       this.emploi_du_temps = [
         {
-          id : 1,
+          id: 1,
           display: false,
           name: 'Beaugendre',
           prenom: 'Mattis',
@@ -100,23 +99,23 @@ export default Vue.extend({
           telephone: '07 77 77 77 77',
         },
         {
-          id : 2,
+          id: 2,
           display: false,
           name: 'Beaugendre',
           prenom: 'Mattis',
           mail: 'mattis.beaugendre@gmail.com',
           telephone: '07 77 77 77 77',
-        },    
+        },
         {
-          id : 3,
+          id: 3,
           display: false,
           name: 'Beaugendre',
           prenom: 'Mattis',
           mail: 'mattis.beaugendre@gmail.com',
           telephone: '07 77 77 77 77',
-        },    
+        },
         {
-          id : 4,
+          id: 4,
           display: false,
           name: 'Beaugendre',
           prenom: 'Mattis',
@@ -144,5 +143,11 @@ export default Vue.extend({
       })
     },
   },
-})
+}
 </script>
+
+<style scoped>
+.text-area {
+  width: 70%;
+}
+</style>

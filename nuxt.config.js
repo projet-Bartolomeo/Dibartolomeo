@@ -1,4 +1,11 @@
-import colors from 'vuetify/es5/util/colors'
+import dotenv from 'dotenv'
+
+let path =
+  process.env.NODE_ENV === 'production'
+    ? '.env' + process.env.NODE_ENV
+    : '.env.' + process.env.NODE_ENV
+
+dotenv.config({ path })
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -47,6 +54,29 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    ['@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: process.env.apiKey,
+          authDomain: process.env.authDomain,
+          projectId: process.env.projectId,
+          storageBucket: process.env.storageBucket,
+          messagingSenderId: process.env.messagingSenderId,
+          appId: process.env.appId,
+          measurementId: process.env.measurementId
+        },
+        services: {
+          auth: true,
+          firestore: true,
+          functions: true,
+          storage: true,
+          database: true,
+          messaging: true,
+          performance: true,
+          analytics: true,
+          remoteConfig: true
+        }
+      }]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -65,8 +95,7 @@ export default {
           error: '#FF5252',
           info: '#2196F3',
           success: '#4CAF50',
-          warning: '#FFC107',
-
+          warning: '#FFC107'
         }
       }
     }
