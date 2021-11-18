@@ -62,13 +62,13 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: "AIzaSyBhRAC7baDijuXXzx-loNjDlbDHYTBNOuE",
-          authDomain: "dibartolomeo-a7ae7.firebaseapp.com",
-          projectId: "dibartolomeo-a7ae7",
-          storageBucket: "dibartolomeo-a7ae7.appspot.com",
-          messagingSenderId: "985214376604",
-          appId: "1:985214376604:web:c1ece4796e82078556ab59",
-          measurementId: "G-T22TK9XJ6Q"
+          apiKey: process.env.apiKey,
+          authDomain: process.env.authDomain,
+          projectId: process.env.projectId,
+          storageBucket: process.env.storageBucket,
+          messagingSenderId: process.env.messagingSenderId,
+          appId: process.env.appId,
+          measurementId: process.env.measurementId
         },
         services: {
           auth: {
