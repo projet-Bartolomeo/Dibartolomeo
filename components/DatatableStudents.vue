@@ -30,15 +30,25 @@
     </template>
     <template #[`item.actions`]="{ item }">
       <div class="d-flex">
-        <SendMessage buttonTitle="mdi-message-text">
-          <v-textarea
-            class="text-area"
-            filled
-            auto-grow
-            name="input-7-4"
-            label="Entrez votre message ici"
-          ></v-textarea>
-        </SendMessage>
+        <Overlay
+          buttonTitle="mdi-message-text"
+          overlayTitle="Envoyer un Message"
+        >
+          <v-col class="d-flex flex-column align-center">
+            <v-textarea
+              class="text-area"
+              filled
+              auto-grow
+              name="input-7-4"
+              label="Entrez votre message ici"
+            ></v-textarea>
+            <v-btn
+              style="color: white"
+              color="teal lighten-2"
+              >Envoyer</v-btn
+            >
+          </v-col>
+        </Overlay>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </div>
     </template>
@@ -46,7 +56,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'DataTable',
   data: () => {
