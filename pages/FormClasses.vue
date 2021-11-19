@@ -67,7 +67,7 @@
                 offset-y
                 min-width="auto"
               >
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                   <div style="width: 10vw">
                     <v-text-field
                       v-model="date"
@@ -105,11 +105,11 @@
         <v-card width="450" class="ma-6 pa-4">
           Description
           <v-textarea
+            id="Description"
             class="px-6 pt-4"
             cols="10"
             rows="5"
             name="Description"
-            id="Description"
             filled
             label="Entrez votre description ici"
           ></v-textarea>
@@ -117,11 +117,11 @@
         <v-card width="450" class="ma-6 pa-4">
           Note pour la professeure
           <v-textarea
+            id="Note"
             class="px-6 pt-4"
             cols="10"
             rows="5"
             name="Note"
-            id="Note"
             filled
             label="Entrez votre note ici"
           ></v-textarea>
@@ -142,7 +142,7 @@
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-card-actions>
-            <send-message />
+            <Overlay />
           </v-card>
         </v-dialog>
       </v-col>
@@ -156,9 +156,13 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-btn class="my-5" style="color: white" color="teal lighten-2"
-        >Ajouter des élèves</v-btn
+      <Overlay
+        type="text"
+        buttonTitle="Ajouter des élèves"
+        overlayTitle="Ajouter élève au cours"
       >
+        <DatatableStudents />
+      </Overlay>
     </v-row>
     <v-col class="mt-5">
       <datatable-students />
@@ -168,6 +172,7 @@
 <script>
 export default {
   data: () => ({
+    open: false,
     date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 10),

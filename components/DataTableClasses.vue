@@ -35,7 +35,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-actions>
-        <send-message />
+        <Overlay />
       </v-card>
     </v-dialog>
     </template>
