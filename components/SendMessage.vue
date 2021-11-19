@@ -5,32 +5,27 @@
     </v-icon>
     <v-btn
       v-else
-      class="my-5"
+      disabled
       style="color: white"
       color="teal lighten-2"
       @click="dialog = !dialog"
-      >{{ buttonTitle }}</v-btn
     >
-    <v-dialog v-model="dialog" max-width="34vw">
+      {{ buttonTitle }}
+    </v-btn>
+    <v-dialog v-model="dialog" class="dialog" max-width="34vw">
       <v-card>
-        <v-card-actions class="pa-4">
-          <div class="d-flex justify-center align-center">
-           {{ overlayTitle }}
-          </div>
+        <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            min-height="auto"
-            min-width="auto"
-            height="40px"
-            width="40px"
-            text
-            @click="dialog = false"
-          >
+          <v-btn text @click="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-actions>
         <v-container class="pt-0">
-          <slot></slot>
+          <v-col class="d-flex flex-column align-center">
+            <p class="mb-10">Envoyer un Message</p>
+            <slot></slot>
+            <v-btn id="message-vide" elevation="7" color="green">Envoyer</v-btn>
+          </v-col>
         </v-container>
       </v-card>
     </v-dialog>
@@ -49,10 +44,6 @@ export default {
       type: String,
       required: true,
     },
-    overlayTitle: {
-      type: String,
-      required: true,
-    },
   },
   data() {
     return {
@@ -61,11 +52,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="css">
-.close-button {
-  min-width: none;
-  height: 35px;
-  width: 35px;
-}
-</style>
