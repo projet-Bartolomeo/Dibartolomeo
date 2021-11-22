@@ -9,7 +9,7 @@
         <v-list-item-content>
         <v-row class="mt-5 justify-center align-center" >
             <v-img
-            src="/image/Fichier 13.png"
+            src="/image/logo.png"
             max-height="170"
             max-width="220"
           />
@@ -49,7 +49,7 @@ export default {
           icon: 'mdi-account',
           route: '/StudentList',
         },
-        { title: 'Administration du site', icon: 'mdi-pencil-box-outline' },
+       /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
       permanent: true
     }

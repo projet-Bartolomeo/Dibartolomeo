@@ -2,16 +2,113 @@
   <div>
     <v-row class="justify-space-between ma-5">
       <v-col class="pa-0">
-        <h2>Cours de dessin fantastique</h2>
-        <p>15/20 élèves</p>
+        <v-row class="ma-0 align-center">
+          <h2 ref="paraLessonTilte">Cours de dessin fantastique</h2>
+          <div
+            class="flex-column hide"
+            ref="inputLessonTilte"
+            style="width: 15vw"
+          >
+            <v-text-field></v-text-field>
+          </div>
+          <div ref="pensilLessonTilte">
+            <v-btn
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="
+                HideShow(
+                  $refs.paraLessonTilte,
+                  $refs.inputLessonTilte,
+                  $refs.pensilLessonTilte,
+                  $refs.closeLessonTilte
+                )
+              "
+            >
+              <v-icon> mdi-pencil </v-icon>
+            </v-btn>
+          </div>
+          <div ref="closeLessonTilte" class="hide">
+            <v-btn
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="
+                HideShow(
+                  $refs.inputLessonTilte,
+                  $refs.paraLessonTilte,
+                  $refs.closeLessonTilte,
+                  $refs.pensilLessonTilte
+                )
+              "
+            >
+              <v-icon> mdi-close </v-icon>
+            </v-btn>
+          </div>
+        </v-row>
+        <v-row class="ma-0 align-center">
+          <p class="ma-0">15/</p>
+          <p class="ma-0" ref="paraLessonMax">20</p>
+          <div
+            class="flex-column hide ma-0 pl-2"
+            ref="inputLessonMax"
+            style="width: 2vw"
+          >
+            <v-text-field class="pa-0"></v-text-field>
+          </div>
+          <p class="ma-0 ml-2">élèves</p>
+          <div ref="pensilLessonMax">
+            <v-btn
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="
+                HideShow(
+                  $refs.paraLessonMax,
+                  $refs.inputLessonMax,
+                  $refs.pensilLessonMax,
+                  $refs.closeLessonMax
+                )
+              "
+            >
+              <v-icon> mdi-pencil </v-icon>
+            </v-btn>
+          </div>
+          <div ref="closeLessonMax" class="hide">
+            <v-btn
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="
+                HideShow(
+                  $refs.inputLessonMax,
+                  $refs.paraLessonMax,
+                  $refs.closeLessonMax,
+                  $refs.pensilLessonMax
+                )
+              "
+            >
+              <v-icon> mdi-close </v-icon>
+            </v-btn>
+          </div>
+        </v-row>
       </v-col>
-      <v-btn color="error"> Supprimer le cours</v-btn>
+      <div class="d-flex flex-column align-center">
+        <v-row> <v-btn color="error">Supprimer le cours</v-btn> </v-row>
+        <v-row ref="enregistrer" class="hide">
+          <v-btn color="success">Enregistrer le cours</v-btn>
+        </v-row>
+      </div>
     </v-row>
     <v-col>
       <v-row class="justify-center">
         <v-card width="450" class="ma-6">
           <v-col>
-            <v-row class="justify-center align-center">
+            <v-row class="justify-start align-center ms-3">
               <p class="ma-0 pr-10">Récurence :</p>
               <div style="width: 15vw">
                 <v-select
@@ -22,7 +119,7 @@
                 ></v-select>
               </div>
             </v-row>
-            <v-row class="justify-center align-center">
+            <v-row class="justify-start align-center ms-3">
               <p class="ma-0 pr-10">Age :</p>
               <div style="width: 15vw">
                 <v-select
@@ -33,12 +130,53 @@
                 ></v-select>
               </div>
             </v-row>
-            <v-row class="justify-center align-center">
+            <v-row class="justify-start align-center mt-7 mb-4 ms-3">
               <p class="ma-0 pr-10">Prix :</p>
-              <div class="flex-column" style="width: 15vw">
-                <v-text-field></v-text-field>
+              <div
+                class="flex-column hide ma-0 pl-2"
+                ref="inputLessonPrice"
+                style="width: 2vw"
+              >
+                <v-text-field class="pa-0"></v-text-field>
               </div>
+              <p class="ma-0" ref="paraLessonPrice">20</p>
               €
+              <div ref="pensilLessonPrice">
+                <v-btn
+                  fab
+                  text
+                  small
+                  color="grey darken-2"
+                  @click="
+                    HideShow(
+                      $refs.paraLessonPrice,
+                      $refs.inputLessonPrice,
+                      $refs.pensilLessonPrice,
+                      $refs.closeLessonPrice
+                    )
+                  "
+                >
+                  <v-icon> mdi-pencil </v-icon>
+                </v-btn>
+              </div>
+              <div ref="closeLessonPrice" class="hide">
+                <v-btn
+                  fab
+                  text
+                  small
+                  color="grey darken-2"
+                  @click="
+                    HideShow(
+                      $refs.inputLessonPrice,
+                      $refs.paraLessonPrice,
+                      $refs.closeLessonPrice,
+                      $refs.pensilLessonPrice
+                    )
+                  "
+                >
+                  <v-icon> mdi-close </v-icon>
+                </v-btn>
+              </div>
             </v-row>
           </v-col>
         </v-card>
@@ -103,48 +241,144 @@
       </v-row>
       <v-row class="justify-center">
         <v-card width="450" class="ma-6 pa-4">
-          Description
-          <v-textarea
-            id="Description"
-            class="px-6 pt-4"
-            cols="10"
-            rows="5"
-            name="Description"
-            filled
-            label="Entrez votre description ici"
-          ></v-textarea>
+          <v-row class="align-center pa-3">
+            <p class="mb-0">Description du cours</p>
+            <div ref="pensilLessonDesc">
+              <v-btn
+                fab
+                text
+                small
+                color="grey darken-2"
+                @click="
+                  HideShow(
+                    $refs.paraLessonDesc,
+                    $refs.inputLessonDesc,
+                    $refs.pensilLessonDesc,
+                    $refs.closeLessonDesc
+                  )
+                "
+              >
+                <v-icon> mdi-pencil </v-icon>
+              </v-btn>
+            </div>
+            <div ref="closeLessonDesc" class="hide">
+              <v-btn
+                fab
+                text
+                small
+                color="grey darken-2"
+                @click="
+                  HideShow(
+                    $refs.inputLessonDesc,
+                    $refs.paraLessonDesc,
+                    $refs.closeLessonDesc,
+                    $refs.pensilLessonDesc
+                  )
+                "
+              >
+                <v-icon> mdi-close </v-icon>
+              </v-btn>
+            </div>
+          </v-row>
+          <div class="hide" ref="inputLessonDesc">
+            <v-textarea
+              id="Description"
+              class="px-6 pt-4"
+              cols="10"
+              rows="5"
+              name="Description"
+              filled
+              label="Entrez votre description ici"
+            ></v-textarea>
+          </div>
+
+          <p ref="paraLessonDesc" class="px-6 pt-4">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias
+            excepturi placeat blanditiis distinctio accusamus cupiditate labore
+            quas magnam repellat! Voluptatum inventore, aspernatur voluptatem
+            vitae nihil enim? Fugit accusantium facere nostrum!
+          </p>
         </v-card>
         <v-card width="450" class="ma-6 pa-4">
-          Note pour la professeure
-          <v-textarea
-            id="Note"
-            class="px-6 pt-4"
-            cols="10"
-            rows="5"
-            name="Note"
-            filled
-            label="Entrez votre note ici"
-          ></v-textarea>
+          <v-row class="align-center pa-3">
+            <p class="mb-0">Note pour la professeure</p>
+            <div ref="pensilLessonNote">
+              <v-btn
+                fab
+                text
+                small
+                color="grey darken-2"
+                @click="
+                  HideShow(
+                    $refs.paraLessonNote,
+                    $refs.inputLessonNote,
+                    $refs.pensilLessonNote,
+                    $refs.closeLessonNote
+                  )
+                "
+              >
+                <v-icon> mdi-pencil </v-icon>
+              </v-btn>
+            </div>
+            <div ref="closeLessonNote" class="hide">
+              <v-btn
+                fab
+                text
+                small
+                color="grey darken-2"
+                @click="
+                  HideShow(
+                    $refs.inputLessonNote,
+                    $refs.paraLessonNote,
+                    $refs.closeLessonNote,
+                    $refs.pensilLessonNote
+                  )
+                "
+              >
+                <v-icon> mdi-close </v-icon>
+              </v-btn>
+            </div>
+          </v-row>
+          <div class="hide" ref="inputLessonNote">
+            <v-textarea
+              id="Note"
+              class="px-6 pt-"
+              cols="10"
+              rows="5"
+              name="Note"
+              filled
+              label="Entrez votre note ici"
+            ></v-textarea>
+          </div>
+          <p ref="paraLessonNote" class="px-6 pt-4">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias
+            excepturi placeat blanditiis distinctio accusamus cupiditate labore
+            quas magnam repellat! Voluptatum inventore, aspernatur voluptatem
+            vitae nihil enim? Fugit accusantium facere nostrum!
+          </p>
         </v-card>
       </v-row>
     </v-col>
 
     <v-row class="ma-0 justify-space-around align-center">
       <v-col class="flex-grow-0">
-        <v-btn disabled color="teal lighten-2" @click="open = !open">
-          Envoyer message
-        </v-btn>
-        <v-dialog v-model="open" width="700">
-          <v-card>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text @click="open = false">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-card-actions>
-            <Overlay />
-          </v-card>
-        </v-dialog>
+        <Overlay
+          type="text"
+          buttonTitle="Envoyer un message"
+          overlayTitle="Envoyer un message"
+        >
+          <v-col class="d-flex flex-column align-center">
+            <v-textarea
+              class="text-area"
+              filled
+              auto-grow
+              name="input-7-4"
+              label="Entrez votre message ici"
+              style="width: 30vw"
+            ></v-textarea>
+            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
+          </v-col>
+        </Overlay>
       </v-col>
 
       <v-col cols="12" sm="4" md="4">
@@ -159,9 +393,15 @@
       <Overlay
         type="text"
         buttonTitle="Ajouter des élèves"
-        overlayTitle="Ajouter élève au cours"
+        overlayTitle="Ajouter élèves au cours"
       >
         <DatatableStudents />
+
+        <v-col class="d-flex flex-column align-center mt-7">
+          <v-btn style="color: white" color="teal lighten-2"
+            >Ajouter au cours</v-btn
+          >
+        </v-col>
       </Overlay>
     </v-row>
     <v-col class="mt-5">
@@ -181,9 +421,9 @@ export default {
     menu2: false,
     modal2: false,
     selectRec: { recurence: 'Unique' },
-    selectAge: { Age: 'Jeune' },
-    recurence: ['Unique', 'Chaque jour', 'Chaque semaine', 'Chaque mois'],
-    Age: ['Jeune', 'Semie', 'Senior'],
+    selectAge: { Age: 'Enfant' },
+    recurence: ['Unique', 'Chaque semaine'],
+    Age: ['Enfant', 'Adolescent', 'Adulte', 'Senior'],
     jour: [
       'Lundi',
       'Mardi',
@@ -194,5 +434,32 @@ export default {
       'Dimanche',
     ],
   }),
+
+  methods: {
+    HideShow(idHide, idShow, iconHide, iconShow) {
+      idHide.className = 'hide'
+      idShow.className = 'show'
+      iconHide.className = 'hide'
+      iconShow.className = 'show'
+      this.$refs.enregistrer.className = 'show'
+    },
+  },
 }
 </script>
+
+<style>
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+  margin-bottom: 0 !important;
+}
+
+#input-31,
+#input-51 {
+  padding: 0;
+  margin-top: 17px;
+}
+</style>

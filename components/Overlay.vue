@@ -11,7 +11,7 @@
       @click="dialog = !dialog"
       >{{ buttonTitle }}</v-btn
     >
-    <v-dialog v-model="dialog" max-width="34vw">
+    <v-dialog v-model="dialog" max-width="55vw">
       <v-card>
         <v-card-actions class="pa-4">
           <div class="d-flex justify-center align-center">
