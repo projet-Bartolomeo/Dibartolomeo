@@ -4,15 +4,15 @@ export default {
   argTypes: {
     type: {
       type: 'string',
-      defaultValue: 'students'
+      defaultValue: 'élève'
     },
     headers: {
       type: 'array',
       defaultValue: [
-        { text: 'Email', value: 'email', align: 'start' },
-        { text: 'Nom', value: 'lastname' },
-        { text: 'Prenom', value: 'firstname' },
-        { text: 'Banni', value: 'banned' },
+        { text: 'Email', value: 'email', initialValue: '', type: 'input', align: 'start' },
+        { text: 'Nom', value: 'lastname', initialValue: '', type: 'input' },
+        { text: 'Prenom', value: 'firstname', initialValue: '', type: 'input' },
+        { text: 'Banni', value: 'banned', initialValue: false, type: 'switch' },
         { text: 'Actions', value: 'actions', sortable: false }
       ]
     },
@@ -41,11 +41,23 @@ export default {
           banned: false
         },
       ]
+    },
+    actions: {
+      type: 'array',
+      defaultValue: [
+        'message',
+        'create',
+        'edit',
+        'delete',
+        'details',
+        'deleteLesson',
+        'search'
+      ]
     }
   }
 }
 
-export const Students = (arg, { argTypes }) => ({
+export const Base = (arg, { argTypes }) => ({
   props: Object.keys(argTypes),
   template: '<v-app><Datatable v-bind="$props" /></v-app>'
 })
