@@ -79,52 +79,42 @@
             <v-spacer></v-spacer>
 
             <v-card flat>
-              <v-card-text>
-                <v-container fluid>
-                  <v-row align="center">
-                    <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title class="d-flex justify-center"
-                        >Recurence : chaque semaine
-                        <v-btn icon>
-                          <v-icon>mdi-chevron-down</v-icon>
-                        </v-btn>
-                      </v-toolbar-title>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title class="d-flex justify-center"
-                        >Age : senior
-                        <v-btn icon>
-                          <v-icon>mdi-chevron-down</v-icon>
-                        </v-btn>
-                      </v-toolbar-title>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title class="d-flex justify-center"
-                        >Prix : 20 €
-                        <v-btn icon>
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                      </v-toolbar-title>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
+              <v-row class="ma-0 justify-space-around pt-5">
+                <div class="d-flex">
+                  <p class="ma-0 pr-3">Récurence :</p>
+                  <p>Unique</p>
+                </div>
+                <div class="d-flex">
+                  <p class="ma-0 pr-3">Age :</p>
+                  <p>Sénior</p>
+                </div>
+                <div class="d-flex">
+                  <p class="ma-0 pr-3">Prix :</p>
+                  <p>20</p>
+                  €
+                </div>
+              </v-row>
               <v-row class="ma-0 justify-center align-center">
                 <v-col cols="12" sm="4" md="4">
-                  <v-btn  style="color: white" disabled color="blue-grey" @click="open = !open">
-                    Envoyer message
-                  </v-btn>
-                  <v-dialog v-model="open" width="700">
-                    <v-card>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn text @click="open = false">
-                          <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                      </v-card-actions>
-                      <send-message />
-                    </v-card>
-                  </v-dialog>
+                  <Overlay
+                    type="text"
+                    buttonTitle="Envoyer un message"
+                    overlayTitle="Envoyer un message"
+                  >
+                    <v-col class="d-flex flex-column align-center">
+                      <v-textarea
+                        class="text-area"
+                        filled
+                        auto-grow
+                        name="input-7-4"
+                        label="Entrez votre message ici"
+                        style="width: 30vw"
+                      ></v-textarea>
+                      <v-btn style="color: white" color="teal lighten-2"
+                        >Envoyer</v-btn
+                      >
+                    </v-col>
+                  </Overlay>
                 </v-col>
 
                 <v-col cols="12" sm="4" md="4">
@@ -142,7 +132,11 @@
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
                 <router-link class="text-decoration-none" to="/formClasses">
-                  <v-btn class="my-5"  style="color: white" color="teal lighten-2">
+                  <v-btn
+                    class="my-5"
+                    style="color: white"
+                    color="teal lighten-2"
+                  >
                     Modifier le cours
                   </v-btn>
                 </router-link>

@@ -5,43 +5,48 @@
     :items="emploi_du_temps"
     :search="search"
     show-select
-    item-key="name"
+    item-key="id"
     class="elevation-1"
-    sort-by="calories"
   >
-    <template v-slot:top>
-        <v-dialog v-model="dialogDelete" max-width="550px">
-          <v-card>
-            <v-card-title class="text-h5"
-              >Êtes-vous sûr de vouloir supprimer ce cours ?</v-card-title
+    <template #top>
+      <v-dialog v-model="dialogDelete" class="dialog" width="50vw">
+        <v-card>
+          <v-card-title class="text-h5 justify-center"
+            >Êtes-vous sûr de vouloir supprimer ce cours?</v-card-title
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="closeDelete"
+              >Annuler</v-btn
             >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Annuler</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-    <v-dialog v-model="dialog" width="700">
-      <v-card>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-actions>
-        <send-message />
-      </v-card>
-    </v-dialog>
+            <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              >OK</v-btn
+            >
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small @click="dialog = !dialog"> mdi-message-text </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+    <template #[`item.actions`]="{ item }">
+      <div class="d-flex">
+        <Overlay
+          buttonTitle="mdi-message-text"
+          overlayTitle="Envoyer un Message"
+        >
+          <v-col class="d-flex flex-column align-center">
+            <v-textarea
+              class="text-area"
+              filled
+              auto-grow
+              name="input-7-4"
+              label="Entrez votre message ici"
+              full-width
+            ></v-textarea>
+            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
+          </v-col>
+        </Overlay>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </div>
     </template>
   </v-data-table>
 </template>
@@ -148,3 +153,10 @@ export default Vue.extend({
   },
 })
 </script>
+
+
+<style scoped>
+.text-area {
+  width: 70%;
+}
+</style>
