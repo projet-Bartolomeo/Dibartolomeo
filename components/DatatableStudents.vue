@@ -9,9 +9,9 @@
     class="elevation-1"
   >
     <template #top>
-      <v-dialog v-model="dialogDelete" class="dialog">
+      <v-dialog v-model="dialogDelete" class="dialog" width="50vw">
         <v-card>
-          <v-card-title class="text-h5"
+          <v-card-title class="text-h5 text-center"
             >Êtes-vous sûr de vouloir supprimer cet élève d'un cours
             ?</v-card-title
           >

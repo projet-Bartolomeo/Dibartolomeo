@@ -10,9 +10,7 @@
       color="teal lighten-2"
       @click="dialog = !dialog"
     >
-      {{ buttonTitle }}
-    </v-btn>
-    <v-dialog v-model="dialog" class="dialog" max-width="34vw">
+    <v-dialog v-model="dialog" max-width="55vw">
       <v-card>
         <v-card-actions>
           <v-spacer></v-spacer>
