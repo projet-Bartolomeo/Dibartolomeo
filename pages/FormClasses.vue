@@ -3,7 +3,7 @@
     <v-row class="justify-space-between ma-5">
       <v-col class="pa-0">
         <v-row class="ma-0 align-center">
-          <h2 ref="paraLessonTilte">Cours de dessin fantastique</h2>
+          <h2 ref="paraLessonTilte">{{ lesson.name }}</h2>
           <div
             class="flex-column hide"
             ref="inputLessonTilte"
@@ -205,7 +205,7 @@
                 offset-y
                 min-width="auto"
               >
-                <template #activator="{ on, attrs }">
+                <template v-slot:activator="{ on, attrs }">
                   <div style="width: 10vw">
                     <v-text-field
                       v-model="date"
@@ -407,12 +407,12 @@
     <v-col class="mt-5">
       <datatable-students />
     </v-col>
+    <v-btn @click="createLesson">create lesson</v-btn>
   </div>
 </template>
 <script>
 export default {
   data: () => ({
-    open: false,
     date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 10),
@@ -433,7 +433,11 @@ export default {
       'Samedi',
       'Dimanche',
     ],
+    lesson: {},
   }),
+  created() {
+    this.lesson = this.$store.state.lesson
+  },
 
   methods: {
     HideShow(idHide, idShow, iconHide, iconShow) {
@@ -442,6 +446,9 @@ export default {
       iconHide.className = 'hide'
       iconShow.className = 'show'
       this.$refs.enregistrer.className = 'show'
+    },
+    async createLesson() {
+      await this.$store.dispatch('lesson/createLesson', this.lesson)
     },
   },
 }

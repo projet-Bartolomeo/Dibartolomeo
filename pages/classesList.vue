@@ -51,7 +51,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-actions>
-        <Overlay />
+        <send-message />
       </v-card>
     </v-dialog>
     <div id="table">
