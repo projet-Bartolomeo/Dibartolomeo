@@ -9,7 +9,7 @@
             ref="inputLessonTilte"
             style="width: 15vw"
           >
-            <v-text-field></v-text-field>
+            <v-text-field @change="test()"></v-text-field>
           </div>
           <div ref="pensilLessonTilte">
             <v-btn
@@ -445,8 +445,11 @@ export default {
       idShow.className = 'show'
       iconHide.className = 'hide'
       iconShow.className = 'show'
-      this.$refs.enregistrer.className = 'show'
     },
+
+    test(){
+      this.$refs.enregistrer.className = 'show'
+    }
     async createLesson() {
       await this.$store.dispatch('lesson/createLesson', this.lesson)
     },
@@ -465,6 +468,8 @@ export default {
 }
 
 #input-31,
+#input-131,
+#input-151,
 #input-51 {
   padding: 0;
   margin-top: 17px;
