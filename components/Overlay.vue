@@ -9,7 +9,7 @@
       style="color: white"
       color="teal lighten-2"
       @click="dialog = !dialog"
-    >
+    ></v-btn>
     <v-dialog v-model="dialog" max-width="55vw">
       <v-card>
         <v-card-actions>
