@@ -1,12 +1,10 @@
 <template>
   <v-navigation-drawer
-    absolute
-    permanent
+    app
     left
     style="background: linear-gradient(90deg, rgba(108,20,36,1) 18%, rgba(91,16,29,1) 91%);"
-
   >
-    <template v-slot:prepend>
+    <template #prepend>
       <v-list-item>
         <v-list-item-content>
         <v-row class="mt-5 justify-center align-center" >
@@ -19,7 +17,6 @@
         </v-list-item-content>
       </v-list-item>
     </template>
-
     <v-spacer></v-spacer>
     <v-list dense nav>
       <v-list-item
@@ -53,6 +50,7 @@ export default {
         },
        /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
+      permanent: true
     }
   },
 }
