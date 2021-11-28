@@ -446,10 +446,9 @@ export default {
       iconHide.className = 'hide'
       iconShow.className = 'show'
     },
-
     test(){
       this.$refs.enregistrer.className = 'show'
-    }
+    },
     async createLesson() {
       await this.$store.dispatch('lesson/createLesson', this.lesson)
     },
