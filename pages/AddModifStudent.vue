@@ -13,13 +13,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-    components: {
-  }
-}
-</script>
-
 <style>
 #page {
   display: flex;
