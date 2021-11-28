@@ -9,9 +9,9 @@
     class="elevation-1"
   >
     <template #top>
-      <v-dialog v-model="dialogDelete" class="dialog">
+      <v-dialog v-model="dialogDelete" class="dialog" width="50vw">
         <v-card>
-          <v-card-title class="text-h5"
+          <v-card-title class="text-h5 text-center"
             >Êtes-vous sûr de vouloir supprimer cet élève d'un cours
             ?</v-card-title
           >
@@ -30,7 +30,7 @@
     </template>
     <template #[`item.actions`]="{ item }">
       <div class="d-flex">
-        <SendMessage buttonTitle="mdi-message-text">
+        <Overlay buttonTitle="mdi-message-text">
           <v-textarea
             class="text-area"
             filled
@@ -38,7 +38,7 @@
             name="input-7-4"
             label="Entrez votre message ici"
           ></v-textarea>
-        </SendMessage>
+        </Overlay>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </div>
     </template>

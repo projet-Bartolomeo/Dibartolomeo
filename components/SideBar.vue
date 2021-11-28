@@ -9,9 +9,13 @@
     <template v-slot:prepend>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="text-center" style="color: white">
-            Di Bartolomeo
-          </v-list-item-title>
+        <v-row class="mt-5 justify-center align-center" >
+            <v-img
+            src="/image/logo.png"
+            max-height="170"
+            max-width="220"
+          />
+          </v-row>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -47,7 +51,7 @@ export default {
           icon: 'mdi-account',
           route: '/StudentList',
         },
-        { title: 'Administration du site', icon: 'mdi-pencil-box-outline' },
+       /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
     }
   },
