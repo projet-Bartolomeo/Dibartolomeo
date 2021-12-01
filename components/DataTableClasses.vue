@@ -46,6 +46,7 @@
           </v-col>
         </Overlay>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small @click="viewDetails(item.id)"> mdi-text-box-search-outline </v-icon>
       </div>
     </template>
   </v-data-table>
@@ -104,6 +105,7 @@ export default Vue.extend({
           prix: 24,
           nbr: '5/20',
           note: 'Lorem ipsum dolor sit amet, consectet',
+          id: '4tjgSvNIEjBV4OMXVXWP' 
         },
         {
           name: 'Les Grands',
@@ -150,10 +152,12 @@ export default Vue.extend({
         this.editedIndex = -1
       })
     },
+    async viewDetails(lessonId) {
+      await this.$store.dispatch('lesson/getLessonById', lessonId)
+    }
   },
 })
 </script>
-
 
 <style scoped>
 .text-area {

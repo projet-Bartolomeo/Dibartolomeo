@@ -3,13 +3,17 @@
     <v-row class="justify-space-between ma-5">
       <v-col class="pa-0">
         <v-row class="ma-0 align-center">
-          <h2 ref="paraLessonTilte">Cours de dessin fantastique</h2>
+          <h2 ref="paraLessonTilte">{{ lesson.lesson.name }}</h2>
           <div
-            class="flex-column hide"
             ref="inputLessonTilte"
+            class="flex-column hide"
             style="width: 15vw"
           >
-            <v-text-field></v-text-field>
+            <v-text-field
+              v-model="name"
+              :value="lesson.lesson.name"
+              @change="ShowSave()"
+            ></v-text-field>
           </div>
           <div ref="pensilLessonTilte">
             <v-btn
@@ -50,13 +54,17 @@
         </v-row>
         <v-row class="ma-0 align-center">
           <p class="ma-0">15/</p>
-          <p class="ma-0" ref="paraLessonMax">20</p>
+          <p ref="paraLessonMax" class="ma-0">20</p>
           <div
-            class="flex-column hide ma-0 pl-2"
             ref="inputLessonMax"
+            class="flex-column hide ma-0 pl-2"
             style="width: 2vw"
           >
-            <v-text-field class="pa-0"></v-text-field>
+            <v-text-field
+              v-model="MaxStudents"
+              class="pa-0 ml-1 input"
+              @change="ShowSave()"
+            ></v-text-field>
           </div>
           <p class="ma-0 ml-2">élèves</p>
           <div ref="pensilLessonMax">
@@ -116,6 +124,7 @@
                   :items="recurence"
                   item-text="recurence"
                   item-value="recurence"
+                  @change="ShowSave()"
                 ></v-select>
               </div>
             </v-row>
@@ -127,19 +136,24 @@
                   :items="Age"
                   item-text="Age"
                   item-value="Age"
+                  @change="ShowSave()"
                 ></v-select>
               </div>
             </v-row>
             <v-row class="justify-start align-center mt-7 mb-4 ms-3">
               <p class="ma-0 pr-10">Prix :</p>
               <div
-                class="flex-column hide ma-0 pl-2"
                 ref="inputLessonPrice"
+                class="flex-column hide ma-0 pl-2"
                 style="width: 2vw"
               >
-                <v-text-field class="pa-0"></v-text-field>
+                <v-text-field
+                  v-model="price"
+                  class="pa-0 input"
+                  @change="ShowSave()"
+                ></v-text-field>
               </div>
-              <p class="ma-0" ref="paraLessonPrice">20</p>
+              <p ref="paraLessonPrice" class="ma-0">20</p>
               €
               <div ref="pensilLessonPrice">
                 <v-btn
@@ -184,15 +198,20 @@
           <v-col>
             <v-row class="justify-space-around align-center">
               <div style="width: 10vw">
-                <v-select :items="jour" label="Jour"></v-select>
+                <v-select
+                  v-model="day"
+                  :items="jour"
+                  label="Jour"
+                  @change="ShowSave()"
+                ></v-select>
               </div>
               de
               <div style="width: 5vw">
-                <input type="time" />
+                <input v-model="startHour1" type="time" @change="ShowSave()" />
               </div>
               à
               <div style="width: 5vw">
-                <input type="time" />
+                <input v-model="endHour1" type="time" @change="ShowSave()" />
               </div>
             </v-row>
             <v-row class="justify-space-around align-center">
@@ -217,7 +236,12 @@
                     ></v-text-field>
                   </div>
                 </template>
-                <v-date-picker v-model="date" no-title scrollable>
+                <v-date-picker
+                  v-model="date"
+                  no-title
+                  scrollable
+                  @change="ShowSave()"
+                >
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="menu = false">
                     Cancel
@@ -229,11 +253,11 @@
               </v-menu>
               de
               <div style="width: 5vw">
-                <input type="time" />
+                <input v-model="startHour2" type="time" @change="ShowSave()" />
               </div>
               à
               <div style="width: 5vw">
-                <input type="time" />
+                <input v-model="endtHour2" type="time" @change="ShowSave()" />
               </div>
             </v-row>
           </v-col>
@@ -280,15 +304,17 @@
               </v-btn>
             </div>
           </v-row>
-          <div class="hide" ref="inputLessonDesc">
+          <div ref="inputLessonDesc" class="hide">
             <v-textarea
               id="Description"
+              v-model="desc"
               class="px-6 pt-4"
               cols="10"
               rows="5"
               name="Description"
               filled
               label="Entrez votre description ici"
+              @change="ShowSave()"
             ></v-textarea>
           </div>
 
@@ -339,15 +365,17 @@
               </v-btn>
             </div>
           </v-row>
-          <div class="hide" ref="inputLessonNote">
+          <div ref="inputLessonNote" class="hide">
             <v-textarea
               id="Note"
+              v-model="note"
               class="px-6 pt-"
               cols="10"
               rows="5"
               name="Note"
               filled
               label="Entrez votre note ici"
+              @change="ShowSave()"
             ></v-textarea>
           </div>
           <p ref="paraLessonNote" class="px-6 pt-4">
@@ -360,59 +388,25 @@
       </v-row>
     </v-col>
 
-    <v-row class="ma-0 justify-space-around align-center">
-      <v-col class="flex-grow-0">
-        <Overlay
-          type="text"
-          buttonTitle="Envoyer un message"
-          overlayTitle="Envoyer un message"
-        >
-          <v-col class="d-flex flex-column align-center">
-            <v-textarea
-              class="text-area"
-              filled
-              auto-grow
-              name="input-7-4"
-              label="Entrez votre message ici"
-              style="width: 30vw"
-            ></v-textarea>
-            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
-          </v-col>
-        </Overlay>
-      </v-col>
-
-      <v-col cols="12" sm="4" md="4">
-        <v-text-field
-          outlined
-          dense
-          label="Recherche"
-          type="text"
-          hide-details
-        ></v-text-field>
-      </v-col>
-      <Overlay
-        type="text"
-        buttonTitle="Ajouter des élèves"
-        overlayTitle="Ajouter élèves au cours"
-      >
-        <DatatableStudents />
-
-        <v-col class="d-flex flex-column align-center mt-7">
-          <v-btn style="color: white" color="teal lighten-2"
-            >Ajouter au cours</v-btn
-          >
-        </v-col>
-      </Overlay>
-    </v-row>
     <v-col class="mt-5">
       <datatable-students />
     </v-col>
+    <v-btn @click="createLesson">create lesson</v-btn>
   </div>
 </template>
 <script>
 export default {
   data: () => ({
-    open: false,
+    desc: '',
+    endtHour2: '',
+    startHour2: '',
+    endHour1: '',
+    startHour1: '',
+    day: '',
+    price: '',
+    name: '',
+    MaxStudents: '',
+    note : '' ,
     date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 10),
@@ -433,7 +427,11 @@ export default {
       'Samedi',
       'Dimanche',
     ],
+    lesson: {},
   }),
+  created() {
+    this.lesson = this.$store.state.lesson
+  },
 
   methods: {
     HideShow(idHide, idShow, iconHide, iconShow) {
@@ -441,7 +439,13 @@ export default {
       idShow.className = 'show'
       iconHide.className = 'hide'
       iconShow.className = 'show'
+    },
+
+    ShowSave() {
       this.$refs.enregistrer.className = 'show'
+    },
+    async createLesson() {
+      await this.$store.dispatch('lesson/createLesson', this.lesson)
     },
   },
 }
@@ -457,9 +461,8 @@ export default {
   margin-bottom: 0 !important;
 }
 
-#input-31,
-#input-51 {
+.input input {
   padding: 0;
-  margin-top: 17px;
+  margin-top: 19px;
 }
 </style>
