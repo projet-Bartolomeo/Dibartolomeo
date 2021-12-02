@@ -5,7 +5,7 @@ export const state = () => ({
 })
 
 export const actions = {
-    async createLesson({ commit }, newLesson) {
+    async envoie ({ commit }, newLesson) {
         const lesson = await this.$fire.firestore.collection('lesson').add(newLesson)
         return lesson
     },
