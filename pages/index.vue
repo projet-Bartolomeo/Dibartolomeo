@@ -98,7 +98,7 @@
                 <datatable-students />
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
-                <router-link class="text-decoration-none" to="/formClasses">
+                <router-link class="text-decoration-none" to="/lesson">
                   <v-btn
                     class="my-5"
                     style="color: white"

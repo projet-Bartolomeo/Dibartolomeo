@@ -3,7 +3,7 @@
     <v-row class="ma-4 justify-space-between">
       <div id="title"><h1>Listes des cours</h1></div>
       <div id="btnAjouterCours">
-        <router-link class="text-decoration-none" to="/formClasses">
+        <router-link class="text-decoration-none" to="/lesson">
           <v-btn style="color: white" color="teal lighten-2"
             >Ajouter un cours
           </v-btn></router-link
