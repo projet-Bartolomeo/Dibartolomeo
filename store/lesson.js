@@ -13,4 +13,9 @@ export const actions = {
         const lesson = await this.$fire.firestore.collection('lesson').doc(id).get()
         return lesson.data().lesson
     },
+    async getLessonsTeacherId({ commit } ,idTeacher){
+        const results = await this.$fire.firestore.collection('lesson').where('profesor' ,'==', `${idTeacher}`).get()
+        return readQuerySnapshot(results)
+    },
+
 }
