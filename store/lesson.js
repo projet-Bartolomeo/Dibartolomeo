@@ -12,5 +12,5 @@ export const actions = {
     async getLessonById({ commit }, id) {
         const lesson = await this.$fire.firestore.collection('lesson').doc(id).get()
         return lesson.data().lesson
-    } 
+    },
 }
