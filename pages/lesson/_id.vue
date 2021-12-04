@@ -3,15 +3,17 @@
     <v-row class="justify-space-between ma-5">
       <v-col class="pa-0">
         <v-row class="ma-0 align-center">
-          <h2 ref="paraLessonTilte">{{ lesson.lesson.name }}</h2>
+          <h2 ref="paraLessonTilte">
+            {{ lesson.name }}
+          </h2>
           <div
             ref="inputLessonTilte"
             class="flex-column hide"
             style="width: 15vw"
           >
             <v-text-field
-              v-model="name"
-              :value="lesson.lesson.name"
+              id="name"
+              v-model="lesson.name"
               @change="ShowSave()"
             ></v-text-field>
           </div>
@@ -52,16 +54,16 @@
             </v-btn>
           </div>
         </v-row>
-        <v-row class="ma-0 align-center">
-          <p class="ma-0">15/</p>
-          <p ref="paraLessonMax" class="ma-0">20</p>
+        <v-row  class="ma-0 align-center">
+          <p class="ma-0">{{lesson.studentliste.length}}/</p>
+          <p ref="paraLessonMax" class="ma-0">{{ lesson.maximumStudents }}</p>
           <div
             ref="inputLessonMax"
             class="flex-column hide ma-0 pl-2"
             style="width: 2vw"
           >
             <v-text-field
-              v-model="MaxStudents"
+              v-model="lesson.maximumStudents"
               class="pa-0 ml-1 input"
               @change="ShowSave()"
             ></v-text-field>
@@ -108,7 +110,7 @@
       <div class="d-flex flex-column align-center">
         <v-row> <v-btn color="error">Supprimer le cours</v-btn> </v-row>
         <v-row ref="enregistrer" class="hide">
-          <v-btn color="success">Enregistrer le cours</v-btn>
+          <v-btn @click="createLesson" color="success">Enregistrer le cours</v-btn>
         </v-row>
       </div>
     </v-row>
@@ -120,7 +122,7 @@
               <p class="ma-0 pr-10">Récurence :</p>
               <div style="width: 15vw">
                 <v-select
-                  v-model="selectRec"
+                  v-model="lesson.recurrence"
                   :items="recurence"
                   item-text="recurence"
                   item-value="recurence"
@@ -132,7 +134,7 @@
               <p class="ma-0 pr-10">Age :</p>
               <div style="width: 15vw">
                 <v-select
-                  v-model="selectAge"
+                  v-model="lesson.ageRange"
                   :items="Age"
                   item-text="Age"
                   item-value="Age"
@@ -148,12 +150,12 @@
                 style="width: 2vw"
               >
                 <v-text-field
-                  v-model="price"
+                  v-model="lesson.price"
                   class="pa-0 input"
                   @change="ShowSave()"
                 ></v-text-field>
               </div>
-              <p ref="paraLessonPrice" class="ma-0">20</p>
+              <p ref="paraLessonPrice" class="ma-0">{{lesson.price}}</p>
               €
               <div ref="pensilLessonPrice">
                 <v-btn
@@ -307,7 +309,7 @@
           <div ref="inputLessonDesc" class="hide">
             <v-textarea
               id="Description"
-              v-model="desc"
+              v-model="lesson.descritpion"
               class="px-6 pt-4"
               cols="10"
               rows="5"
@@ -319,10 +321,7 @@
           </div>
 
           <p ref="paraLessonDesc" class="px-6 pt-4">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias
-            excepturi placeat blanditiis distinctio accusamus cupiditate labore
-            quas magnam repellat! Voluptatum inventore, aspernatur voluptatem
-            vitae nihil enim? Fugit accusantium facere nostrum!
+           {{lesson.descritpion}}
           </p>
         </v-card>
         <v-card width="450" class="ma-6 pa-4">
@@ -368,7 +367,7 @@
           <div ref="inputLessonNote" class="hide">
             <v-textarea
               id="Note"
-              v-model="note"
+              v-model="lesson.teacherNote"
               class="px-6 pt-"
               cols="10"
               rows="5"
@@ -379,10 +378,7 @@
             ></v-textarea>
           </div>
           <p ref="paraLessonNote" class="px-6 pt-4">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias
-            excepturi placeat blanditiis distinctio accusamus cupiditate labore
-            quas magnam repellat! Voluptatum inventore, aspernatur voluptatem
-            vitae nihil enim? Fugit accusantium facere nostrum!
+          {{lesson.teacherNote}}
           </p>
         </v-card>
       </v-row>
@@ -391,22 +387,19 @@
     <v-col class="mt-5">
       <datatable-students />
     </v-col>
-    <v-btn @click="createLesson">create lesson</v-btn>
   </div>
 </template>
 <script>
 export default {
   data: () => ({
-    desc: '',
+    lesson: {
+      studentliste: [],
+    },
     endtHour2: '',
     startHour2: '',
     endHour1: '',
     startHour1: '',
     day: '',
-    price: '',
-    name: '',
-    MaxStudents: '',
-    note : '' ,
     date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 10),
@@ -414,8 +407,6 @@ export default {
     time: null,
     menu2: false,
     modal2: false,
-    selectRec: { recurence: 'Unique' },
-    selectAge: { Age: 'Enfant' },
     recurence: ['Unique', 'Chaque semaine'],
     Age: ['Enfant', 'Adolescent', 'Adulte', 'Senior'],
     jour: [
@@ -427,10 +418,9 @@ export default {
       'Samedi',
       'Dimanche',
     ],
-    lesson: {},
   }),
   created() {
-    this.lesson = this.$store.state.lesson
+    this.getLesson()
   },
 
   methods: {
@@ -443,9 +433,16 @@ export default {
 
     ShowSave() {
       this.$refs.enregistrer.className = 'show'
-    },
+      console.log('test' + this.endtHour2)
+},
     async createLesson() {
       await this.$store.dispatch('lesson/createLesson', this.lesson)
+    },
+    async getLesson() {
+      this.lesson = await this.$store.dispatch(
+        'lesson/getLessonById',
+        this.$route.query.id
+      )
     },
   },
 }

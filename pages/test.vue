@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="justify-end">
-      <div>{{user}}</div>
+      <div>{{test}}</div>
       <div>test</div>
     </v-row>
   </div>
@@ -11,7 +11,8 @@
   export default {
   data() {
     return {
-      user: {}
+      user: {},
+      test : {}
     };
   },
   created() {
@@ -20,6 +21,7 @@
     methods : {
       async fetchData() {
       this.user = await this.$store.dispatch('students/getAllStudents');
+      this.test = await this.$store.dispatch('students/GetStudentByTeacherId');
     },
     }
 }

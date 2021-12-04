@@ -57,6 +57,7 @@ export default {
   name: 'DataTable',
   data: () => {
     return {
+      idProf : '0kK1fyyWN8N2bkHNYLoo',
       show: false,
       marker: true,
       iconIndex: 0,
@@ -69,7 +70,7 @@ export default {
           text: 'Nom',
           align: 'start',
           sortable: false,
-          value: 'name',
+          value: 'lastName',
         },
         { text: 'Prenom', value: 'prenom' },
         { text: 'Mail', value: 'mail' },
@@ -87,48 +88,15 @@ export default {
     },
   },
   created() {
-    this.initialize()
+    this.fetchData()
   },
   methods: {
     clearMessage() {
       this.search = ''
     },
 
-    initialize() {
-      this.emploi_du_temps = [
-        {
-          id: 1,
-          display: false,
-          name: 'Beaugendre',
-          prenom: 'Mattis',
-          mail: 'mattis.beaugendre@gmail.com',
-          telephone: '07 77 77 77 77',
-        },
-        {
-          id: 2,
-          display: false,
-          name: 'Beaugendre',
-          prenom: 'Mattis',
-          mail: 'mattis.beaugendre@gmail.com',
-          telephone: '07 77 77 77 77',
-        },
-        {
-          id: 3,
-          display: false,
-          name: 'Beaugendre',
-          prenom: 'Mattis',
-          mail: 'mattis.beaugendre@gmail.com',
-          telephone: '07 77 77 77 77',
-        },
-        {
-          id: 4,
-          display: false,
-          name: 'Beaugendre',
-          prenom: 'Mattis',
-          mail: 'mattis.beaugendre@gmail.com',
-          telephone: '07 77 77 77 77',
-        },
-      ]
+      async fetchData() {
+      this.emploi_du_temps = await this.$store.dispatch('students/GetStudentByTeacherId' , '0kK1fyyWN8N2bkHNYLoo');
     },
 
     deleteItem(item) {
