@@ -1,24 +1,16 @@
-import { user } from '../model/User'
-import { readQuerySnapshot } from '../services/firestoreHelper'
+import { lesson } from '../model/Lesson'
 
 export const state = () => ({
-    user
+    lesson
 })
 
 export const actions = {
-    async getAllStudents() {
-        const results = await this.$fire.firestore.collection('user').where('type', '==', 'student').get()
-        return readQuerySnapshot(results)
+    async createLesson({ commit }, newLesson) {
+        const lesson = await this.$fire.firestore.collection('lesson').add(newLesson)
+        return lesson
     },
-
-    async GetStudentByTeacherId({ commit } ,idTeacher){
-        const results = await this.$fire.firestore.collection('user').where('teacherList' ,'array-contains', `${idTeacher}`).get()
-        return readQuerySnapshot(results)
-    },
-
-    async getStudentById({ commit },id ) {
-        const results = await this.$fire.firestore.collection('user').doc(id).get()
-        return results.data()
-    },
+    async getLessonById({ commit }, id) {
+        const lesson = await this.$fire.firestore.collection('lesson').doc(id).get()
+        return lesson.data().lesson
+    } 
 }
-
