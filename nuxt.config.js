@@ -1,9 +1,6 @@
 import dotenv from 'dotenv'
 
-let path =
-  process.env.NODE_ENV === 'production'
-    ? '.env' + process.env.NODE_ENV
-    : '.env.' + process.env.NODE_ENV
+const path = process.env.environnement == 'production' ? '.env.production' : '.env.development'
 
 dotenv.config({ path })
 
