@@ -433,8 +433,7 @@ export default {
 
     ShowSave() {
       this.$refs.enregistrer.className = 'show'
-      console.log('test' + this.endtHour2)
-},
+    },
     async createLesson() {
       await this.$store.dispatch('lesson/createLesson', this.lesson)
     },
