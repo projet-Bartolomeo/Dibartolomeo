@@ -13,10 +13,23 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
+import {user} from '../model/User'
 export default {
-    components: {
-  }
+  data() {
+    return {
+      studentID: 'df28MA9DGqmgJKirnXhi',
+      user,
+    }
+  },
+  created() {
+    this.getUser(this.studentID)
+  },
+  methods: {
+    async getUser(studentID) {
+      this.user = await this.$store.dispatch('student/getStudentById',studentID)
+    },
+  },
 }
 </script>
 

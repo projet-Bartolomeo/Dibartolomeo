@@ -13,9 +13,12 @@ export const actions = {
 
     async GetStudentByTeacherId({ commit } ,idTeacher){
         const results = await this.$fire.firestore.collection('user').where('teacherList' ,'array-contains', `${idTeacher}`).get()
-        console.log(idTeacher)
         return readQuerySnapshot(results)
+    },
 
-    }
+    async getStudentById({ commit },id ) {
+        const results = await this.$fire.firestore.collection('user').doc(id).get()
+        return results.data()
+    },
 }
 
