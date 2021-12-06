@@ -22,10 +22,13 @@
     "firebase": "^9.4.1",
     "fs": "^0.0.1-security",
     "net": "^1.0.2",
-    "node-mailjet": "^3.3.4",
     "nuxt": "^2.15.7",
     "tls": "^0.0.1",
-    "vuetify": "^2.5.5"
+    "vue-password-strength-meter": "^1.7.2",
+    "vue-simple-password-meter": "^0.1.0",
+    "vuetify": "^2.5.5",
+    "vuex-persistedstate": "^4.1.0",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

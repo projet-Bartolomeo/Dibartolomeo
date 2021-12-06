@@ -71,7 +71,7 @@
             </v-row>
 
             
-        </v-card-actions>
+       
       </v-card>
     </v-dialog>
   </div>
@@ -87,7 +87,7 @@
           >
           </v-row>
           
-        </v-card-actions>
+          
       </v-card>
       <v-snackbar
         :timeout="4000"
@@ -109,18 +109,21 @@ layout:'connexion',
     return {
       snackbar: false,
       snackbarText: 'No error message',
+          id:'',
       auth: {
         email: '',
         password: '',
         email_forgot:'',
       }
+  
     }
   },
    methods: {
     login() {
       this.$fire.auth.signInWithEmailAndPassword(this.auth.email, this.auth.password)
-        .then(() => {
-        this.$nuxt.$router.push('/')
+        .then((user) => {
+        this.id=this.$fire.getUid(this.auth.email, this.auth.password);
+           this.$nuxt.$router.push('/')
       })   
       
       .catch(function (error){
