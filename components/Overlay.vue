@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <v-icon v-if="type === 'icon'" small @click="dialog = !dialog">
+  <div class="auto-width">
+    <v-icon v-if="type === 'icon'" @click="dialog = !dialog">
       {{ buttonTitle }}
     </v-icon>
     <v-btn
       v-else
-      disabled
       style="color: white"
       color="teal lighten-2"
       @click="dialog = !dialog"
-    ></v-btn>
+      >{{ buttonTitle }}</v-btn
+    >
     <v-dialog v-model="dialog" max-width="55vw">
       <v-card>
         <v-card-actions>
@@ -50,3 +50,9 @@ export default {
   },
 }
 </script>
+
+<style lang="css" scoped>
+  .auto-width {
+    width: auto
+  }
+</style>
