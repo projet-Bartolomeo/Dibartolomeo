@@ -25,7 +25,7 @@
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="ressource"
+        :items="user"
         sort-by="calories"
         class="elevation-1"
         :footer-props="{
@@ -156,9 +156,24 @@ export default {
       type: Boolean,
       required: false,
     },
+    getAllStudents :{
+      type: Boolean,
+      require: false,
+    },
+    GetStudentByTeacherId : {
+      type: Boolean,
+      require: false,
+    },
+    GetStudentByTLessonId: {
+      type: Boolean,
+      require: false,
+    }
   },
   data() {
     return {
+      teacherId : '0kK1fyyWN8N2bkHNYLoo',
+      lessonId: '7zKCsBFScaVmuOpG2QVl',
+      user : [],
       type: 'élève',
       headers: [
         {
@@ -183,27 +198,10 @@ export default {
         },
         { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
       ],
-      datas: [
-        {
-          id: 1,
-          email: 'mattis.beaugendre@gmail.com',
-          lastname: 'Mattis',
-          firstname: 'Beaugendre',
-          banned: false,
-        },
-        {
-          id: 3,
-          email: 'Mathieu.Pocong@gmail.com',
-          lastname: 'Mathieu',
-          firstname: 'Pocong',
-          banned: false,
-        },
-      ],
       showSelect: false,
       search: '',
       dialog: false,
       dialogDelete: false,
-      ressource: [],
       editedIndex: -1,
       editedItem: {},
       defaultItem: {},
@@ -247,14 +245,38 @@ export default {
       },
       {}
     )
-    this.ressource = this.datas
     this.currentHeader = this.headers.reduce((newHeader, currentHeader) => {
       newHeader[currentHeader.value] = currentHeader
       return newHeader
     }, {})
+
+    if (this.getAllStudents == "true") {
+       this.getAll();
+    }
+
+    if (this.GetStudentByTeacherId == "true") {
+       this.getByTeacherId(this.teacherId);
+    }
+
+    if(this.GetStudentByTLessonId == "true"){
+      this.getByLessonId(this.lessonId)
+    }
+    
   },
 
   methods: {
+    async getAll() {
+      this.user = await this.$store.dispatch('student/getAllStudents');
+    },
+    async getByTeacherId(teacherId) {
+      this.user = await this.$store.dispatch('student/GetStudentByTeacherId', teacherId);
+    },
+    
+    async getByLessonId(lessonId) {
+      this.user = await this.$store.dispatch('student/GetStudentByTLessonId', lessonId);
+    },
+
+
     deleteStudentFromLesson() {
       this.deleteItemConfirm()
     },
@@ -265,19 +287,19 @@ export default {
       console.log(student)
     },
     editItem(item) {
-      this.editedIndex = this.ressource.indexOf(item)
+      this.editedIndex = this.user.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem(item) {
-      this.editedIndex = this.ressource.indexOf(item)
+      this.editedIndex = this.user.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.ressource.splice(this.editedIndex, 1)
+      this.user.splice(this.editedIndex, 1)
       this.closeDelete()
     },
     deleteStudent() {
@@ -301,9 +323,9 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.ressource[this.editedIndex], this.editedItem)
+        Object.assign(this.user[this.editedIndex], this.editedItem)
       } else {
-        this.ressource.push(this.editedItem)
+        this.user.push(this.editedItem)
       }
       this.close()
     },
