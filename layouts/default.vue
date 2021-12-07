@@ -23,3 +23,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.nuxtlink {
+  text-decoration: none;
+}
+</style>
