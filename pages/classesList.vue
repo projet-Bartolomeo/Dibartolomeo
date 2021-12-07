@@ -10,7 +10,6 @@
         >
       </div>
     </v-row>
-
     <v-dialog v-model="dialog" width="700">
       <v-card>
         <v-card-actions>
@@ -23,7 +22,7 @@
       </v-card>
     </v-dialog>
     <div id="table">
-      <DataTableClasses />
+      <DataTableLesson message delete/>
     </div>
   </div>
 </template>

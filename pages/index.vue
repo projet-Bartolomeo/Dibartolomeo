@@ -95,7 +95,7 @@
                 </div>
               </v-row>
               <v-col class="mt-5">
-                <datatable-students />
+                <DataTableStudent message lesson/>
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
                 <router-link class="text-decoration-none" to="/lesson">

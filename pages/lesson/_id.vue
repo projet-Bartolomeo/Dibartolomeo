@@ -384,8 +384,17 @@
       </v-row>
     </v-col>
 
+    <v-row class="ma-0 justify-space-around align-center">
+      <Overlay
+        type="text"
+        buttonTitle="Ajouter des élèves"
+        overlayTitle="Ajouter élèves au cours"
+      >
+        <DataTableStudent add/>
+      </Overlay>
+    </v-row>
     <v-col class="mt-5">
-      <datatable-students />
+      <DataTableStudent lesson/>
     </v-col>
   </div>
 </template>

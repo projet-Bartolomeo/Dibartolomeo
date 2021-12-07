@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <v-icon v-if="type === 'icon'" small @click="dialog = !dialog">
+  <div class="auto-width">
+    <v-icon v-if="type === 'icon'" @click="dialog = !dialog">
       {{ buttonTitle }}
     </v-icon>
     <v-btn
       v-else
-      class="my-5"
       style="color: white"
       color="teal lighten-2"
       @click="dialog = !dialog"
@@ -61,10 +60,8 @@ export default {
 }
 </script>
 
-<style scoped lang="css">
-.close-button {
-  min-width: none;
-  height: 35px;
-  width: 35px;
-}
+<style lang="css" scoped>
+  .auto-width {
+    width: auto
+  }
 </style>

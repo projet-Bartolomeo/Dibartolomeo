@@ -8,8 +8,7 @@
         ></router-link
       >
     </v-row>
-
-    <DatatableStudents />
+    <DataTableStudent message/>
   </div>
 </template>
 

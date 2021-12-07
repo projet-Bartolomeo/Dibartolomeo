@@ -1,7 +1,7 @@
 <template>
   <div id="page">
     <ModifEleve />
-    <DataTableClasses />
+    <DataTableLesson />
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
       <v-btn 
         id="enregistrer"
