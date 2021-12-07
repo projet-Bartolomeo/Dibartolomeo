@@ -361,51 +361,16 @@
     </v-col>
 
     <v-row class="ma-0 justify-space-around align-center">
-      <v-col class="flex-grow-0">
-        <Overlay
-          type="text"
-          buttonTitle="Envoyer un message"
-          overlayTitle="Envoyer un message"
-        >
-          <v-col class="d-flex flex-column align-center">
-            <v-textarea
-              class="text-area"
-              filled
-              auto-grow
-              name="input-7-4"
-              label="Entrez votre message ici"
-              style="width: 30vw"
-            ></v-textarea>
-            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
-          </v-col>
-        </Overlay>
-      </v-col>
-
-      <v-col cols="12" sm="4" md="4">
-        <v-text-field
-          outlined
-          dense
-          label="Recherche"
-          type="text"
-          hide-details
-        ></v-text-field>
-      </v-col>
       <Overlay
         type="text"
         buttonTitle="Ajouter des élèves"
         overlayTitle="Ajouter élèves au cours"
       >
-        <DatatableStudents />
-
-        <v-col class="d-flex flex-column align-center mt-7">
-          <v-btn style="color: white" color="teal lighten-2"
-            >Ajouter au cours</v-btn
-          >
-        </v-col>
+        <DataTableStudent add/>
       </Overlay>
     </v-row>
     <v-col class="mt-5">
-      <datatable-students />
+      <DataTableStudent lesson/>
     </v-col>
     <v-btn @click="createLesson">create lesson</v-btn>
   </div>
