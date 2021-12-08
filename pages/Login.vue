@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import {user} from'../model/User'
 export default {
 layout:'connexion',
   data() {
@@ -114,24 +115,20 @@ layout:'connexion',
         email: '',
         password: '',
         email_forgot:'',
-      }
+      },
+      user,
   
     }
   },
    methods: {
-    login() {
+    async login() {
       this.$fire.auth.signInWithEmailAndPassword(this.auth.email, this.auth.password)
-        .then((user) => {
-        this.id=this.$fire.getUid(this.auth.email, this.auth.password);
-           this.$nuxt.$router.push('/')
-      })   
-      
-      .catch(function (error){
-        this.snackbarText = error.message
-        this.snackbar = true
-
         
-      })
+        this.id=this.$fire.getUid(this.auth.email, this.auth.password)
+       this.user= await this.$store.dispatch('user/getUserByemail',this.auth.email)
+        await this.store.dispatch('login', {user})
+           this.$nuxt.$router.push('/')
+     
       
     },
     googleSignIn(){
@@ -139,7 +136,7 @@ const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
       this.$fire.auth.signInWithPopup(provider)
       .then((user) => {
         
-        this.$nuxt.$router.push('/')
+        this.$nuxt.$router.push('/Calendar')
       })
       .catch(function (error){
         this.snackbarText = error.message

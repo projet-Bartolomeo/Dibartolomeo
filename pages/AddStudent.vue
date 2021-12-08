@@ -45,12 +45,12 @@ export default {
       newUser: {
         firstName: '',
         lastName: '',
-        
         type: 'student',
         banned: 'false',
       },
       email:'',
       nombre:'',
+      url:'',
     }
   },
 
@@ -59,7 +59,8 @@ export default {
       this.nombre = await this.$store.dispatch(
         'user/Countemail',
         this.email)
-       
+        if(this.nombre==='0'){
+           
       await this.$fire.firestore.collection('user').doc(this.email).set(this.newUser);
       
 
@@ -73,12 +74,15 @@ export default {
       
     ],
     "subject": "Finalisation Inscription",
-    "content": `<p>bonjour<p><a href='http://localhost:3000/changepassword/${this.email}'>Finalisation mot-passe</a></h3><br />,`
+    "content": `<p>bonjour<p><a href='${this.email}'>Finalisation mot-passe</a></h3><br />,`
 }
 
 );
-        
-        
+
+        }else{
+      
+        console.log('impsible')
+        }
     },
   },
 }

@@ -68,7 +68,20 @@ export default {
       recherche: '',
       open: false,
       dialog: false,
+      Message:{
+        contenu:'',
+        email:'',
+        idprofesseur:'',
+      }
     }
+  },
+    method:{
+      envoyermessage(){
+
+      }
+
+    
+
   },
 }
 </script>

@@ -10,7 +10,7 @@
             style="width: 15vw"
           >
             <v-text-field
-              v-model="name"
+              v-model="lesson.name"
               :value="lesson.lesson.name"
               @change="ShowSave()"
             ></v-text-field>
@@ -61,7 +61,7 @@
             style="width: 2vw"
           >
             <v-text-field
-              v-model="MaxStudents"
+              v-model="lesson.MaxStudents"
               class="pa-0 ml-1 input"
               @change="ShowSave()"
             ></v-text-field>
@@ -120,7 +120,7 @@
               <p class="ma-0 pr-10">Récurence :</p>
               <div style="width: 15vw">
                 <v-select
-                  v-model="selectRec"
+                  v-model="lesson.recurence"
                   :items="recurence"
                   item-text="recurence"
                   item-value="recurence"
@@ -132,7 +132,7 @@
               <p class="ma-0 pr-10">Age :</p>
               <div style="width: 15vw">
                 <v-select
-                  v-model="selectAge"
+                  v-model="lesson.Age"
                   :items="Age"
                   item-text="Age"
                   item-value="Age"
@@ -148,7 +148,7 @@
                 style="width: 2vw"
               >
                 <v-text-field
-                  v-model="price"
+                  v-model="lesson.Prix"
                   class="pa-0 input"
                   @change="ShowSave()"
                 ></v-text-field>
@@ -199,7 +199,7 @@
             <v-row class="justify-space-around align-center">
               <div style="width: 10vw">
                 <v-select
-                  v-model="day"
+                  v-model="lesson.startDate"
                   :items="jour"
                   label="Jour"
                   @change="ShowSave()"
@@ -227,7 +227,7 @@
                 <template #activator="{ on, attrs }">
                   <div style="width: 10vw">
                     <v-text-field
-                      v-model="date"
+                      v-model="lesson.EndDate"
                       label="Date"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -306,8 +306,9 @@
           </v-row>
           <div ref="inputLessonDesc" class="hide">
             <v-textarea
+
               id="Description"
-              v-model="desc"
+              v-model="lesson.Description"
               class="px-6 pt-4"
               cols="10"
               rows="5"
@@ -368,7 +369,7 @@
           <div ref="inputLessonNote" class="hide">
             <v-textarea
               id="Note"
-              v-model="note"
+              v-model="lesson.note"
               class="px-6 pt-"
               cols="10"
               rows="5"
@@ -395,8 +396,10 @@
   </div>
 </template>
 <script>
+import {lesson} from '../model/Lesson';
 export default {
   data: () => ({
+    lesson,
     desc: '',
     endtHour2: '',
     startHour2: '',
@@ -427,7 +430,7 @@ export default {
       'Samedi',
       'Dimanche',
     ],
-    lesson: {},
+
   }),
   created() {
     this.lesson = this.$store.state.lesson
@@ -443,10 +446,33 @@ export default {
 
     ShowSave() {
       this.$refs.enregistrer.className = 'show'
+      
     },
     async createLesson() {
-      await this.$store.dispatch('lesson/createLesson', this.lesson)
+      this.lesson.studentliste=[{email:'louka.ruiz@orange.fr'},{email:'louka.ruiz@ynov.com'}]
+      await this.$store.dispatch('lesson/envoie', this.lesson);
+      this.lesson.studentliste.forEach(Element => {
+        this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email',
+    {
+   "recipients": [
+        {
+            "email": Element.email,
+            "name": "student"
+        },
+      
+    ],
+    "subject": `Vous êtes inscrit au cour ${this.lesson.name}`,
+    "content": `<p>Vous êtes inscrit au cour ${this.lesson.name}<p><br />,`
+}
+
+);
+        
+      });
+
+     
+
     },
+    
   },
 }
 </script>

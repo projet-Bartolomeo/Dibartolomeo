@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       items: [
-        { title: 'Planning', icon: 'mdi-bulletin-board', route: '/' },
+        { title: 'Planning', icon: 'mdi-bulletin-board', route: '/Calendar' },
         { title: 'Liste des cours', icon: 'mdi-image', route: '/classesList' },
         {
           title: 'Liste des éleves',

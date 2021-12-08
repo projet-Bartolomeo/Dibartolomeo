@@ -42,8 +42,9 @@
               name="input-7-4"
               label="Entrez votre message ici"
               style="width: 30vw"
+              v-model="Message.content"
             ></v-textarea>
-            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
+            <v-btn style="color: white" color="teal lighten-2" @click="addStudent">Envoyer</v-btn>
           </v-col>
         </Overlay>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -64,6 +65,12 @@ export default {
       selected: [],
       dialog: false,
       dialogDelete: false,
+      Message:{
+        content:'',
+        studentid:'louka.ruiz@orange.fr',
+        lessonid:'4tjgSvNIEjBV4OMXVXWP',
+      },
+
       headers: [
         {
           text: 'Nom',
@@ -75,8 +82,9 @@ export default {
         { text: 'Mail', value: 'mail' },
         { text: 'Telephone', value: 'telephone', align: 'start' },
         { text: 'Actions', value: 'actions', sortable: false },
+        
       ],
-
+      
       emploi_du_temps: [],
     }
   },
@@ -90,9 +98,26 @@ export default {
     this.initialize()
   },
   methods: {
-    clearMessage() {
-      this.search = ''
-    },
+      async addStudent() {
+      this.nombre = await this.$store.dispatch(
+        'message/envoieMessage',
+        this.Message);
+        await this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email',
+    {
+   "recipients": [
+        {
+            "email": this.Message.studentid,
+            "name": 'jojo'
+            
+        },
+      
+    ],
+    "subject": "Message du professeur",
+    "content": `<p>${this.Message.content}'><p></h3><br />,`
+}
+
+);
+      },
 
     initialize() {
       this.emploi_du_temps = [

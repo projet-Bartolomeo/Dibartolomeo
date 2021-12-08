@@ -58,7 +58,7 @@ export default {
           this.id,
           this.mot_passe.mot_passeactuel
         )
-           this.$nuxt.$router.push('/')
+           this.$nuxt.$router.push('/Calendar')
   
       
     },

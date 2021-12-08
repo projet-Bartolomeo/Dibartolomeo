@@ -11,14 +11,18 @@ export const actions = {
         const user = await this.$fire.firestore.collection('user').doc(id).get()
         return user.data().user
     },
-   
+
     async getUserByemail({ commit }, email) {
         const alluser = await this.$fire.firestore.collection('user').doc(email).get();
         return alluser
     },
     async Countemail({ commit }, email) {
-        const query = await this.$fire.firestore.collection("user").doc(email).size;
-        return query
-        
-    },
-}
+         await this.$fire.firestore.collection("user").doc(email).get()
+            .then(taille => {
+                taille=taille.size
+                return taille
+
+
+            })
+        }
+    }
