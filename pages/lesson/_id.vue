@@ -394,7 +394,7 @@
       </Overlay>
     </v-row>
     <v-col class="mt-5">
-      <DataTableStudent lesson/>
+      <DataTableStudent lesson data/>
     </v-col>
   </div>
 </template>

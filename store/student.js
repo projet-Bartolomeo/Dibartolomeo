@@ -16,6 +16,12 @@ export const actions = {
         return readQuerySnapshot(results)
     },
 
+    async GetStudentByTLessonId({ commit } ,idLesson){
+        const results = await this.$fire.firestore.collection('user').where('lessonList' ,'array-contains', `${idLesson}`).get()
+        return readQuerySnapshot(results)
+    },
+
+
     async getStudentById({ commit },id ) {
         const results = await this.$fire.firestore.collection('user').doc(id).get()
         return results.data()

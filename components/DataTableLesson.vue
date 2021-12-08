@@ -139,6 +139,10 @@ export default {
       type: Boolean,
       required: false,
     },
+    getLessonById : {
+      type: Boolean,
+      required: false,
+    },
   },
   data() {
     return {

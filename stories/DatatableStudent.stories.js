@@ -13,6 +13,18 @@ export default {
     add: {
       options: [undefined, 'true'],
       control: { type: 'select' }
+    },
+    getAllStudents: {
+      options: [undefined, 'true'],
+      control: { type: 'select' }
+    },
+    GetStudentByTeacherId : {
+      options: [undefined, 'true'],
+      control: { type: 'select' }
+    },
+    GetStudentByTLessonId : {
+      options: [undefined, 'true'],
+      control: { type: 'select' }
     }
   }
 }

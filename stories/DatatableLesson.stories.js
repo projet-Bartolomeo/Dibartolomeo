@@ -9,6 +9,10 @@ export default {
     delete: {
       options: [undefined, 'true'],
       control: { type: 'select' }
+    },
+    getLessonById: {
+      options: [undefined, 'true'],
+      control: { type: 'select' }
     }
   }
 }
