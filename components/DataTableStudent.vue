@@ -17,15 +17,26 @@
           v-if="$props.message"
           type="text"
           buttonTitle="Envoyer message"
+          overlayTitle="Envoyer un message"
         >
-          <v-text-field v-model="messageText"></v-text-field>
+          <v-col class="d-flex flex-column align-center">
+            <v-textarea
+              class="text-area"
+              filled
+              auto-grow
+              name="input-7-4"
+              label="Entrez votre message ici"
+              style="width: 30vw"
+            ></v-textarea>
+            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
+          </v-col>
         </Overlay>
       </v-card-title>
     </v-card>
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="user"
+        :items="$props.datas"
         sort-by="calories"
         class="elevation-1"
         :footer-props="{
@@ -124,8 +135,25 @@
         </template>
         <template v-else v-slot:[`item.actions`]="{ item }">
           <div class="d-flex">
-            <Overlay v-if="$props.message" class="mr-1" buttonTitle="mdi-message">
-              <v-text-field v-model="messageText"></v-text-field>
+            <Overlay
+              v-if="$props.message"
+              class="mr-1"
+              buttonTitle="mdi-message"
+              overlayTitle="Envoyer un message"
+            >
+              <v-col class="d-flex flex-column align-center">
+                <v-textarea
+                  class="text-area"
+                  filled
+                  auto-grow
+                  name="input-7-4"
+                  label="Entrez votre message ici"
+                  style="width: 30vw"
+                ></v-textarea>
+                <v-btn style="color: white" color="teal lighten-2"
+                  >Envoyer</v-btn
+                >
+              </v-col>
             </Overlay>
             <NuxtLink class="nuxtlink" :to="`/student/${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
@@ -156,24 +184,14 @@ export default {
       type: Boolean,
       required: false,
     },
-    getAllStudents :{
-      type: Boolean,
-      require: false,
+    datas: {
+      type: Array,
+      required: false,
     },
-    GetStudentByTeacherId : {
-      type: Boolean,
-      require: false,
-    },
-    GetStudentByTLessonId: {
-      type: Boolean,
-      require: false,
-    }
   },
   data() {
     return {
-      teacherId : '0kK1fyyWN8N2bkHNYLoo',
-      lessonId: '7zKCsBFScaVmuOpG2QVl',
-      user : [],
+      users: [],
       type: 'élève',
       headers: [
         {
@@ -237,6 +255,7 @@ export default {
   },
 
   created() {
+    this.users = this.datas
     this.defaultItem = this.editedItem = this.headers.reduce(
       (defaultItem, currentHeader) => {
         if (currentHeader.initialValue === undefined) return defaultItem
@@ -249,34 +268,9 @@ export default {
       newHeader[currentHeader.value] = currentHeader
       return newHeader
     }, {})
-
-    if (this.getAllStudents == "true") {
-       this.getAll();
-    }
-
-    if (this.GetStudentByTeacherId == "true") {
-       this.getByTeacherId(this.teacherId);
-    }
-
-    if(this.GetStudentByTLessonId == "true"){
-      this.getByLessonId(this.lessonId)
-    }
-    
   },
 
   methods: {
-    async getAll() {
-      this.user = await this.$store.dispatch('student/getAllStudents');
-    },
-    async getByTeacherId(teacherId) {
-      this.user = await this.$store.dispatch('student/GetStudentByTeacherId', teacherId);
-    },
-    
-    async getByLessonId(lessonId) {
-      this.user = await this.$store.dispatch('student/GetStudentByTLessonId', lessonId);
-    },
-
-
     deleteStudentFromLesson() {
       this.deleteItemConfirm()
     },

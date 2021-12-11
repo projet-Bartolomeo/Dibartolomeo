@@ -17,15 +17,26 @@
           v-if="$props.message"
           type="text"
           buttonTitle="Envoyer message"
+          overlayTitle="Envoyer un message"
         >
-          <v-text-field v-model="messageText"></v-text-field>
+          <v-col class="d-flex flex-column align-center">
+            <v-textarea
+              class="text-area"
+              filled
+              auto-grow
+              name="input-7-4"
+              label="Entrez votre message ici"
+              style="width: 30vw"
+            ></v-textarea>
+            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
+          </v-col>
         </Overlay>
       </v-card-title>
     </v-card>
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="ressource"
+        :items="$props.datas"
         sort-by="calories"
         class="elevation-1"
         :footer-props="{
@@ -54,6 +65,11 @@
                       md="4"
                     >
                       <div v-if="currentHeader[item[0]] !== undefined">
+                        <v-text-field
+                          v-if="currentHeader[item[0]].type === 'input'"
+                          v-model="editedItem[item[0]]"
+                          :label="currentHeader[item[0]].text"
+                        ></v-text-field>
                         <v-text-field
                           v-if="currentHeader[item[0]].type === 'input'"
                           v-model="editedItem[item[0]]"
@@ -109,9 +125,23 @@
               v-if="$props.message"
               class="mr-1"
               buttonTitle="mdi-message"
+              overlayTitle="Envoyer un message"
             >
-              <v-text-field v-model="messageText"></v-text-field>
+              <v-col class="d-flex flex-column align-center">
+                <v-textarea
+                  class="text-area"
+                  filled
+                  auto-grow
+                  name="input-7-4"
+                  label="Entrez votre message ici"
+                  style="width: 30vw"
+                ></v-textarea>
+                <v-btn style="color: white" color="teal lighten-2"
+                  >Envoyer</v-btn
+                >
+              </v-col>
             </Overlay>
+
             <NuxtLink class="nuxtlink" :to="`/lesson/${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
@@ -139,9 +169,13 @@ export default {
       type: Boolean,
       required: false,
     },
-    getLessonById : {
+    getLessonById: {
       type: Boolean,
       required: false,
+    },
+    datas: {
+      type: Array,
+      require: true,
     },
   },
   data() {
@@ -149,8 +183,8 @@ export default {
       type: 'cours',
       headers: [
         {
-          text: 'titre',
-          value: 'title',
+          text: 'Titre',
+          value: 'name',
           initialValue: '',
           type: 'input',
           align: 'start',
@@ -177,7 +211,7 @@ export default {
         { text: 'prix', value: 'price', initialValue: [], type: 'input' },
         {
           text: 'description',
-          value: 'description',
+          value: 'descritpion',
           initialValue: '',
           type: 'input',
         },
@@ -195,39 +229,11 @@ export default {
         },
         {
           text: 'fin',
-          value: 'endDate',
+          value: 'EndDate',
           initialValue: new Date(),
           type: 'input',
         },
         { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
-      ],
-      datas: [
-        {
-          id: 1,
-          title: 'un super cours',
-          maximumStudents: 18,
-          recurrence: 'tous les jours',
-          ageRange: 'adulte',
-          price: 16,
-          description:
-            "c'est vraiment une super description et en plus, bien longue",
-          teacherNote: "penser à acheter de l'ocre jaune",
-          startDate: '12-10-2020 10:00',
-          endDate: '12-10-2020 11:15',
-        },
-        {
-          id: 1,
-          title: 'le meilleur cours',
-          maximumStudents: 18,
-          recurrence: 'unique',
-          ageRange: 'enfant',
-          price: 15,
-          description:
-            "c'est vraiment une super description et en plus, bien longue",
-          teacherNote: 'prendre un parapluie',
-          startDate: '12-20-2021 14:00',
-          endDate: '12-20-2021 15:00',
-        },
       ],
       showSelect: false,
       search: '',
@@ -277,7 +283,6 @@ export default {
       },
       {}
     )
-    this.ressource = this.datas
     this.currentHeader = this.headers.reduce((newHeader, currentHeader) => {
       newHeader[currentHeader.value] = currentHeader
       return newHeader

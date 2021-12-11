@@ -1,8 +1,9 @@
 <template>
   <div>
     <v-row class="justify-end">
-      <div>{{test}}</div>
+      <div>{{this.$store.state.lesson.getLessonsByStudentId}}</div>
       <div>test</div>
+        <DataTableLesson :datas="$store.state.lesson.getLessonsByStudentId" />
     </v-row>
   </div>
 </template>
@@ -11,18 +12,20 @@
   export default {
   data() {
     return {
-      user: {},
-      test : {}
-    };
+      lesson: [],
+    }
   },
   created() {
     this.fetchData();
   },
     methods : {
       async fetchData() {
-      this.user = await this.$store.dispatch('students/getAllStudents');
-      this.test = await this.$store.dispatch('students/GetStudentByTeacherId');
+      this.lesson = await this.$store.dispatch('lesson/getLessonsByStudentId', 'YrGucQSEGT9Z0ctUngrX');
+      this.$store.commit('lesson/setLessonsByStudentId', this.lesson)
     },
+
+
+
     }
 }
 

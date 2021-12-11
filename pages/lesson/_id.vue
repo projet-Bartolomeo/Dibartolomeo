@@ -4,7 +4,7 @@
       <v-col class="pa-0">
         <v-row class="ma-0 align-center">
           <h2 ref="paraLessonTilte">
-            {{ lesson.name }}
+            {{ lesson.name}}
           </h2>
           <div
             ref="inputLessonTilte"
@@ -54,8 +54,8 @@
             </v-btn>
           </div>
         </v-row>
-        <v-row  class="ma-0 align-center">
-          <p class="ma-0">{{lesson.studentliste.length}}/</p>
+        <v-row class="ma-0 align-center">
+          <p class="ma-0">{{ lesson.studentliste.length }}/</p>
           <p ref="paraLessonMax" class="ma-0">{{ lesson.maximumStudents }}</p>
           <div
             ref="inputLessonMax"
@@ -110,7 +110,9 @@
       <div class="d-flex flex-column align-center">
         <v-row> <v-btn color="error">Supprimer le cours</v-btn> </v-row>
         <v-row ref="enregistrer" class="hide">
-          <v-btn @click="createLesson" color="success">Enregistrer le cours</v-btn>
+          <v-btn @click="createLesson" color="success"
+            >Enregistrer le cours</v-btn
+          >
         </v-row>
       </div>
     </v-row>
@@ -155,7 +157,7 @@
                   @change="ShowSave()"
                 ></v-text-field>
               </div>
-              <p ref="paraLessonPrice" class="ma-0">{{lesson.price}}</p>
+              <p ref="paraLessonPrice" class="ma-0">{{ lesson.price }}</p>
               €
               <div ref="pensilLessonPrice">
                 <v-btn
@@ -321,7 +323,7 @@
           </div>
 
           <p ref="paraLessonDesc" class="px-6 pt-4">
-           {{lesson.descritpion}}
+            {{ lesson.descritpion }}
           </p>
         </v-card>
         <v-card width="450" class="ma-6 pa-4">
@@ -378,7 +380,7 @@
             ></v-textarea>
           </div>
           <p ref="paraLessonNote" class="px-6 pt-4">
-          {{lesson.teacherNote}}
+            {{ lesson.teacherNote }}
           </p>
         </v-card>
       </v-row>
@@ -390,17 +392,22 @@
         buttonTitle="Ajouter des élèves"
         overlayTitle="Ajouter élèves au cours"
       >
-        <DataTableStudent add/>
+        <DataTableStudent add :datas="$store.state.student.getAllStudents" />
       </Overlay>
     </v-row>
     <v-col class="mt-5">
-      <DataTableStudent lesson data/>
+      <DataTableStudent
+        lesson
+        :datas="$store.state.student.getStudentByLessonId"
+      />
     </v-col>
   </div>
 </template>
 <script>
 export default {
   data: () => ({
+    user: [],
+    allUser: [],
     lesson: {
       studentliste: [],
     },
@@ -430,6 +437,7 @@ export default {
   }),
   created() {
     this.getLesson()
+    this.fetchData()
   },
 
   methods: {
@@ -451,6 +459,17 @@ export default {
         'lesson/getLessonById',
         this.$route.query.id
       )
+    },
+
+    async fetchData() {
+      this.user = await this.$store.dispatch(
+        'student/getStudentByLessonId',
+        this.$route.query.id
+      )
+      this.$store.commit('student/setStudentByLessonId', this.user)
+
+      this.allUser = await this.$store.dispatch('student/getAllStudents')
+      this.$store.commit('student/setAllStudents', this.allUser)
     },
   },
 }

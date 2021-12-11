@@ -46,7 +46,7 @@ export default {
         {
           title: 'Liste des éleves',
           icon: 'mdi-account',
-          route: '/StudentList',
+          route: '/studentList',
         },
        /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
