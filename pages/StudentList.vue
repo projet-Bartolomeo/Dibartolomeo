@@ -8,7 +8,7 @@
         ></router-link
       >
     </v-row>
-    <DataTableStudent message/>
+    <DataTableStudent message :datas="$store.state.student.getStudentByTeacherId" />
   </div>
 </template>
 
@@ -19,7 +19,18 @@ export default {
       recherche: '',
       open: false,
       dialog: false,
+      user : [],
+      idTeacher : '0kK1fyyWN8N2bkHNYLoo'
     }
+  },
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    async fetchData() {
+      this.user = await this.$store.dispatch('student/getStudentByTeacherId' , this.idTeacher)
+      this.$store.commit('student/setStudentByTeacherId', this.user)
+    },
   },
 }
 </script>

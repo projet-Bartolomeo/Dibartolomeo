@@ -2,8 +2,19 @@ import { lesson } from '../model/Lesson'
 import { readQuerySnapshot } from '../services/firestoreHelper'
 
 export const state = () => ({
-    lesson
+    lesson,
+    getLessonsTeacherId : [],
+    getLessonsByStudentId : [] 
 })
+
+export const mutations = {
+    setLessonsTeacherId(state, getLessonsTeacherId){
+        state.getLessonsTeacherId = getLessonsTeacherId
+    },
+    setLessonsByStudentId(state, getLessonsByStudentId){
+        state.getLessonsByStudentId = getLessonsByStudentId
+    },
+}
 
 export const actions = {
     async createLesson({ commit }, newLesson) {
@@ -16,6 +27,10 @@ export const actions = {
     },
     async getLessonsTeacherId({ commit } ,idTeacher){
         const results = await this.$fire.firestore.collection('lesson').where('profesor' ,'==', `${idTeacher}`).get()
+        return readQuerySnapshot(results)
+    },
+    async  getLessonsByStudentId({ commit } ,idStudent){
+        const results = await this.$fire.firestore.collection('lesson').where('studentliste' ,'array-contains', `${idStudent}`).get()
         return readQuerySnapshot(results)
     },
     async updateLesson({ commit }, { id, payload }) {

@@ -10,9 +10,8 @@ export default {
       options: [undefined, 'true'],
       control: { type: 'select' }
     },
-    getLessonById: {
-      options: [undefined, 'true'],
-      control: { type: 'select' }
+    datas : {
+      control: { type: 'array' }
     }
   }
 }

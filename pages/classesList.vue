@@ -3,7 +3,7 @@
     <v-row class="ma-4 justify-space-between">
       <div id="title"><h1>Listes des cours</h1></div>
       <div id="btnAjouterCours">
-        <router-link class="text-decoration-none" to="/lesson">
+        <router-link class="text-decoration-none" to="/lesson/new">
           <v-btn style="color: white" color="teal lighten-2"
             >Ajouter un cours
           </v-btn></router-link
@@ -22,7 +22,7 @@
       </v-card>
     </v-dialog>
     <div id="table">
-      <DataTableLesson message delete/>
+      <DataTableLesson message delete :datas="$store.state.lesson.getLessonsTeacherId" />
     </div>
   </div>
 </template>
@@ -34,7 +34,22 @@ export default {
       recherche: '',
       open: false,
       dialog: false,
+      idTeacher: '0kK1fyyWN8N2bkHNYLoo',
+      lesson: [],
     }
+  },
+
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    async fetchData() {
+      this.lesson = await this.$store.dispatch(
+        'lesson/getLessonsTeacherId',
+        this.idTeacher
+      )
+      this.$store.commit('lesson/setLessonsTeacherId', this.lesson)
+    },
   },
 }
 </script>
