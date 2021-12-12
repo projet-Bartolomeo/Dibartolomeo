@@ -201,18 +201,12 @@ export default {
           type: 'input',
           align: 'start',
         },
-        { text: 'Nom', value: 'lastname', initialValue: '', type: 'input' },
+        { text: 'Nom', value: 'lastName', initialValue: '', type: 'input' },
         {
           text: 'Prenom',
-          value: 'firstname',
+          value: 'firstName',
           initialValue: '',
           type: 'input',
-        },
-        {
-          text: 'Banni',
-          value: 'banned',
-          initialValue: false,
-          type: 'switch',
         },
         { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
       ],
@@ -275,10 +269,8 @@ export default {
       this.deleteItemConfirm()
     },
     sendMessage(lessons = this.selected) {
-      console.log(lessons)
     },
     addToLesson(student) {
-      console.log(student)
     },
     editItem(item) {
       this.editedIndex = this.user.indexOf(item)

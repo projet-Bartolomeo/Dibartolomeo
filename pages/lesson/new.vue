@@ -18,7 +18,6 @@
             <v-text-field
               v-model="lesson.maximumStudents"
               class="pa-0 ml-1 input"
-              @change="ShowSave()"
             ></v-text-field>
           </div>
           <p class="ma-0 ml-2">élèves</p>
@@ -39,10 +38,10 @@
               <div style="width: 15vw">
                 <v-select
                   v-model="lesson.recurrence"
-                  :items="recurence"
-                  item-text="recurence"
-                  item-value="recurence"
-                  @change="ShowSave()"
+                  :items="recurrence"
+                  item-text="recurrence"
+                  item-value="recurrence"
+                  @change="showDay()"
                 ></v-select>
               </div>
             </v-row>
@@ -54,7 +53,6 @@
                   :items="Age"
                   item-text="Age"
                   item-value="Age"
-                  @change="ShowSave()"
                 ></v-select>
               </div>
             </v-row>
@@ -68,37 +66,43 @@
                 <v-text-field
                   v-model="lesson.price"
                   class="pa-0 input"
-                  @change="ShowSave()"
                 ></v-text-field>
               </div>
               €
             </v-row>
           </v-col>
         </v-card>
-        <v-card width="450" class="ma-6 pa-6">
+        <v-card
+          style="align-items: center; display: flex"
+          width="450"
+          class="ma-6 pa-6"
+        >
           <v-col>
             <v-row
+              v-bind:class="{
+                show: isActiveEveryWeekDate,
+                hide: !isActiveEveryWeekDate,
+              }"
               ref="everyWeekDate"
               class="justify-space-around align-center"
             >
               <div style="width: 10vw">
-                <v-select
-                  v-model="day"
-                  :items="jour"
-                  label="Jour"
-                  @change="ShowSave()"
-                ></v-select>
+                <v-select v-model="day" :items="jour" label="Jour"></v-select>
               </div>
               de
               <div style="width: 5vw">
-                <input v-model="startHour1" type="time" @change="ShowSave()" />
+                <input v-model="startHour1" type="time" />
               </div>
               à
               <div style="width: 5vw">
-                <input v-model="endHour1" type="time" @change="ShowSave()" />
+                <input v-model="endHour1" type="time" />
               </div>
             </v-row>
-            <v-row ref="unique" class="justify-space-around align-center">
+            <v-row
+              ref="unique"
+              v-bind:class="{ show: isActiveUnique, hide: !isActiveUnique }"
+              class="justify-space-around align-center"
+            >
               <v-menu
                 ref="menu"
                 v-model="menu"
@@ -120,12 +124,7 @@
                     ></v-text-field>
                   </div>
                 </template>
-                <v-date-picker
-                  v-model="date"
-                  no-title
-                  scrollable
-                  @change="ShowSave()"
-                >
+                <v-date-picker v-model="date" no-title scrollable>
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="menu = false">
                     Cancel
@@ -137,11 +136,11 @@
               </v-menu>
               de
               <div style="width: 5vw">
-                <input v-model="startHour2" type="time" @change="ShowSave()" />
+                <input v-model="startHour2" type="time" />
               </div>
               à
               <div style="width: 5vw">
-                <input v-model="endtHour2" type="time" @change="ShowSave()" />
+                <input v-model="endtHour2" type="time" />
               </div>
             </v-row>
           </v-col>
@@ -162,7 +161,6 @@
               name="Description"
               filled
               label="Entrez votre description ici"
-              @change="ShowSave()"
             ></v-textarea>
           </div>
         </v-card>
@@ -180,7 +178,6 @@
               name="Note"
               filled
               label="Entrez votre note ici"
-              @change="ShowSave()"
             ></v-textarea>
           </div>
         </v-card>
@@ -199,6 +196,7 @@ export default {
     hide: true,
     lesson: {
       studentliste: [],
+      recurrence: 'Unique',
     },
     endtHour2: '',
     startHour2: '',
@@ -212,7 +210,7 @@ export default {
     time: null,
     menu2: false,
     modal2: false,
-    recurence: ['Unique', 'Chaque semaine'],
+    recurrence: ['Unique', 'Chaque semaine'],
     Age: ['Enfant', 'Adolescent', 'Adulte', 'Senior'],
     jour: [
       'Lundi',
@@ -223,6 +221,8 @@ export default {
       'Samedi',
       'Dimanche',
     ],
+    isActiveEveryWeekDate: true,
+    isActiveUnique : true,
   }),
   created() {
     this.showDay()
@@ -232,11 +232,14 @@ export default {
       await this.$store.dispatch('lesson/createLesson', this.lesson)
     },
     showDay() {
-     /*  if (this.lesson.recurence === 'Unique') {
-      } else {
-        this.$refs.everyWeekDate.className = 'show'
-        this.$refs.unique.className = 'hide'
-      } */
+      if (this.lesson.recurrence === 'Unique') {
+        this.isActiveUnique = true
+        this.isActiveEveryWeekDate = false
+      }
+      else {
+        this.isActiveUnique = false
+        this.isActiveEveryWeekDate = true
+      }
     },
   },
 }
@@ -247,7 +250,7 @@ export default {
   display: none;
 }
 .show {
-  display: block;
+  display: flex;
   margin-bottom: 0 !important;
 }
 .input input {

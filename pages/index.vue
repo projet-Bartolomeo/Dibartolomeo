@@ -95,7 +95,7 @@
                 </div>
               </v-row>
               <v-col class="mt-5">
-                <DataTableStudent message lesson/>
+                <DataTableStudent message lesson />
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
                 <router-link class="text-decoration-none" to="/lesson">
@@ -136,8 +136,32 @@ export default {
     events: [
       {
         name: 'Cours dessins fantastique',
-        start: '2021-11-12 09:00',
-        end: '2021-11-12 10:00',
+        start: '2021-12-3 09:00',
+        end: '2021-12-3 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-8 09:00',
+        end: '2021-12-8 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-17 09:00',
+        end: '2021-12-17 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-27 09:00',
+        end: '2021-12-27 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-13 09:00',
+        end: '2021-12-13 10:00',
         color: 'green',
       },
     ],

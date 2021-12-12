@@ -32,7 +32,6 @@ export const actions = {
 
     async getStudentByTeacherId({ commit } ,idTeacher){
         const results = await this.$fire.firestore.collection('user').where('teacherList' ,'array-contains', `${idTeacher}`).get()
-        console.log(readQuerySnapshot(results))
         return readQuerySnapshot(results)
     },
 

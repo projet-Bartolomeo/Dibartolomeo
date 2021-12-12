@@ -142,7 +142,7 @@
               </v-col>
             </Overlay>
 
-            <NuxtLink class="nuxtlink" :to="`/lesson/${item.id}`">
+            <NuxtLink class="nuxtlink" :to="`/lesson/?id=${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
             <v-icon v-if="$props.delete" class="mr-1" @click="deleteItem(item)">
@@ -209,18 +209,6 @@ export default {
           type: 'input',
         },
         { text: 'prix', value: 'price', initialValue: [], type: 'input' },
-        {
-          text: 'description',
-          value: 'descritpion',
-          initialValue: '',
-          type: 'input',
-        },
-        {
-          text: 'note du professeur',
-          value: 'teacherNote',
-          initialValue: '',
-          type: 'input',
-        },
         {
           text: 'début',
           value: 'startDate',
@@ -291,15 +279,12 @@ export default {
 
   methods: {
     deleteLesson(lesson) {
-      console.log(lesson)
       this.deleteItemConfirm()
     },
     deleteAllLesson(lesson) {
-      console.log(lesson)
       this.deleteItemConfirm()
     },
     sendMessage(lessons = this.selected) {
-      console.log(lessons)
     },
 
     editItem(item) {

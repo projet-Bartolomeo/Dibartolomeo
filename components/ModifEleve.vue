@@ -74,7 +74,6 @@ export default {
         'student/getStudentById',
         studentID
       )
-      console.log(this.user)
     },
   },
 }
