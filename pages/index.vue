@@ -124,50 +124,27 @@ export default {
     open: false,
     focus: '',
     type: 'month',
+    EndDate:'',
+    startDate:'',
     typeToLabel: {
       month: 'Mois',
       week: 'Semaine',
       day: 'Jour',
       '4day': '4 jours',
     },
+    nom:'',
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
-    events: [
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-3 09:00',
-        end: '2021-12-3 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-8 09:00',
-        end: '2021-12-8 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-17 09:00',
-        end: '2021-12-17 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-27 09:00',
-        end: '2021-12-27 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-13 09:00',
-        end: '2021-12-13 10:00',
-        color: 'green',
-      },
-    ],
+     idTeacher: '0kK1fyyWN8N2bkHNYLoo',
+    events: [],
   }),
   mounted() {
     this.$refs.calendar.checkChange()
+  },
+  created(){
+    this.fetchData();
+
   },
   methods: {
     viewDay({ date }) {
@@ -224,6 +201,74 @@ export default {
       }
       this.events = events
     },
+    async fetchData() {
+      this.lesson = await this.$store.dispatch(
+        'lesson/getLessonsTeacherId',
+        this.idTeacher
+      )
+
+      this.lesson.map((lesson) => {
+        const timestampEnd = lesson.EndDate.seconds * 1000
+        const timestampStart = lesson.startDate.seconds * 1000
+
+        const dateEnd = new Date(timestampEnd)
+        const dateStart = new Date(timestampStart)
+
+        let eh = dateEnd.getHours()
+        if (eh < 10) {
+          eh = '0' + eh
+        }
+        let em = dateEnd.getMinutes()
+        if (em < 10) {
+          em = '0' + em
+        }
+
+        let sh = dateStart.getHours()
+        if (sh < 10) {
+          sh = '0' + sh
+        }
+        let sm = dateStart.getMinutes()
+        if (sm < 10) {
+          sm = '0' + sm
+        }
+const nom=this.lesson.name
+this.nom=nom
+        this.EndDate =
+          dateEnd.getFullYear() +
+          '-' +
+          (dateEnd.getMonth() + 1) +
+          '-' +
+          dateEnd.getDate() +
+          ' ' +
+          eh +
+          ':' +
+          em
+
+        this.startDate =
+          dateStart.getFullYear() +
+          '-' +
+          (dateStart.getMonth() + 1) +
+          '-' +
+          dateStart.getDate() +
+          ' ' +
+          sh +
+          ':' +
+          sm
+          this.events.push(
+      {
+        name: this.nom,
+        start: this.startDate,
+        end: this.EndDate,
+        color: 'green',
+      },
+          )
+          return this.events
+
+        
+      })
+      this.$store.commit('lesson/setLessonsTeacherId', this.lesson)
+    },
   },
 }
+
 </script>
