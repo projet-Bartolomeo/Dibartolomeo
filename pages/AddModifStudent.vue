@@ -101,12 +101,12 @@ export default {
         {
           recipients: [
             {
-              email: this.email,
+              email: this.newUser.id,
               name: 'louka',
             },
           ],
           subject: 'Finalisation Inscription',
-          content: `<p>bonjour<p><a href='${this.email}'>Finalisation mot-passe</a></h3><br />,`,
+          content: `<p>bonjour<p><a href='${this.newUser.id}'>Finalisation mot-passe</a></h3><br />,`,
         }
       )
     },

@@ -128,8 +128,8 @@ layout:'connexion',
        this.user= await this.$store.dispatch('user/getUserByemail',this.auth.email)
         await this.store.dispatch('user.login/login', {user})
            this.$nuxt.$router.push('/')
-     
-      
+           this.$store.commit('user/setlogin',this.login)
+
     },
     googleSignIn(){
 const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
@@ -157,6 +157,7 @@ const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
         this.snackbar = true
       })
     },
+    
     
   }
   
