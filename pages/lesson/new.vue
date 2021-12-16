@@ -398,15 +398,17 @@
     
   
 <script>
+  
 export default {
   data: () => ({
+     
     show: true,
     hide: true,
     lesson: {
       studentliste: [],
       recurrence: 'Unique',
     },
-    newlesson:{name:'',},
+    lesson:{name:'',MaxStudents:'',recurence:'',Age:'',Prix:'',stareDate:''},
     endtHour2: '',
     startHour2: '',
     endHour1: '',
@@ -449,7 +451,7 @@ export default {
       }
     },
      async createLesson() {
-       await this.$store.dispatch('lesson/createLesson', this.newlesson)
+       await this.$store.dispatch('lesson/createLesson', this.Flesson)
       this.lesson.studentliste=this.$store.state.student.getStudentByTeacherId
       await this.$store.dispatch('lesson/envoie', this.lesson);
       this.lesson.studentliste.forEach(Element => {
@@ -463,7 +465,7 @@ export default {
       
     ],
     "subject": `Vous êtes inscrit au cour ${this.lesson.name}`,
-    "content": `<p>Vous êtes inscrit au cour ${this.lesson.name}<p><br />,`
+    "content": `<p>Vous êtes inscrit au cour ${this.lesson.id}<p><br />,`
 }
 
 );

@@ -102,7 +102,7 @@ export default {
           recipients: [
             {
               email: this.newUser.id,
-              name: 'louka',
+              name: this.newUser.firstName,
             },
           ],
           subject: 'Finalisation Inscription',

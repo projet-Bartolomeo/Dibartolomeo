@@ -13,10 +13,7 @@
         ></v-text-field>
         <v-spacer></v-spacer>
         <Overlay
-          :disabled="selected.length === 0"
-          v-if="$props.message"
-          type="text"
-          buttonTitle="Envoyer message"
+          buttonTitle="mdi-message-text"
           overlayTitle="Envoyer un message"
         >
           <v-col class="d-flex flex-column align-center">
@@ -27,8 +24,9 @@
               name="input-7-4"
               label="Entrez votre message ici"
               style="width: 30vw"
+              v-model="Message.content"
             ></v-textarea>
-            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
+            <v-btn style="color: white" color="teal lighten-2" @click="addStudent">Envoyer</v-btn>
           </v-col>
         </Overlay>
       </v-card-title>
@@ -315,7 +313,28 @@ export default {
       }
       this.close()
     },
+    async addStudent() {
+      this.nombre = await this.$store.dispatch(
+        'message/envoieMessage',
+        this.Message);
+        await this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email',
+    {
+   "recipients": [
+        {
+            "email": this.Message.studentid,
+            "name": 'jojo'
+            
+        },
+      
+    ],
+    "subject": "Message du professeur",
+    "content": `<p>${this.Message.content}'><p></h3><br />,`
+}
+);
+      },
+    
   },
+  
 }
 </script>
 
