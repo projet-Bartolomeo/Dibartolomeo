@@ -1,6 +1,7 @@
 <template>
   <v-col class="d-flex flex-column align-center">
     <v-textarea
+      clearable
       v-model="message"
       class="text-area"
       filled
@@ -40,7 +41,6 @@ export default {
   methods: {
     sendMessage() {
       this.$store.commit('overlay/close')
-      console.log(this.$props.recipients)
       this.message = ''
     },
   },
