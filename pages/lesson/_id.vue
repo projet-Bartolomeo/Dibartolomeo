@@ -4,7 +4,7 @@
       <v-col class="pa-0">
         <v-row class="ma-0 align-center">
           <h2 ref="paraLessonTilte">
-            {{ lesson.name}}
+            {{ lesson.name }}
           </h2>
           <div
             ref="inputLessonTilte"
@@ -386,20 +386,26 @@
       </v-row>
     </v-col>
 
-    <v-row class="ma-0 justify-space-around align-center">
-      <Overlay
-        type="text"
-        buttonTitle="Ajouter des élèves"
-        overlayTitle="Ajouter élèves au cours"
-      >
-        <DataTableStudent add :datas="$store.state.student.getAllStudents" />
-      </Overlay>
-    </v-row>
+    <v-row class="ma-0 justify-space-around align-center"> </v-row>
     <v-col class="mt-5">
       <DataTableStudent
         lesson
         :datas="$store.state.student.getStudentByLessonId"
-      />
+      >
+        <v-btn
+          style="color: white"
+          color="blue darken-1"
+          class="mr-4"
+          @click="
+            $store.commit('overlay/open', {
+              component: 'DataTableStudent',
+              props: { datas: $store.state.student.getAllStudents, add: '' },
+              title: 'Choisissez les élèves à ajouter à votre cours',
+            })
+          "
+          >Ajouter un élève</v-btn
+        >
+      </DataTableStudent>
     </v-col>
   </div>
 </template>
