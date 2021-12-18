@@ -26,6 +26,7 @@
           "
           >send message</v-btn
         >
+        <slot></slot>
       </v-card-title>
     </v-card>
     <v-card class="ma-4">
