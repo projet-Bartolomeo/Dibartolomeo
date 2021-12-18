@@ -10,6 +10,7 @@ export const mutations = {
         })
     },
     close(state) {
+        state.component = ''
         state.open = false
     }
 }
