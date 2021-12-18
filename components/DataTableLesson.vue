@@ -117,6 +117,7 @@
         <template v-slot:[`item.actions`]="{ item }">
           <div class="d-flex">
             <v-icon
+              class="mr-1"
               v-if="$props.message"
               @click="
                 $store.commit('overlay/open', {
