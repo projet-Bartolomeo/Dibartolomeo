@@ -12,25 +12,20 @@
           clearable
         ></v-text-field>
         <v-spacer></v-spacer>
-        <Overlay
-          :disabled="selected.length === 0"
+        <v-btn
           v-if="$props.message"
-          type="text"
-          buttonTitle="Envoyer message"
-          overlayTitle="Envoyer un message"
+          :disabled="selected.length === 0"
+          style="color: white"
+          color="blue darken-1"
+          @click="
+            $store.commit('overlay/open', {
+              component: 'MessageForm',
+              props: { recipients: selectedId, type: 'student' },
+              title: 'Tapez votre message',
+            })
+          "
+          >send message</v-btn
         >
-          <v-col class="d-flex flex-column align-center">
-            <v-textarea
-              class="text-area"
-              filled
-              auto-grow
-              name="input-7-4"
-              label="Entrez votre message ici"
-              style="width: 30vw"
-            ></v-textarea>
-            <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
-          </v-col>
-        </Overlay>
       </v-card-title>
     </v-card>
     <v-card class="ma-4">
@@ -135,26 +130,17 @@
         </template>
         <template v-else v-slot:[`item.actions`]="{ item }">
           <div class="d-flex">
-            <Overlay
+            <v-icon
               v-if="$props.message"
-              class="mr-1"
-              buttonTitle="mdi-message"
-              overlayTitle="Envoyer un message"
+              @click="
+                $store.commit('overlay/open', {
+                  component: 'MessageForm',
+                  props: { recipients: [item.id], type: 'student' },
+                  title: 'Tapez votre message',
+                })
+              "
+              >mdi-message</v-icon
             >
-              <v-col class="d-flex flex-column align-center">
-                <v-textarea
-                  class="text-area"
-                  filled
-                  auto-grow
-                  name="input-7-4"
-                  label="Entrez votre message ici"
-                  style="width: 30vw"
-                ></v-textarea>
-                <v-btn style="color: white" color="teal lighten-2"
-                  >Envoyer</v-btn
-                >
-              </v-col>
-            </Overlay>
             <NuxtLink class="nuxtlink" :to="`/student/${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
@@ -237,6 +223,9 @@ export default {
       if (this.$props.message) return true
       return false
     },
+    selectedId() {
+      return this.selected.map((select) => select.id)
+    },
   },
 
   watch: {
@@ -268,10 +257,7 @@ export default {
     deleteStudentFromLesson() {
       this.deleteItemConfirm()
     },
-    sendMessage(lessons = this.selected) {
-    },
-    addToLesson(student) {
-    },
+    addToLesson(student) {},
     editItem(item) {
       this.editedIndex = this.user.indexOf(item)
       this.editedItem = Object.assign({}, item)
