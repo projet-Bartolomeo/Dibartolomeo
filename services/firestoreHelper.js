@@ -3,6 +3,5 @@ export function readQuerySnapshot(querySnapshot) {
         const document = documentSnapshot.data();
         document.id = documentSnapshot.id;
         return document
-
     })
 }
