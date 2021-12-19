@@ -155,7 +155,7 @@ export default {
       type: Boolean,
       required: false,
     },
-    getLessonById: {
+    getById: {
       type: Boolean,
       required: false,
     },

@@ -27,7 +27,7 @@
       <DataTableLesson
         message
         delete
-        :datas="$store.state.lesson.getLessonsTeacherId"
+        :datas="$store.state.lesson.getByTeacherId"
       />
     </div>
   </div>
@@ -51,7 +51,7 @@ export default {
   methods: {
     async fetchData() {
       this.lesson = await this.$store.dispatch(
-        'lesson/getLessonsTeacherId',
+        'lesson/getByTeacherId',
         this.idTeacher
       )
 
