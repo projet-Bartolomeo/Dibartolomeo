@@ -41,6 +41,7 @@ export default {
   methods: {
     sendMessage() {
       this.$store.commit('overlay/close')
+      this.$store.commit('notification/open', { description: `mesage send to students` })
       this.message = ''
     },
   },
