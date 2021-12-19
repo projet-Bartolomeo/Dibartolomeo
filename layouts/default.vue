@@ -19,7 +19,6 @@ export default {
     return {
       right: true,
       rightDrawer: false,
-      errorCode: '',
     }
   },
   errorCaptured(err) {
