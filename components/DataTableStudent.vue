@@ -133,6 +133,7 @@
           <div class="d-flex">
             <v-icon
               v-if="$props.message"
+              class="mr-1"
               @click="
                 $store.commit('overlay/open', {
                   component: 'MessageForm',

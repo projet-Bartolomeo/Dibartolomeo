@@ -462,7 +462,7 @@ export default {
     },
     async getLesson() {
       this.lesson = await this.$store.dispatch(
-        'lesson/getLessonById',
+        'lesson/getById',
         this.$route.query.id
       )
     },

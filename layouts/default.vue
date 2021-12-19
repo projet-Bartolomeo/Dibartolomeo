@@ -6,6 +6,7 @@
     <v-main>
       <v-container fluid>
         <Overlay />
+        <Notification />
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -19,6 +20,13 @@ export default {
       right: true,
       rightDrawer: false,
     }
+  },
+  errorCaptured(err) {
+    this.$store.commit('notification/open', {
+      description: err,
+      type: 'error',
+    })
+    return false
   },
 }
 </script>

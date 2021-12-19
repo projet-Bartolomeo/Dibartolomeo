@@ -185,7 +185,7 @@
     </v-col>
 
     <v-col class="mt-5">
-      <datatable-students />
+      <DataTableStudent />
     </v-col>
   </div>
 </template>
@@ -229,7 +229,7 @@ export default {
   },
   methods: {
     async createLesson() {
-      await this.$store.dispatch('lesson/createLesson', this.lesson)
+      await this.$store.dispatch('lesson/create', this.lesson)
     },
     showDay() {
       if (this.lesson.recurrence === 'Unique') {
