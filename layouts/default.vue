@@ -14,14 +14,7 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      right: true,
-      rightDrawer: false,
-    }
-  },
-}
+export default {}
 </script>
 
 <style>
