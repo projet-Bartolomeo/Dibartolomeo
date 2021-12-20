@@ -6,7 +6,11 @@
     <v-main>
       <v-container fluid>
         <Overlay />
-        <Notification />
+        <Notification
+          v-for="notification in $store.state.notification.list"
+          :id="notification.id"
+          :key="notification.id"
+        />
         <router-view></router-view>
       </v-container>
     </v-main>
