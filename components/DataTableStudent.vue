@@ -20,7 +20,7 @@
           @click="
             $store.commit('overlay/open', {
               component: 'MessageForm',
-              props: { recipients: selectedId, type: 'student' },
+              props: { recipients: selected, type: 'student' },
               title: 'Tapez votre message',
             })
           "
@@ -224,9 +224,6 @@ export default {
     getShowSelect() {
       if (this.$props.message) return true
       return false
-    },
-    selectedId() {
-      return this.selected.map((select) => select.id)
     },
   },
 
