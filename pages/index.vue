@@ -1,7 +1,7 @@
 <template>
   <v-row class="fill-height">
     <v-col>
-      <h2 class="ma-4">Planning</h2>
+      <h1 class="ma-4">Planning</h1>
       <v-sheet elevation="7" height="64">
         <v-toolbar flat>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
@@ -79,70 +79,31 @@
             <v-spacer></v-spacer>
 
             <v-card flat>
-              <v-card-text>
-                <v-container fluid>
-                  <v-row align="center">
-                    <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title class="d-flex justify-center"
-                        >Recurence : chaque semaine
-                        <v-btn icon>
-                          <v-icon>mdi-chevron-down</v-icon>
-                        </v-btn>
-                      </v-toolbar-title>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title class="d-flex justify-center"
-                        >Age : senior
-                        <v-btn icon>
-                          <v-icon>mdi-chevron-down</v-icon>
-                        </v-btn>
-                      </v-toolbar-title>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="4">
-                      <v-toolbar-title class="d-flex justify-center"
-                        >Prix : 20 €
-                        <v-btn icon>
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                      </v-toolbar-title>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-row class="ma-0 justify-center align-center">
-                <v-col cols="12" sm="4" md="4">
-                  <v-btn  style="color: white" disabled color="blue-grey" @click="open = !open">
-                    Envoyer message
-                  </v-btn>
-                  <v-dialog v-model="open" width="700">
-                    <v-card>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn text @click="open = false">
-                          <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                      </v-card-actions>
-                      <send-message />
-                    </v-card>
-                  </v-dialog>
-                </v-col>
-
-                <v-col cols="12" sm="4" md="4">
-                  <v-text-field
-                    outlined
-                    dense
-                    label="Recherche"
-                    type="text"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
+              <v-row class="ma-0 justify-space-around pt-5">
+                <div class="d-flex">
+                  <p class="ma-0 pr-3">Récurence :</p>
+                  <p>Unique</p>
+                </div>
+                <div class="d-flex">
+                  <p class="ma-0 pr-3">Age :</p>
+                  <p>Sénior</p>
+                </div>
+                <div class="d-flex">
+                  <p class="ma-0 pr-3">Prix :</p>
+                  <p>20</p>
+                  €
+                </div>
               </v-row>
               <v-col class="mt-5">
-                <datatable-students />
+                <DataTableStudent message lesson />
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
-                <router-link class="text-decoration-none" to="/formClasses">
-                  <v-btn class="my-5"  style="color: white" color="teal lighten-2">
+                <router-link class="text-decoration-none" to="/lesson">
+                  <v-btn
+                    class="my-5"
+                    style="color: white"
+                    color="teal lighten-2"
+                  >
                     Modifier le cours
                   </v-btn>
                 </router-link>
@@ -175,8 +136,32 @@ export default {
     events: [
       {
         name: 'Cours dessins fantastique',
-        start: '2021-11-12 09:00',
-        end: '2021-11-12 10:00',
+        start: '2021-12-3 09:00',
+        end: '2021-12-3 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-8 09:00',
+        end: '2021-12-8 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-17 09:00',
+        end: '2021-12-17 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-27 09:00',
+        end: '2021-12-27 10:00',
+        color: 'green',
+      },
+      {
+        name: 'Cours dessins fantastique',
+        start: '2021-12-13 09:00',
+        end: '2021-12-13 10:00',
         color: 'green',
       },
     ],

@@ -1,9 +1,6 @@
 import dotenv from 'dotenv'
 
-let path =
-  process.env.NODE_ENV === 'production'
-    ? '.env' + process.env.NODE_ENV
-    : '.env.' + process.env.NODE_ENV
+const path = process.env.environnement == 'production' ? '.env.production' : '.env.development'
 
 dotenv.config({ path })
 
@@ -13,8 +10,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - dibartolomeo',
-    title: 'dibartolomeo',
+    title: 'Dibartolomeo',
     htmlAttrs: {
       lang: 'en'
     },
@@ -25,7 +21,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/image/favicon.png' }
     ]
   },
 
@@ -103,5 +99,10 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+  storybook: {
+    stories: [
+      '~/stories/**/*.stories.js'
+    ],
   }
 }

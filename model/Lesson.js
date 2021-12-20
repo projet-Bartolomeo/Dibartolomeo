@@ -1,18 +1,14 @@
-const mongoose = require('mongoose')
-const schema   = mongoose.Schema
-
-
-const Lesson = new schema({
-    studentliste : { type:Array },
-    maximumStudents : { type:Number },
-    recurrence: { type:String },
-   recurrenceid: { type:String },
-    ageRange:{ type:String },
-    price:{ type: Number },
-    descritpion:{ type: String },
-    teacherNote:{ type: String },
-    startDate:{ type: Date, default: false },
-    EndDate:{type:Date},
-})
-module.exports = Lesson =mongoose.model('Lesson', Lesson)
-
+export const lesson = {
+    name: 'tedt',
+    studentliste: [],
+    maximumStudents: 20,
+    recurrence: 'Unique',
+    recurrenceid: '1',
+    ageRange: 'Adulte',
+    price: 15,
+    descritpion: '', 
+    teacherNote: '',
+    numRegisteredStudents : '10',
+    startDate: new Date(),
+    EndDate: new Date()
+}

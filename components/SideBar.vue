@@ -1,21 +1,22 @@
 <template>
   <v-navigation-drawer
-    absolute
-    permanent
+    app
     left
     style="background: linear-gradient(90deg, rgba(108,20,36,1) 18%, rgba(91,16,29,1) 91%);"
-
   >
-    <template v-slot:prepend>
+    <template #prepend>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="text-center" style="color: white">
-            Di Bartolomeo
-          </v-list-item-title>
+        <v-row class="mt-5 justify-center align-center" >
+            <v-img
+            src="/image/logo.png"
+            max-height="170"
+            max-width="220"
+          />
+          </v-row>
         </v-list-item-content>
       </v-list-item>
     </template>
-
     <v-spacer></v-spacer>
     <v-list dense nav>
       <v-list-item
@@ -45,10 +46,11 @@ export default {
         {
           title: 'Liste des éleves',
           icon: 'mdi-account',
-          route: '/StudentList',
+          route: '/studentList',
         },
-        { title: 'Administration du site', icon: 'mdi-pencil-box-outline' },
+       /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
+      permanent: true
     }
   },
 }
