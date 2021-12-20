@@ -7,7 +7,7 @@
           {{ $store.state.notification.description }}
         </div>
         <v-spacer></v-spacer>
-        <v-icon v-bind="attrs" @click="$store.commit('notification/close')"
+        <v-icon class="ml-2" @click="$store.commit('notification/close')"
           >mdi-close</v-icon
         >
       </div>
