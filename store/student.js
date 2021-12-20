@@ -24,24 +24,36 @@ export const mutations = {
 }
 
 export const actions = {
-    async getAllStudents() {
-        const results = await this.$fire.firestore.collection('user').where('type', '==', 'student').get()
-        return readQuerySnapshot(results)
+        try {
+            const results = await this.$fire.firestore.collection('user').where('type', '==', 'student').get()
+            return readQuerySnapshot(results)
+        } catch (error) {
+            commit('notification/open', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
+        }
     },
 
-    async getStudentByTeacherId({ commit }, idTeacher) {
-        const results = await this.$fire.firestore.collection('user').where('teacherList', 'array-contains', `${idTeacher}`).get()
-        return readQuerySnapshot(results)
+        try {
+            const results = await this.$fire.firestore.collection('user').where('teacherList', 'array-contains', `${idTeacher}`).get()
+            return readQuerySnapshot(results)
+        } catch (error) {
+            commit('notification/open', { description: 'problème lors de la récupération de vos élèves', type: 'error' }, { root: true })
+        }
     },
 
-    async getStudentByLessonId({ commit }, idLesson) {
-        const results = await this.$fire.firestore.collection('user').where('lessonList', 'array-contains', `${idLesson}`).get()
-        return readQuerySnapshot(results)
+        try {
+            const results = await this.$fire.firestore.collection('user').where('lessonList', 'array-contains', `${idLesson}`).get()
+            return readQuerySnapshot(results)
+        } catch (error) {
+            commit('notification/open', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
+        }
     },
 
-    async getStudentById({ commit }, id) {
-        const results = await this.$fire.firestore.collection('user').doc(id).get()
-        return results.data()
+        try {
+            const result = await this.$fire.firestore.collection('user').doc(id).get()
+            return { ...result.data(), id: result.id }
+        } catch (error) {
+            commit('notification/open', { description: 'problème lors de la récupération de l\'élève', type: 'error' }, { root: true })
+        }
     },
 }
 
