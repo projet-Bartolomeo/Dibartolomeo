@@ -51,7 +51,7 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="updateRange"
+         
         ></v-calendar>
         <v-dialog
           v-model="selectedOpen"
@@ -123,51 +123,28 @@ export default {
     colors: ['grey', 'green'],
     open: false,
     focus: '',
+    lessons:[],
     type: 'month',
+    EndDate: '',
+    startDate: '',
     typeToLabel: {
       month: 'Mois',
       week: 'Semaine',
       day: 'Jour',
       '4day': '4 jours',
     },
+    nom: '',
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
-    events: [
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-3 09:00',
-        end: '2021-12-3 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-8 09:00',
-        end: '2021-12-8 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-17 09:00',
-        end: '2021-12-17 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-27 09:00',
-        end: '2021-12-27 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-13 09:00',
-        end: '2021-12-13 10:00',
-        color: 'green',
-      },
-    ],
+    idTeacher: '0kK1fyyWN8N2bkHNYLoo',
+    events: [],
   }),
   mounted() {
     this.$refs.calendar.checkChange()
+  },
+  created() {
+    this.fetchData()
   },
   methods: {
     viewDay({ date }) {
@@ -202,27 +179,67 @@ export default {
       nativeEvent.stopPropagation()
     },
 
-    updateRange({ start, end }) {
-      const events = []
-      const min = new Date(`${start.date}T00:00:00`)
-      const max = new Date(`${end.date}T23:59:59`)
-      const days = (max.getTime() - min.getTime()) / 86400000
-      const eventCount = this.rnd(days, days + 20)
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        const second = new Date(first.getTime() + secondTimestamp)
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
+    
+    async fetchData() {
+      this.lessons = await this.$store.dispatch(
+        'lesson/getLessonsTeacherId',
+        this.idTeacher
+      )
+
+      this.lessons.map((lesson) => {
+        const timestampEnd = lesson.EndDate.seconds * 1000
+        const timestampStart = lesson.startDate.seconds * 1000
+
+        const dateEnd = new Date(timestampEnd)
+        const dateStart = new Date(timestampStart)
+
+        let eh = dateEnd.getHours()
+        if (eh < 10) {
+          eh = '0' + eh
+        }
+        let em = dateEnd.getMinutes()
+        if (em < 10) {
+          em = '0' + em
+        }
+
+        let sh = dateStart.getHours()
+        if (sh < 10) {
+          sh = '0' + sh
+        }
+        let sm = dateStart.getMinutes()
+        if (sm < 10) {
+          sm = '0' + sm
+        }
+
+        this.EndDate =
+          dateEnd.getFullYear() +
+          '-' +
+          (dateEnd.getMonth() + 1) +
+          '-' +
+          dateEnd.getDate() +
+          ' ' +
+          eh +
+          ':' +
+          em
+
+        this.startDate =
+          dateStart.getFullYear() +
+          '-' +
+          (dateStart.getMonth() + 1) +
+          '-' +
+          dateStart.getDate() +
+          ' ' +
+          sh +
+          ':' +
+          sm
+        this.events.push({
+          name: lesson.name,
+          start: this.startDate,
+          end: this.EndDate,
+          color: 'green',
         })
-      }
-      this.events = events
+        return this.events
+      })
     },
   },
 }

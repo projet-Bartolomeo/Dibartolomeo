@@ -1,6 +1,21 @@
 export const state = () => ({
-    user: {}
+    user: {},
+    newUser: {},
+    login:{}
 })
+
+export const mutations = {
+    setNewUser(state, newUser) {
+        const datas = Object.entries(newUser).reduce((datas, [key, data]) => {
+            if (key === 'email') return datas
+            return { ...datas, [key]: data }
+          }, {})
+        state.newUser = { id: newUser.email, datas }
+    },
+    setlogin(state, login) {
+        state.login = login
+    }
+}
 
 export const actions = {
     async modifyUser({ commit }, { id, payload }) {
@@ -9,3 +24,4 @@ export const actions = {
         return user
     }
 }
+

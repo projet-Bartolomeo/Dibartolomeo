@@ -4,24 +4,31 @@
       <v-row class="justify-space-between ma-5">
         <v-col md="4">
           <v-text-field
-            v-model="user.lastname"
+            @change="setNewUser"
+            v-model="newUser.firstName"
             label="Nom"
-            required
+            name="nom"
+          
           ></v-text-field>
+
           <v-text-field
-            v-model="user.email"
-            :rules="emailRules"
+            @change="setNewUser"
+            v-model="newUser.email"
+            name="email"
             label="E-mail"
+            type="mail"
             required
           ></v-text-field>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" justify-center>
           <v-text-field
-            v-model="user.firstname"
+            @change="setNewUser"
+            v-model="newUser.lastName"
+            name="prenom"
             label="Prénom"
             required
           ></v-text-field>
-          <v-switch v-model="user.banned" inset label="banni"></v-switch>
+          <v-switch inset label="banni"></v-switch>
         </v-col>
       </v-row>
     </v-card>
@@ -56,7 +63,13 @@ export default {
       open: false,
       dialog: false,
       studentID: 'YrGucQSEGT9Z0ctUngrX',
-      user: {},
+      newUser: {
+        firstName: '',
+        lastName: '',
+        type: 'student',
+        banned: 'false',
+        email:'',
+      },
     }
   },
   created() {
@@ -69,6 +82,9 @@ export default {
         studentID
       )
     },
+    setNewUser(){
+      this.$store.commit('user/setNewUser',this.newUser)
+    }
   },
 }
 </script>

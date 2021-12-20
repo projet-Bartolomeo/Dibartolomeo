@@ -303,7 +303,28 @@ export default {
       }
       this.close()
     },
+    async addStudent() {
+      this.nombre = await this.$store.dispatch(
+        'message/envoieMessage',
+        this.Message);
+        await this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email',
+    {
+   "recipients": [
+        {
+            "email": this.Message.studentid,
+            "name": 'jojo'
+            
+        },
+      
+    ],
+    "subject": "Message du professeur",
+    "content": `<p>${this.Message.content}'><p></h3><br />,`
+}
+);
+      },
+    
   },
+  
 }
 </script>
 
