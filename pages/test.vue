@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-row class="justify-end">
-      <div>{{this.$store.state.lesson.getLessonsByStudentId}}</div>
+      <div>{{this.$store.state.lesson.getByStudentId}}</div>
       <div>test</div>
-        <DataTableLesson :datas="$store.state.lesson.getLessonsByStudentId" />
+        <DataTableLesson :datas="$store.state.lesson.getByStudentId" />
     </v-row>
   </div>
 </template>
@@ -20,7 +20,7 @@
   },
     methods : {
       async fetchData() {
-      this.lesson = await this.$store.dispatch('lesson/getLessonsByStudentId', 'YrGucQSEGT9Z0ctUngrX');
+      this.lesson = await this.$store.dispatch('lesson/getByStudentId', 'YrGucQSEGT9Z0ctUngrX');
       this.$store.commit('lesson/setLessonsByStudentId', this.lesson)
     },
 

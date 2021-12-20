@@ -1,7 +1,7 @@
 <template>
   <div id="page">
     <ModifEleve />
-    <DataTableLesson :datas="$store.state.lesson.getLessonsByStudentId" />
+    <DataTableLesson :datas="$store.state.lesson.getByStudentId" />
     <v-row class="d-flex justify-center mb-6 align-center mt-5">
       <v-btn
         id="enregistrer"
@@ -38,7 +38,7 @@ export default {
     },
     async getLesson(studentId) {
       this.lesson = await this.$store.dispatch(
-        'lesson/getLessonsByStudentId',
+        'lesson/getByStudentId',
         studentId
       )
       this.lesson.map((lesson) => {

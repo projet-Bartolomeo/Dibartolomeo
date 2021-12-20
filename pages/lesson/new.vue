@@ -1,5 +1,5 @@
 <template>
- <div>
+  <div>
     <v-row class="justify-space-between ma-5">
       <v-col class="pa-0">
         <v-row class="ma-0 align-center">
@@ -306,7 +306,6 @@
           </v-row>
           <div ref="inputLessonDesc" class="hide">
             <v-textarea
-
               id="Description"
               v-model="lesson.Description"
               class="px-6 pt-4"
@@ -390,25 +389,30 @@
     </v-col>
 
     <v-col class="mt-5">
-      <datatable-students />
+      <DataTableStudent />
     </v-col>
     <v-btn @click="createLesson">create lesson</v-btn>
   </div>
-  </template>
+</template>
     
   
 <script>
-  
 export default {
   data: () => ({
-     
     show: true,
     hide: true,
     lesson: {
       studentliste: [],
       recurrence: 'Unique',
     },
-    lesson:{name:'',MaxStudents:'',recurence:'',Age:'',Prix:'',stareDate:''},
+    lesson: {
+      name: '',
+      MaxStudents: '',
+      recurence: '',
+      Age: '',
+      Prix: '',
+      stareDate: '',
+    },
     endtHour2: '',
     startHour2: '',
     endHour1: '',
@@ -433,45 +437,41 @@ export default {
       'Dimanche',
     ],
     isActiveEveryWeekDate: true,
-    isActiveUnique : true,
+    isActiveUnique: true,
   }),
   created() {
     this.showDay()
   },
   methods: {
-    
+    async createLesson() {
+      await this.$store.dispatch('lesson/create', this.lesson)
+    },
     showDay() {
       if (this.lesson.recurrence === 'Unique') {
         this.isActiveUnique = true
         this.isActiveEveryWeekDate = false
-      }
-      else {
+      } else {
         this.isActiveUnique = false
         this.isActiveEveryWeekDate = true
       }
     },
-     async createLesson() {
-       await this.$store.dispatch('lesson/createLesson', this.Flesson)
-      this.lesson.studentliste=this.$store.state.student.getStudentByTeacherId
-      await this.$store.dispatch('lesson/envoie', this.lesson);
-      this.lesson.studentliste.forEach(Element => {
-        this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email',
-    {
-   "recipients": [
-        {
-            "email": Element.id,
-            "name": "student"
-        },
-      
-    ],
-    "subject": `Vous êtes inscrit au cour ${this.lesson.name}`,
-    "content": `<p>Vous êtes inscrit au cour ${this.lesson.id}<p><br />,`
-}
-
-);
-        
-      });
-     },
+    async createLesson() {
+      await this.$store.dispatch('lesson/createLesson', this.Flesson)
+      this.lesson.studentliste = this.$store.state.student.getStudentByTeacherId
+      await this.$store.dispatch('lesson/envoie', this.lesson)
+      this.lesson.studentliste.forEach((Element) => {
+        this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email', {
+          recipients: [
+            {
+              email: Element.id,
+              name: 'student',
+            },
+          ],
+          subject: `Vous êtes inscrit au cour ${this.lesson.name}`,
+          content: `<p>Vous êtes inscrit au cour ${this.lesson.id}<p><br />,`,
+        })
+      })
+    },
   },
 }
 </script>

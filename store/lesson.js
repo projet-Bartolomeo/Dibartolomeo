@@ -3,38 +3,40 @@ import { readQuerySnapshot } from '../services/firestoreHelper'
 
 export const state = () => ({
     lesson,
-    getLessonsTeacherId : [],
-    getLessonsByStudentId : [] 
+    getByTeacherId: [],
+    getByStudentId: []
 })
 
 export const mutations = {
-    setLessonsTeacherId(state, getLessonsTeacherId){
-        state.getLessonsTeacherId = getLessonsTeacherId
+    setLessonsTeacherId(state, getByTeacherId) {
+        state.getByTeacherId = getByTeacherId
     },
-    setLessonsByStudentId(state, getLessonsByStudentId){
-        state.getLessonsByStudentId = getLessonsByStudentId
+    setLessonsByStudentId(state, getByStudentId) {
+        state.getByStudentId = getByStudentId
     },
 }
 
 export const actions = {
-    async createLesson({ commit }, newLesson) {
+    async create({ commit }, newLesson) {
         const lesson = await this.$fire.firestore.collection('lesson').add(newLesson)
+        commit('notification/open', { description: 'votre cours a bien été créé' }, { root: true })
         return lesson
     },
-    async getLessonById({ commit }, id) {
+    async getById({ commit }, id) {
         const lesson = await this.$fire.firestore.collection('lesson').doc(id).get()
         return lesson.data()
     },
-    async getLessonsTeacherId({ commit } ,idTeacher){
-        const results = await this.$fire.firestore.collection('lesson').where('profesor' ,'==', `${idTeacher}`).get()
+    async getByTeacherId({ commit }, idTeacher) {
+        const results = await this.$fire.firestore.collection('lesson').where('profesor', '==', `${idTeacher}`).get()
         return readQuerySnapshot(results)
     },
-    async  getLessonsByStudentId({ commit } ,idStudent){
-        const results = await this.$fire.firestore.collection('lesson').where('studentliste' ,'array-contains', `${idStudent}`).get()
+    async getByStudentId({ commit }, idStudent) {
+        const results = await this.$fire.firestore.collection('lesson').where('studentliste', 'array-contains', `${idStudent}`).get()
         return readQuerySnapshot(results)
     },
-    async updateLesson({ commit }, { id, payload }) {
+    async update({ commit }, { id, payload }) {
         const lesson = await this.$fire.firestore.collection('lesson').doc(id).update(payload)
+        commit('notification/open', { description: 'le cours a bien été mis à jour' }, { root: true })
         return lesson
     }
 }
