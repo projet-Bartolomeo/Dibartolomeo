@@ -21,13 +21,6 @@ export default {
       rightDrawer: false,
     }
   },
-  errorCaptured(err) {
-    this.$store.commit('notification/open', {
-      description: err,
-      type: 'error',
-    })
-    return false
-  },
 }
 </script>
 
