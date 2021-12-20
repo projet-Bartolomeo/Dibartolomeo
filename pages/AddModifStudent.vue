@@ -27,7 +27,7 @@ export default {
   methods: {
     async getUser(studentId) {
       this.user = await this.$store.dispatch(
-        'student/getStudentById',
+        'student/getById',
         studentId
       )
     },
@@ -85,7 +85,7 @@ export default {
 
         return lesson
       })
-      this.$store.commit('lesson/setLessonsByStudentId', this.lesson)
+      this.$store.commit('lesson/setByStudentId', this.lesson)
     },
   },
 }

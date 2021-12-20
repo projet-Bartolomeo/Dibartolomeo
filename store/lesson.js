@@ -8,10 +8,10 @@ export const state = () => ({
 })
 
 export const mutations = {
-    setLessonsTeacherId(state, getByTeacherId) {
+    setTeacherId(state, getByTeacherId) {
         state.getByTeacherId = getByTeacherId
     },
-    setLessonsByStudentId(state, getByStudentId) {
+    setByStudentId(state, getByStudentId) {
         state.getByStudentId = getByStudentId
     },
 }

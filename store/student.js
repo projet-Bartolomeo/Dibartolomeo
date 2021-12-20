@@ -3,10 +3,9 @@ import { readQuerySnapshot } from '../services/firestoreHelper'
 
 export const state = () => ({
     user,
-    getAllStudents: [],
-    getStudentByTeacherId: [],
-    getStudentByLessonId: [],
-
+    getAll: [],
+    getByTeacherId: [],
+    getByLessonId: [],
 })
 
 export const mutations = {
@@ -24,6 +23,7 @@ export const mutations = {
 }
 
 export const actions = {
+    async getAll({ commit }) {
         try {
             const results = await this.$fire.firestore.collection('user').where('type', '==', 'student').get()
             return readQuerySnapshot(results)
@@ -32,6 +32,7 @@ export const actions = {
         }
     },
 
+    async getByTeacherId({ commit }, idTeacher) {
         try {
             const results = await this.$fire.firestore.collection('user').where('teacherList', 'array-contains', `${idTeacher}`).get()
             return readQuerySnapshot(results)
@@ -40,6 +41,7 @@ export const actions = {
         }
     },
 
+    async getByLessonId({ commit }, idLesson) {
         try {
             const results = await this.$fire.firestore.collection('user').where('lessonList', 'array-contains', `${idLesson}`).get()
             return readQuerySnapshot(results)
@@ -48,6 +50,7 @@ export const actions = {
         }
     },
 
+    async getById({ commit }, id) {
         try {
             const result = await this.$fire.firestore.collection('user').doc(id).get()
             return { ...result.data(), id: result.id }
@@ -56,4 +59,3 @@ export const actions = {
         }
     },
 }
-

@@ -390,7 +390,7 @@
     <v-col class="mt-5">
       <DataTableStudent
         lesson
-        :datas="$store.state.student.getStudentByLessonId"
+        :datas="$store.state.student.getByLessonId"
       >
         <v-btn
           style="color: white"
@@ -399,7 +399,7 @@
           @click="
             $store.commit('overlay/open', {
               component: 'DataTableStudent',
-              props: { datas: $store.state.student.getAllStudents, add: '' },
+              props: { datas: $store.state.student.getAll, add: '' },
               title: 'Choisissez les élèves à ajouter à votre cours',
             })
           "
@@ -469,12 +469,12 @@ export default {
 
     async fetchData() {
       this.user = await this.$store.dispatch(
-        'student/getStudentByLessonId',
+        'student/getByLessonId',
         this.$route.query.id
       )
       this.$store.commit('student/setStudentByLessonId', this.user)
 
-      this.allUser = await this.$store.dispatch('student/getAllStudents')
+      this.allUser = await this.$store.dispatch('student/getAll')
       this.$store.commit('student/setAllStudents', this.allUser)
     },
   },
