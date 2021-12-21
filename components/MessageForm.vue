@@ -11,7 +11,9 @@
       style="width: 30vw"
     ></v-textarea>
     <v-btn
-      :disabled="message.trim() === ''"
+      :disabled="
+        message == undefined || (message != undefined && message.trim() === '')
+      "
       @click="sendMessage"
       style="color: white"
       color="teal lighten-2"
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+import { createMessageDescription } from '../services/messageHelper'
 export default {
   props: {
     recipients: {
@@ -28,7 +31,6 @@ export default {
       required: true,
     },
     type: {
-      defaultValue: 'user',
       type: String,
       required: true,
     },
@@ -40,8 +42,11 @@ export default {
   },
   methods: {
     sendMessage() {
+      const description = createMessageDescription(this.$props.type, this.$props.recipients)
       this.$store.commit('overlay/close')
-      this.$store.commit('notification/open', { description: `mesage send to students` })
+      this.$store.commit('notification/open', {
+        description,
+      })
       this.message = ''
     },
   },
