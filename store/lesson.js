@@ -4,7 +4,7 @@ import { readQuerySnapshot } from '../services/firestoreHelper'
 export const state = () => ({
     lesson,
     getLessonsTeacherId : [],
-    getLessonsByStudentId : [] 
+    getLessonsByStudentId : [],
 })
 
 export const mutations = {

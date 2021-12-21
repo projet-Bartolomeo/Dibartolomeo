@@ -6,6 +6,7 @@ export const state = () => ({
     getAllStudents : [],
     getStudentByTeacherId : [],
     getStudentByLessonId : [],
+    studentList : [],
     
 })
 
@@ -21,6 +22,9 @@ export const mutations = {
 
     setStudentByLessonId(state ,getStudentByLessonId){
         state.getStudentByLessonId = getStudentByLessonId
+    },
+    setStudentList(state, studentList ){
+        state.studentList = studentList
     }
 }
 

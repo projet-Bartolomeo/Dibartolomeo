@@ -31,6 +31,14 @@
             <v-btn style="color: white" color="teal lighten-2">Envoyer</v-btn>
           </v-col>
         </Overlay>
+        <v-btn
+          :disabled="selected.length === 0"
+          v-if="$props.add"
+          style="color: white"
+          color="teal lighten-2"
+          @click="addToLesson(selected)"
+          >Ajouter</v-btn
+        >
       </v-card-title>
     </v-card>
     <v-card class="ma-4">
@@ -234,7 +242,7 @@ export default {
       return this.editedItem
     },
     getShowSelect() {
-      if (this.$props.message) return true
+      if (this.$props.message || this.$props.add) return true
       return false
     },
   },
@@ -268,9 +276,12 @@ export default {
     deleteStudentFromLesson() {
       this.deleteItemConfirm()
     },
-    sendMessage(lessons = this.selected) {
-    },
-    addToLesson(student) {
+    sendMessage(lessons = this.selected) {},
+    addToLesson(students) {
+      if(!students.length){
+        students = [students]
+      }
+    this.$store.commit('student/setStudentList', students)
     },
     editItem(item) {
       this.editedIndex = this.user.indexOf(item)
