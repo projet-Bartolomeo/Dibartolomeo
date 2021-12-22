@@ -8,13 +8,13 @@
         <v-row class="justify-space-between ma-5">
           <v-col md="4">
             <password
-    v-model="mot_passe.mot_passeactuel"
-    :toggle="true"
-    @score="showScore"
-    @feedback="showFeedback"
-  />
+              v-model="password.value"
+              :toggle="true"
+              @score="showScore"
+              @feedback="showFeedback"
+            />
             <v-text-field
-              v-model="mot_passe.verif"
+              v-model="password.verification"
               label="Confirmation Mot de passe"
               type="password"
             ></v-text-field>
@@ -28,7 +28,7 @@
             elevation="7"
             color="success"
             width="150px"
-            @click="finalisation"
+            @click="register"
             >Enregistrer</v-btn
           >
         </v-row>
@@ -37,39 +37,35 @@
   </v-form>
 </template>
 <script>
- import Password from 'vue-password-strength-meter'
+import Password from 'vue-password-strength-meter'
 
 export default {
   components: { Password },
   data() {
     return {
       user: {},
-      mot_passe: {
-        mot_passeactuel: '',
-        verif: '',
+      password: {
+        value: '',
+        verification: '',
       },
     }
   },
   methods: {
-     finalisation() {
-      
+    register() {
       this.id = this.$route.params.id
       this.$fire.auth.createUserWithEmailAndPassword(
-          this.id,
-          this.mot_passe.mot_passeactuel
-        )
-           this.$nuxt.$router.push('/')
-  
-      
+        this.id,
+        this.password.value
+      )
+      this.$nuxt.$router.push('/')
     },
-    showFeedback ({suggestions, warning}) {
-        console.log('🙏', suggestions)
-        console.log('⚠', warning)
-      },
-      showScore (score) {
-        console.log('💯', score)
-      }
-     
+    showFeedback({ suggestions, warning }) {
+      console.log('🙏', suggestions)
+      console.log('⚠', warning)
+    },
+    showScore(score) {
+      console.log('💯', score)
+    },
   },
 }
 </script>

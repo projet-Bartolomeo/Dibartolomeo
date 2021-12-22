@@ -12,7 +12,7 @@ export const mutations = {
           }, {})
         state.newUser = { id: newUser.email, datas }
     },
-    setlogin(state, login) {
+    set(state, login) {
         state.login = login
     }
 }

@@ -51,7 +51,6 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-         
         ></v-calendar>
         <v-dialog
           v-model="selectedOpen"
@@ -118,12 +117,13 @@
 </template>
 
 <script>
+import { converstiondate } from '../services/ConvertDate'
 export default {
   data: () => ({
     colors: ['grey', 'green'],
     open: false,
     focus: '',
-    lessons:[],
+    lessons: [],
     type: 'month',
     EndDate: '',
     startDate: '',
@@ -179,7 +179,6 @@ export default {
       nativeEvent.stopPropagation()
     },
 
-    
     async fetchData() {
       this.lessons = await this.$store.dispatch(
         'lesson/getLessonsTeacherId',
@@ -187,51 +186,9 @@ export default {
       )
 
       this.lessons.map((lesson) => {
-        const timestampEnd = lesson.EndDate.seconds * 1000
-        const timestampStart = lesson.startDate.seconds * 1000
+        const startDate = converstiondate(lesson.startDate)
+        const EndDate = converstiondate(lesson.EndDate)
 
-        const dateEnd = new Date(timestampEnd)
-        const dateStart = new Date(timestampStart)
-
-        let eh = dateEnd.getHours()
-        if (eh < 10) {
-          eh = '0' + eh
-        }
-        let em = dateEnd.getMinutes()
-        if (em < 10) {
-          em = '0' + em
-        }
-
-        let sh = dateStart.getHours()
-        if (sh < 10) {
-          sh = '0' + sh
-        }
-        let sm = dateStart.getMinutes()
-        if (sm < 10) {
-          sm = '0' + sm
-        }
-
-        this.EndDate =
-          dateEnd.getFullYear() +
-          '-' +
-          (dateEnd.getMonth() + 1) +
-          '-' +
-          dateEnd.getDate() +
-          ' ' +
-          eh +
-          ':' +
-          em
-
-        this.startDate =
-          dateStart.getFullYear() +
-          '-' +
-          (dateStart.getMonth() + 1) +
-          '-' +
-          dateStart.getDate() +
-          ' ' +
-          sh +
-          ':' +
-          sm
         this.events.push({
           name: lesson.name,
           start: this.startDate,

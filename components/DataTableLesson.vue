@@ -1,32 +1,30 @@
 <template>
   <div>
     <v-card class="ma-4 mb-6">
-      <v-card-title>
-        <v-text-field
-          class="ma-2 text-field pa-0"
-          v-model="search"
-          append-icon="mdi-magnify"
-          :label="`Rechercher un ${type}`"
-          single-line
-          hide-details
-          clearable
-        ></v-text-field>
-        <v-spacer></v-spacer>
-        <v-btn
-          v-if="$props.message"
-          :disabled="selected.length === 0"
-          style="color: white"
-          color="blue darken-1"
-          @click="
-            $store.commit('overlay/open', {
-              component: 'MessageForm',
-              props: { recipients: selectedId, type: 'lesson' },
-              title: 'Tapez votre message',
-            })
-          "
-          >send message</v-btn
-        >
-      </v-card-title>
+      <v-text-field
+        class="ma-2 text-field pa-0"
+        v-model="search"
+        append-icon="mdi-magnify"
+        :label="`Rechercher un ${type}`"
+        single-line
+        hide-details
+        clearable
+      ></v-text-field>
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="$props.message"
+        :disabled="selected.length === 0"
+        style="color: white"
+        color="blue darken-1"
+        @click="
+          $store.commit('overlay/open', {
+            component: 'MessageForm',
+            props: { recipients: selectedId, type: 'lesson' },
+            title: 'Tapez votre message',
+          })
+        "
+        >send message</v-btn
+      >
     </v-card>
     <v-card class="ma-4">
       <v-data-table
@@ -222,6 +220,10 @@ export default {
       singleSelect: false,
       selected: [],
       messageText: 'draw your lines',
+      startDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      startDateMenu:false,      
+      endDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      endDateMenu:false,
     }
   },
   computed: {

@@ -22,7 +22,8 @@
     "firebase": "^9.2.0",
     "nuxt": "^2.15.7",
     "vue-password-strength-meter": "^1.7.2",
-    "vuetify": "^2.5.5"
+    "vuetify": "^2.5.5",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

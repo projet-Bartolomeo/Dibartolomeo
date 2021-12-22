@@ -126,9 +126,8 @@ layout:'connexion',
         
         this.id=this.$fire.getUid(this.auth.email, this.auth.password)
        this.user= await this.$store.dispatch('user/getUserByemail',this.auth.email)
-        await this.store.dispatch('user.login/login', {user})
            this.$nuxt.$router.push('/')
-           this.$store.commit('user/setlogin',this.login)
+           this.$store.commit('user/set',this.login)
 
     },
     googleSignIn(){
@@ -138,10 +137,8 @@ const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
         
         this.$nuxt.$router.push('/Calendar')
       })
-      .catch(function (error){
-        this.snackbarText = error.message
-        this.snackbar = true
-      })
+commit('notification/open', { description: 'problème de connexion' }, { root: true })
+      
     },
      forgotPassword() {
       
