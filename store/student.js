@@ -3,10 +3,9 @@ import { readQuerySnapshot } from '../services/firestoreHelper'
 
 export const state = () => ({
     user,
-    getAllStudents: [],
-    getStudentByTeacherId: [],
-    getStudentByLessonId: [],
-
+    getAll: [],
+    getByTeacherId: [],
+    getByLessonId: [],
 })
 
 export const mutations = {
@@ -24,24 +23,39 @@ export const mutations = {
 }
 
 export const actions = {
-    async getAllStudents() {
-        const results = await this.$fire.firestore.collection('user').where('type', '==', 'student').get()
-        return readQuerySnapshot(results)
+    async getAll({ commit }) {
+        try {
+            const results = await this.$fire.firestore.collection('user').where('type', '==', 'student').get()
+            return readQuerySnapshot(results)
+        } catch (error) {
+            commit('notification/create', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
+        }
     },
 
-    async getStudentByTeacherId({ commit }, idTeacher) {
-        const results = await this.$fire.firestore.collection('user').where('teacherList', 'array-contains', `${idTeacher}`).get()
-        return readQuerySnapshot(results)
+    async getByTeacherId({ commit }, idTeacher) {
+        try {
+            const results = await this.$fire.firestore.collection('user').where('teacherList', 'array-contains', `${idTeacher}`).get()
+            return readQuerySnapshot(results)
+        } catch (error) {
+            commit('notification/create', { description: 'problème lors de la récupération de vos élèves', type: 'error' }, { root: true })
+        }
     },
 
-    async getStudentByLessonId({ commit }, idLesson) {
-        const results = await this.$fire.firestore.collection('user').where('lessonList', 'array-contains', `${idLesson}`).get()
-        return readQuerySnapshot(results)
+    async getByLessonId({ commit }, idLesson) {
+        try {
+            const results = await this.$fire.firestore.collection('user').where('lessonList', 'array-contains', `${idLesson}`).get()
+            return readQuerySnapshot(results)
+        } catch (error) {
+            commit('notification/create', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
+        }
     },
 
-    async getStudentById({ commit }, id) {
-        const results = await this.$fire.firestore.collection('user').doc(id).get()
-        return results.data()
+    async getById({ commit }, id) {
+        try {
+            const result = await this.$fire.firestore.collection('user').doc(id).get()
+            return { ...result.data(), id: result.id }
+        } catch (error) {
+            commit('notification/create', { description: 'problème lors de la récupération de l\'élève', type: 'error' }, { root: true })
+        }
     },
 }
-

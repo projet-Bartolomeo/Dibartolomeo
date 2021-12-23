@@ -65,7 +65,7 @@ export default {
   methods: {
     async getUser(studentID) {
       this.user = await this.$store.dispatch(
-        'student/getStudentById',
+        'student/getById',
         studentID
       )
     },

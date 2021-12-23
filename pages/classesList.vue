@@ -104,7 +104,7 @@ export default {
 
         return lesson
       })
-      this.$store.commit('lesson/setLessonsTeacherId', this.lesson)
+      this.$store.commit('lesson/setTeacherId', this.lesson)
     },
   },
 }
