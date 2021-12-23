@@ -36,7 +36,7 @@ export const actions = {
     },
     async getByTeacherId({ commit }, idTeacher) {
         try {
-            const results = await this.$fire.firestore.collection('lesson').where('profesor', '==', `${idTeacher}`).get()
+            const results = await this.$fire.firestore.collection('lesson').where('profesorId', '==', `${idTeacher}`).get()
             return readQuerySnapshot(results)
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de vos cours', type: 'error' }, { root: true })

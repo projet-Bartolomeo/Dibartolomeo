@@ -118,8 +118,11 @@
 </template>
 
 <script>
+import { converstiondate } from '../services/ConvertDate'
 export default {
   data: () => ({
+    startDate:'',
+        EndDate:'',
     colors: ['grey', 'green'],
     open: false,
     focus: '',
@@ -133,41 +136,16 @@ export default {
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
-    events: [
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-3 09:00',
-        end: '2021-12-3 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-8 09:00',
-        end: '2021-12-8 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-17 09:00',
-        end: '2021-12-17 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-27 09:00',
-        end: '2021-12-27 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-13 09:00',
-        end: '2021-12-13 10:00',
-        color: 'green',
-      },
-    ],
+    events: [],
+    idTeacher: '0kK1fyyWN8N2bkHNYLoo',
+        lessons: [],
+        
   }),
   mounted() {
     this.$refs.calendar.checkChange()
+  },
+  created() {
+    this.fetchData()
   },
   methods: {
     viewDay({ date }) {
@@ -223,6 +201,26 @@ export default {
         })
       }
       this.events = events
+    },
+    async fetchData() {
+      this.lessons = await this.$store.dispatch(
+        'lesson/getByTeacherId',
+        this.idTeacher
+      )
+
+      this.lessons.map((lesson) => {
+         
+        this.startDate = converstiondate(lesson.startDate)
+      this.EndDate = converstiondate(lesson.EndDate)
+
+        this.events.push({
+          name: lesson.name,
+          start: this.startDate,
+          end: this.EndDate,
+          color: 'green',
+        })
+        return this.events
+      })
     },
   },
 }
