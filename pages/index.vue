@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { converstiondate } from '../services/ConvertDate'
+import { convertTimestampToDate } from '../services/DateHelper'
 export default {
   data: () => ({
     startDate:'',
@@ -210,8 +210,8 @@ export default {
 
       this.lessons.map((lesson) => {
          
-        this.startDate = converstiondate(lesson.startDate)
-      this.EndDate = converstiondate(lesson.EndDate)
+        this.startDate = convertTimestampToDate(lesson.startDate)
+      this.EndDate = convertTimestampToDate(lesson.EndDate)
 
         this.events.push({
           name: lesson.name,
