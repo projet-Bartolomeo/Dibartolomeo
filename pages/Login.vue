@@ -126,7 +126,7 @@ layout:'connexion',
         
         this.id=this.$fire.getUid(this.auth.email, this.auth.password)
        this.user= await this.$store.dispatch('user/getUserByemail',this.auth.email)
-        await this.store.dispatch('user.login/login', {user})
+        await this.store.dispatch('user/setlogin', {user})
            this.$nuxt.$router.push('/')
      
       

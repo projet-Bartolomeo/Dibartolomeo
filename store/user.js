@@ -1,6 +1,15 @@
 export const state = () => ({
-    user: {}
-})
+    user: {},
+        login:{}
+    })
+    
+    export const mutations = {
+       
+        setlogin(state, login) {
+            state.login = login
+        }
+    }
+
 
 export const actions = {
     async modify({ commit }, { id, payload }) {
