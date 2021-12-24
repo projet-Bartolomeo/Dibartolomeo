@@ -45,50 +45,6 @@
         :show-select="getShowSelect"
       >
         <template v-slot:top>
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col
-                      v-for="item in Object.entries(editedItemFiltered)"
-                      :key="item[1]"
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <div v-if="currentHeader[item[0]] !== undefined">
-                        <v-text-field
-                          v-if="currentHeader[item[0]].type === 'input'"
-                          v-model="editedItem[item[0]]"
-                          :label="currentHeader[item[0]].text"
-                        ></v-text-field>
-                        <v-switch
-                          v-if="currentHeader[item[0]].type === 'switch'"
-                          v-model="editedItem[item[0]]"
-                          inset
-                          :label="currentHeader[item[0]].text"
-                        ></v-switch>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Annuler
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
-                  Sauvegarder
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card v-if="$props.lesson">
               <v-card-title class="text-h5 overflow-wrap-normal"
@@ -290,15 +246,6 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.user[this.editedIndex], this.editedItem)
-      } else {
-        this.user.push(this.editedItem)
-      }
-      this.close()
     },
   },
 }
