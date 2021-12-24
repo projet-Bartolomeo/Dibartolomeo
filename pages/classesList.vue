@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import {convertTimestampToDate} from '../services/DateHelper'
 export default {
   data() {
     return {
@@ -56,51 +57,8 @@ export default {
       )
 
       this.lesson.map((lesson) => {
-        const timestampEnd = lesson.EndDate.seconds * 1000
-        const timestampStart = lesson.startDate.seconds * 1000
-
-        const dateEnd = new Date(timestampEnd)
-        const dateStart = new Date(timestampStart)
-
-        let eh = dateEnd.getHours()
-        if (eh < 10) {
-          eh = '0' + eh
-        }
-        let em = dateEnd.getMinutes()
-        if (em < 10) {
-          em = '0' + em
-        }
-
-        let sh = dateStart.getHours()
-        if (sh < 10) {
-          sh = '0' + sh
-        }
-        let sm = dateStart.getMinutes()
-        if (sm < 10) {
-          sm = '0' + sm
-        }
-
-        lesson.EndDate =
-          dateEnd.getDate() +
-          '/' +
-          (dateEnd.getMonth() + 1) +
-          '/' +
-          dateEnd.getFullYear() +
-          ' ' +
-          eh +
-          ':' +
-          em
-
-        lesson.startDate =
-          dateStart.getDate() +
-          '/' +
-          (dateStart.getMonth() + 1) +
-          '/' +
-          dateStart.getFullYear() +
-          ' ' +
-          sh +
-          ':' +
-          sm
+      lesson.EndDate=convertTimestampToDate(lesson.EndDate)
+        lesson.startDate=convertTimestampToDate(lesson.startDate)
 
         return lesson
       })
