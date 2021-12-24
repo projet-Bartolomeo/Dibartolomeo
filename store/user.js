@@ -1,5 +1,5 @@
 export const state = () => ({
-    user: {}
+    id: '0kK1fyyWN8N2bkHNYLoo'
 })
 
 export const actions = {
