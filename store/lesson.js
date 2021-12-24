@@ -4,7 +4,8 @@ import { readQuerySnapshot } from '../services/firestoreHelper'
 export const state = () => ({
     lesson,
     getByTeacherId: [],
-    getByStudentId: []
+    getByStudentId: [],
+    Dates:[],
 })
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
     },
     setByStudentId(state, getByStudentId) {
         state.getByStudentId = getByStudentId
+    },
+    setDates(state, Dates) {
+        state.Dates= Dates
     },
 }
 
@@ -34,13 +38,16 @@ export const actions = {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },
-    async getByTeacherId({ commit }, idTeacher) {
-        try {
-            const results = await this.$fire.firestore.collection('lesson').where('profesorId', '==', `${idTeacher}`).get()
-            return readQuerySnapshot(results)
-        } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération de vos cours', type: 'error' }, { root: true })
+    async getByTeacherId({ commit }, {idTeacher,startdate,endDate}){
+        const results
+        const DateDay=new Date();
+        if(startdate==''|| endDate==''){
+            results = await this.$fire.firestore.collection('lesson').where('startdate','>=',DateDay).get()
+        }else{
+         results = await this.$fire.firestore.collection('lesson').where('profesor', '==', `${idTeacher}`)
+        .where('startDate','==',`${startdate}`).where('EndDate','==',`${endDate}`).where('startdate','>=',DateDay).get()
         }
+        return readQuerySnapshot(results)
     },
     async getByStudentId({ commit }, idStudent) {
         try {
