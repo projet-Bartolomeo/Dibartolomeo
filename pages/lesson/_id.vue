@@ -14,7 +14,7 @@
             <v-text-field
               id="name"
               v-model="lesson.name"
-              @change="ShowSave()"
+              @change="showSave('name', lesson.name)"
             ></v-text-field>
           </div>
           <div ref="pensilLessonTilte">
@@ -55,7 +55,9 @@
           </div>
         </v-row>
         <v-row class="ma-0 align-center">
-          <p class="ma-0">{{ lesson.studentliste.length }}/</p>
+          <p class="ma-0">
+            {{ lesson.studentIdList.length }}/
+          </p>
           <p ref="paraLessonMax" class="ma-0">{{ lesson.maximumStudents }}</p>
           <div
             ref="inputLessonMax"
@@ -65,7 +67,7 @@
             <v-text-field
               v-model="lesson.maximumStudents"
               class="pa-0 ml-1 input"
-              @change="ShowSave()"
+              @change="showSave('maximumStudents', lesson.maximumStudents)"
             ></v-text-field>
           </div>
           <p class="ma-0 ml-2">élèves</p>
@@ -108,9 +110,33 @@
         </v-row>
       </v-col>
       <div class="d-flex flex-column align-center">
-        <v-row> <v-btn color="error">Supprimer le cours</v-btn> </v-row>
+        <v-row>
+          <v-btn
+            color="error"
+            @click="
+              $store.commit('overlay/open', {
+                component: 'LessonModificationForm',
+                props: {
+                  lesson: initialLesson,
+                  archive: true,
+                  redirectPath: '/classesList',
+                },
+                title: 'Voulez-vous archiver :',
+              })
+            "
+            >Archiver le cours</v-btn
+          >
+        </v-row>
         <v-row ref="enregistrer" class="hide">
-          <v-btn @click="createLesson" color="success"
+          <v-btn
+            color="success"
+            @click="
+              $store.commit('overlay/open', {
+                component: 'LessonModificationForm',
+                props: { lesson: initialLesson, payload, modify: true },
+                title: 'Voulez-vous modifier :',
+              })
+            "
             >Enregistrer le cours</v-btn
           >
         </v-row>
@@ -128,7 +154,7 @@
                   :items="recurence"
                   item-text="recurence"
                   item-value="recurence"
-                  @change="ShowSave()"
+                  @change="showSave('recurrence', lesson.recurrence)"
                 ></v-select>
               </div>
             </v-row>
@@ -140,7 +166,7 @@
                   :items="Age"
                   item-text="Age"
                   item-value="Age"
-                  @change="ShowSave()"
+                  @change="showSave('ageRange', lesson.ageRange)"
                 ></v-select>
               </div>
             </v-row>
@@ -154,7 +180,7 @@
                 <v-text-field
                   v-model="lesson.price"
                   class="pa-0 input"
-                  @change="ShowSave()"
+                  @change="showSave('price', lesson.price)"
                 ></v-text-field>
               </div>
               <p ref="paraLessonPrice" class="ma-0">{{ lesson.price }}</p>
@@ -206,16 +232,16 @@
                   v-model="day"
                   :items="jour"
                   label="Jour"
-                  @change="ShowSave()"
+                  @change="showSave('startDate', new Date(lesson.startDate))"
                 ></v-select>
               </div>
               de
               <div style="width: 5vw">
-                <input v-model="startHour1" type="time" @change="ShowSave()" />
+                <input v-model="startHour1" type="time" @change="showSave()" />
               </div>
               à
               <div style="width: 5vw">
-                <input v-model="endHour1" type="time" @change="ShowSave()" />
+                <input v-model="endHour1" type="time" @change="showSave()" />
               </div>
             </v-row>
             <v-row class="justify-space-around align-center">
@@ -244,7 +270,12 @@
                   v-model="date"
                   no-title
                   scrollable
-                  @change="ShowSave()"
+                  @change="
+                    showSave(
+                      'startDate',
+                      `${date.getFullYear()}/${date.getMonth()}/${date.getDay()}:${startHour2}`
+                    ) && showSave('endDate', date)
+                  "
                 >
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="menu = false">
@@ -257,11 +288,11 @@
               </v-menu>
               de
               <div style="width: 5vw">
-                <input v-model="startHour2" type="time" @change="ShowSave()" />
+                <input v-model="startHour2" type="time" @change="showSave()" />
               </div>
               à
               <div style="width: 5vw">
-                <input v-model="endtHour2" type="time" @change="ShowSave()" />
+                <input v-model="endtHour2" type="time" @change="showSave()" />
               </div>
             </v-row>
           </v-col>
@@ -318,7 +349,7 @@
               name="Description"
               filled
               label="Entrez votre description ici"
-              @change="ShowSave()"
+              @change="showSave('descritpion', lesson.descritpion)"
             ></v-textarea>
           </div>
 
@@ -376,7 +407,7 @@
               name="Note"
               filled
               label="Entrez votre note ici"
-              @change="ShowSave()"
+              @change="showSave('teacherNote', teacherNote)"
             ></v-textarea>
           </div>
           <p ref="paraLessonNote" class="px-6 pt-4">
@@ -388,10 +419,7 @@
 
     <v-row class="ma-0 justify-space-around align-center"> </v-row>
     <v-col class="mt-5">
-      <DataTableStudent
-        lesson
-        :datas="$store.state.student.getByLessonId"
-      >
+      <DataTableStudent storeDataName="getByLessonId" :lesson="lesson">
         <v-btn
           style="color: white"
           color="blue darken-1"
@@ -399,7 +427,11 @@
           @click="
             $store.commit('overlay/open', {
               component: 'DataTableStudent',
-              props: { datas: $store.state.student.getAll, add: '' },
+              props: {
+                storeDataName: 'getAll',
+                add: 'addToDatatableByLessonId',
+                lesson: $store.state.lesson.getByLessonId,
+              },
               title: 'Choisissez les élèves à ajouter à votre cours',
             })
           "
@@ -412,11 +444,10 @@
 <script>
 export default {
   data: () => ({
-    user: [],
+    initialLesson: {},
+    payload: {},
     allUser: [],
-    lesson: {
-      studentliste: [],
-    },
+    lesson: {},
     endtHour2: '',
     startHour2: '',
     endHour1: '',
@@ -441,9 +472,9 @@ export default {
       'Dimanche',
     ],
   }),
-  created() {
-    this.getLesson()
-    this.fetchData()
+  async created() {
+    await this.getLesson()
+    await this.fetchData()
   },
 
   methods: {
@@ -454,14 +485,17 @@ export default {
       iconShow.className = 'show'
     },
 
-    ShowSave() {
+    showSave(field, value) {
       this.$refs.enregistrer.className = 'show'
+      this.addToPayload(field, value)
     },
-    async createLesson() {
-      await this.$store.dispatch('lesson/createLesson', this.lesson)
+
+    addToPayload(field, value) {
+      this.payload = { ...this.payload, [field]: value }
     },
+
     async getLesson() {
-      this.lesson = await this.$store.dispatch(
+      this.lesson = this.initialLesson = await this.$store.dispatch(
         'lesson/getById',
         this.$route.query.id
       )
