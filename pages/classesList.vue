@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {converstiondate} from '../services/ConvertDate'
+import {convertTimestampToDate} from '../services/DateHelper'
 export default {
   data() {
     return {
@@ -57,8 +57,8 @@ export default {
       )
 
       this.lesson.map((lesson) => {
-      lesson.EndDate=converstiondate(lesson.EndDate)
-        lesson.startDate=converstiondate(lesson.startDate)
+      lesson.EndDate=convertTimestampToDate(lesson.EndDate)
+        lesson.startDate=convertTimestampToDate(lesson.startDate)
 
         return lesson
       })

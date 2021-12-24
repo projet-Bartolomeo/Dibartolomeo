@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import {converstiondate} from '../services/ConvertDate'
+import {convertTimestampToDate} from '../services/DateHelper'
 import { user } from '../model/User'
 export default {
   data() {
@@ -38,8 +38,8 @@ export default {
         studentId
       )
       this.lesson.map((lesson) => {
-        lesson.EndDate=converstiondate(lesson.EndDate)
-        lesson.startDate=converstiondate(lesson.startDate)
+        lesson.EndDate=convertTimestampToDate(lesson.EndDate)
+        lesson.startDate=convertTimestampToDate(lesson.startDate)
         return lesson
       })
       this.$store.commit('lesson/setByStudentId', this.lesson)
