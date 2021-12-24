@@ -5,3 +5,7 @@ export function readQuerySnapshot(querySnapshot) {
         return document
     })
 }
+
+export function generateRandomId() {
+    return new Date().getTime() * Math.random()
+}
