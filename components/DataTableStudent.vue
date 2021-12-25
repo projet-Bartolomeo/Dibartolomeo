@@ -6,7 +6,7 @@
           class="ma-2 text-field pa-0"
           v-model="search"
           append-icon="mdi-magnify"
-          :label="`Rechercher un ${type}`"
+          label="Rechercher un élève"
           single-line
           hide-details
           clearable
@@ -32,11 +32,11 @@
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="$props.datas"
+        :items="$store.state.student[$props.datas]"
         sort-by="calories"
         class="elevation-1"
         :footer-props="{
-          'items-per-page-text': `${type} par page`,
+          'items-per-page-text': 'élève par page',
         }"
         :search="search"
         v-model="selected"
@@ -56,10 +56,7 @@
                 <v-btn color="blue darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="deleteStudentFromLesson"
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -74,7 +71,7 @@
                 <v-btn color="blue darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteStudent"
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -129,8 +126,8 @@ export default {
       required: false,
     },
     datas: {
-      type: Array,
-      required: false,
+      type: String,
+      required: true,
     },
   },
   data() {
@@ -156,11 +153,9 @@ export default {
       ],
       showSelect: false,
       search: '',
-      dialog: false,
       dialogDelete: false,
       editedIndex: -1,
       editedItem: {},
-      defaultItem: {},
       currentHeader: {},
       singleSelect: false,
       selected: [],
@@ -193,15 +188,6 @@ export default {
   },
 
   created() {
-    this.users = this.datas
-    this.defaultItem = this.editedItem = this.headers.reduce(
-      (defaultItem, currentHeader) => {
-        if (currentHeader.initialValue === undefined) return defaultItem
-        defaultItem[currentHeader.value] = currentHeader.initialValue
-        return defaultItem
-      },
-      {}
-    )
     this.currentHeader = this.headers.reduce((newHeader, currentHeader) => {
       newHeader[currentHeader.value] = currentHeader
       return newHeader
@@ -209,43 +195,33 @@ export default {
   },
 
   methods: {
-    deleteStudentFromLesson() {
-      this.deleteItemConfirm()
-    },
-    addToLesson(student) {},
-    editItem(item) {
-      this.editedIndex = this.user.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
+    async addToLesson(student) {
+      await this.$store.dispatch('lesson/addStudentInLesson', { student })
     },
 
     deleteItem(item) {
-      this.editedIndex = this.user.indexOf(item)
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = item
+      this.editedIndex = this.$store.state.student[this.$props.datas].indexOf(item)
       this.dialogDelete = true
-    },
-
-    deleteItemConfirm() {
-      this.user.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
-    deleteStudent() {
-      this.deleteItemConfirm()
-    },
-    close() {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
     },
 
     closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
+    },
+
+    deleteItemConfirm() {
+      if (this.$props.lesson === false) {
+        this.remove()
+      } else {
+        console.log(this.editedItem)
+        this.$store.dispatch('lesson/removeStudentFromLesson', {
+          student: this.editedItem,
+        })
+      }
+      this.closeDelete()
     },
   },
 }

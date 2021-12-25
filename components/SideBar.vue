@@ -42,11 +42,11 @@ export default {
     return {
       items: [
         { title: 'Planning', icon: 'mdi-bulletin-board', route: '/' },
-        { title: 'Liste des cours', icon: 'mdi-image', route: '/classesList' },
+        { title: 'Liste des cours', icon: 'mdi-image', route: '/lesson/list' },
         {
           title: 'Liste des éleves',
           icon: 'mdi-account',
-          route: '/studentList',
+          route: '/student/list',
         },
        /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
