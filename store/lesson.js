@@ -1,4 +1,5 @@
 import { readQuerySnapshot, generateRandomId } from '../services/firestoreHelper'
+import { convertTimestampToDate } from '../services/dateHelper'
 
 export const state = () => ({
     teacherList: [],
@@ -14,7 +15,7 @@ export const mutations = {
 
     removeFromList(state, { lessonIdsToDelete, stateName }) {
         state[stateName] = state[stateName].reduce((newLessonList, currentLesson) => {
-            if (!lessonIdsToDelete.include(currentLesson.id)) newLessonList.push(currentLesson)
+            if (!lessonIdsToDelete.includes(currentLesson.id)) newLessonList.push(currentLesson)
             return newLessonList
         }, [])
     },
@@ -37,30 +38,37 @@ export const mutations = {
 
     removeInListField(state, { stateName, fieldName, toRemove }) {
         state[stateName][fieldName].forEach((field, key) => {
-            if (field === toRemove) state[stateName][fieldName].splice(key, 1)
+            if (field === toRemove) {
+                state[stateName][fieldName].splice(key, 1)
+            }
         })
     },
 }
 
 export const actions = {
-    async setTeacherList({ state, commit }, { startDateFilter, endDateFilter }) {
+    async setTeacherList({ commit, rootState }, { startDateFilter, endDateFilter }) {
         try {
             const teacherListRef = this.$fire.firestore.collection('lesson')
-                .where('profesorId', '==', state.user.id)
+                .where('profesorId', '==', rootState.user.id)
                 .where('isArchived', '==', false)
 
-            if (startDateFilter !== undefined && endDateFilter !== undefined) {
+            if (startDateFilter && endDateFilter) {
                 teacherListRef
                     .where('startDate', '>=', new Date(startDateFilter))
                     .where('startDate', '<=', new Date(endDateFilter))
             } else {
                 teacherListRef
-                    .where('startDate', '>=', new Date())
-                    .where('startDate', '<=', new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000))
+                    .where('startDate', '>=', (new Date()).getTime())
+                    .where('startDate', '<=', (new Date()).getTime() + 7 * 24 * 60 * 60 * 1000)
             }
 
             const teacherListSnapshot = await teacherListRef.get()
-            const teacherList = readQuerySnapshot(teacherListSnapshot)
+            let teacherList = readQuerySnapshot(teacherListSnapshot)
+            teacherList = teacherList.map(lesson => {
+                lesson.startDate = convertTimestampToDate(lesson.startDate)
+                lesson.endDate = convertTimestampToDate(lesson.endDate)
+                return lesson
+            })
             commit('set', { stateName: 'teacherList', lesson: teacherList })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
@@ -72,8 +80,8 @@ export const actions = {
             const lesson = await this.$fire.firestore.collection('lesson')
                 .doc(lessonId)
                 .get()
-            commit('set', { stateName: 'details', lesson })
-            dispatch('student/setFromLesson', { root: true })
+            commit('set', { stateName: 'details', lesson: { ...lesson.data(), id: lesson.id } })
+            dispatch('student/setFromLesson', {}, { root: true })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
@@ -110,32 +118,37 @@ export const actions = {
     async archive({ commit }, { lesson, startDate, endDate, all }) {
         const lessonRef = this.$fire.firestore.collection('lesson')
         let notification = { type: 'success', description: 'les cours ont bien été archivés' }
+
         try {
             if (all) {
-                const lessonsSnapshot = await lessonRef
-                    .where('startDate', '>=', new Date())
-                    .where('recurrenceId', '==', lesson.recurrenceId)
-                    .get()
-                const lessons = readQuerySnapshot(lessonsSnapshot)
-                commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
-                await Promise.all([
-                    ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
-                ])
-            } else if (startDate !== null && endDate !== null) {
-                const lessonsSnapshot = await lessonRef
-                    .where('startDate', '>=', new Date(startDate))
-                    .where('startDate', '<=', new Date(endDate))
-                    .get()
-                const lessons = readQuerySnapshot(lessonsSnapshot)
-                commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
-                await Promise.all([
-                    ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
-                ])
+                if (startDate && endDate) {
+                    const lessonsSnapshot = await lessonRef
+                        .where('recurrenceId', '==', lesson.recurrenceId)
+                        .where('startDate', '>=', new Date(startDate))
+                        .where('startDate', '<=', new Date(endDate))
+                        .get()
+                    const lessons = readQuerySnapshot(lessonsSnapshot)
+                    commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
+                    await Promise.all([
+                        ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
+                    ])
+                } else {
+                    const lessonsSnapshot = await lessonRef
+                        .where('recurrenceId', '==', lesson.recurrenceId)
+                        .where('startDate', '>=', new Date())
+                        .get()
+                    const lessons = readQuerySnapshot(lessonsSnapshot)
+                    commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
+                    await Promise.all([
+                        ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
+                    ])
+                }
             } else {
                 await lessonRef.doc(lesson.id).update({ isArchived: true })
                 commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: [lesson.id] })
                 notification = { type: 'success', description: 'le cours a bien été archivé' }
             }
+
         } catch (error) {
             notification = { type: 'error', description: 'problème lors de l\'achivage' }
         }
@@ -148,25 +161,25 @@ export const actions = {
             commit('student/addToList', { stateName: 'notInLesson', student }, { root: true })
             commit('student/removeFromList', { stateName: 'fromLesson', studentId: student.id }, { root: true })
             await this.$fire.firestore.collection('lesson')
-                .doc(state.lesson.details.id)
-                .update({ studentIdsList: state.lesson.details.studentIdsList })
+                .doc(state.details.id)
+                .update({ studentIdsList: state.details.studentIdsList })
             commit('notification/create', { description: 'élève supprimé du cours' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération de l\'élève', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'problème lors de la suppression d\'un élève', type: 'error' }, { root: true })
         }
     },
 
     async addStudentInLesson({ state, commit }, { student }) {
         try {
-            commit('addToListField', { stateName: 'details', fieldName: 'studentIdsList', toAdd: student.id })
+            commit('lesson/addToListField', { stateName: 'details', fieldName: 'studentIdsList', toAdd: student.id }, { root: true })
             commit('student/addToList', { stateName: 'fromLesson', student }, { root: true })
             commit('student/removeFromList', { stateName: 'notInLesson', studentId: student.id }, { root: true })
             await this.$fire.firestore.collection('lesson')
-                .doc(state.lesson.details.id)
-                .update({ studentIdsList: state.lesson.details.studentIdsList })
-            commit('notification/create', { description: 'élève supprimé du cours' }, { root: true })
+                .doc(state.details.id)
+                .update({ studentIdsList: state.details.studentIdsList })
+            commit('notification/create', { description: 'élève ajouté au cours' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération de l\'élève', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'problème lors de l\'ajout d\'un élève', type: 'error' }, { root: true })
         }
     },
 

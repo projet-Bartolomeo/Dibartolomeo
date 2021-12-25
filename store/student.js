@@ -45,9 +45,9 @@ export const actions = {
         }
     },
 
-    async setFromLesson({ state, commit, dispatch }) {
+    async setFromLesson({ rootState, commit, dispatch }) {
         try {
-            const studentIds = state.lesson.details.studentIdsList
+            const studentIds = rootState.lesson.details.studentIdsList
             const students = await Promise.all([...studentIds.map(async id => {
                 const user = await this.$fire.firestore.collection('user').doc(id).get()
                 return { ...user.data(), id: user.id }
@@ -59,13 +59,11 @@ export const actions = {
         }
     },
 
-    async setNotInLesson({ state, commit }) {
+    async setNotInLesson({ rootState, commit }) {
         try {
-            const studentInLessonIds = state.lesson.details.studentIdsList
-            let students = await this.$fire.firestore.collection('user')
-                .where('profesorIds', 'array-contains', state.user.id)
-                .get()
-            students = students.filter(student => studentInLessonIds.includes(student.id))
+            const studentInLessonIds = rootState.lesson.details.studentIdsList
+            let students = await this.$fire.firestore.collection('user').get()
+            students = readQuerySnapshot(students).filter(student => !studentInLessonIds.includes(student.id))
             commit('set', { stateName: 'notInLesson', student: students })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
