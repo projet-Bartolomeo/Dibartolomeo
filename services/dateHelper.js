@@ -1,5 +1,5 @@
 export function convertTimestampToDate(date) {
-    const timestamp = date * 1000
+    const timestamp = date.seconds * 1000
 
     let convertedDate = new Date(timestamp)
 

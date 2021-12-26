@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field v-model="input"></v-text-field>
+    <v-text-field v-model="input" :label="$props.label" :rules="$props.rules"></v-text-field>
   </div>
 </template>
 
@@ -24,6 +24,14 @@ export default {
     number: {
       type: Boolean,
       required: false,
+    },
+    label: {
+      type: String,
+      required: false,
+    },
+    rules: {
+      type: Array,
+      require: false,
     },
   },
   computed: {
