@@ -1,74 +1,53 @@
 <template>
-  <v-row class="justify-space-between mb-12 mx-5 mt-5 align-center">
-    <v-card elevation="6" width="55vw">
-      <v-row class="justify-space-between ma-5">
-        <v-col md="4">
-          <v-text-field
-            v-model="user.lastname"
-            label="Nom"
-            required
-          ></v-text-field>
-          <v-text-field
-            v-model="user.email"
-            :rules="emailRules"
-            label="E-mail"
-            required
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            v-model="user.firstname"
-            label="Prénom"
-            required
-          ></v-text-field>
-          <v-switch v-model="user.banned" inset label="banni"></v-switch>
-        </v-col>
-      </v-row>
-    </v-card>
-
-    <v-col>
-      <v-row class="d-flex justify-end mb-6">
-        <v-btn
-          style="color: white"
-          color="blue darken-1"
-          @click="
-            $store.commit('overlay/open', {
-              component: 'MessageForm',
-              props: { recipients: [user.id], type: 'student' },
-              title: 'Tapez votre message',
-            })
-          "
-          >send message</v-btn
-        >
-      </v-row>
-      <v-row class="d-flex justify-end mb-6">
-        <v-btn color="error" width="200px"> Supprimer l'élève </v-btn>
-      </v-row>
-    </v-col>
-  </v-row>
+  <v-card elevation="6" width="55vw" class="ma-auto">
+    <v-row class="justify-space-between ma-5">
+      <v-col md="4">
+        <TextField
+          :get="$store.state.student.new.lastname"
+          fieldName="lastName"
+          commit="student/modify"
+          stateName="new"
+          label="Nom"
+          :rules="[(v) => !!v || 'Le nom est obligatoire']"
+        />
+        <TextField
+          :get="$store.state.student.new.email"
+          fieldName="email"
+          commit="student/modify"
+          stateName="new"
+          label="Mail"
+          :rules="emailRules"
+        />
+      </v-col>
+      <v-col cols="12" md="4">
+        <TextField
+          :get="$store.state.student.new.lastname"
+          fieldName="firstName"
+          commit="student/modify"
+          stateName="new"
+          label="Prénom"
+          :rules="[(v) => !!v || 'Le prénom est obligatoire']"
+        />
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      recherche: '',
-      open: false,
-      dialog: false,
-      studentID: 'YrGucQSEGT9Z0ctUngrX',
-      user: {},
+      user: {
+        lastname: '',
+        email: '',
+        firstname: '',
+      },
+      valid: true,
+      emailRules: [
+        (v) => !!v || "Le mail est obligatoire",
+        (v) => /.+@.+\..+/.test(v) || "Le mail n'est pas valide",
+      ],
     }
-  },
-  created() {
-    this.getUser(this.studentID)
-  },
-  methods: {
-    async getUser(studentID) {
-      this.user = await this.$store.dispatch(
-        'student/getById',
-        studentID
-      )
-    },
   },
 }
 </script>

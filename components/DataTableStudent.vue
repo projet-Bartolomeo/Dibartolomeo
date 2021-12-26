@@ -15,8 +15,8 @@
         <v-btn
           v-if="$props.message"
           :disabled="selected.length === 0"
-          style="color: white"
-          color="blue darken-1"
+          style="color: white" 
+          color="teal lighten-2"
           @click="
             $store.commit('overlay/open', {
               component: 'MessageForm',
@@ -24,7 +24,7 @@
               title: 'Tapez votre message',
             })
           "
-          >send message</v-btn
+          >Envoyer message</v-btn
         >
         <slot></slot>
       </v-card-title>
@@ -96,7 +96,7 @@
               "
               >mdi-message</v-icon
             >
-            <NuxtLink class="nuxtlink" :to="`/student/${item.id}`">
+            <NuxtLink class="nuxtlink" :to="`/student/?id=${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
             <v-icon class="mr-1" @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -160,6 +160,7 @@ export default {
       singleSelect: false,
       selected: [],
       messageText: 'draw you lines',
+      delete : [] ,
     }
   },
   computed: {
@@ -205,6 +206,24 @@ export default {
       this.dialogDelete = true
     },
 
+    deleteStudentFromLesson() {
+      this.deleteItemConfirm()
+    },
+    async remove() {
+      await this.$store.dispatch('student/removeFromTeacher' ,this.editedItem)
+    },
+
+    deleteStudent() {
+      this.deleteItemConfirm()
+    },
+    close() {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+
     closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
@@ -216,7 +235,6 @@ export default {
       if (this.$props.lesson === false) {
         this.remove()
       } else {
-        console.log(this.editedItem)
         this.$store.dispatch('lesson/removeStudentFromLesson', {
           student: this.editedItem,
         })

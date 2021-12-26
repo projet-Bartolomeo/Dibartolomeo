@@ -1,100 +1,51 @@
 <template>
-  <div id="page">
-    <ModifEleve />
-    <DataTableLesson :datas="$store.state.lesson.getByStudentId" />
-    <v-row class="d-flex justify-center mb-6 align-center mt-5">
-      <v-btn id="enregistrer" elevation="7" color="success" width="150px"
-        >Enregistrer</v-btn
-      >
-    </v-row>
+  <div>
+    <title value="Création d'un élève" />
+    <v-col class="justify-center">
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-row class="align-center my-10">
+          <StudentForm class="ma-5"  />
+          <ButtonStudent class="d-flex flex-column justify-space-around"/>
+        </v-row>
+        <DataTableLesson :datas="$store.state.lesson.getByStudentId" />
+        <v-row class="d-flex justify-center mb-6 align-center mt-5">
+          <v-btn
+            id="enregistrer"
+            class="mt-10"
+            elevation="7"
+            :disabled="!valid"
+            color="success"
+            width="150px"
+            @click="validate()"
+            >Enregistrer</v-btn
+          >
+        </v-row>
+      </v-form>
+    </v-col>
   </div>
 </template>
 
 <script>
-import { user } from '../../model/User'
 export default {
   data() {
     return {
-      studentId: 'YrGucQSEGT9Z0ctUngrX',
-      user,
-      lesson: [],
+      valid: true,
     }
   },
-  created() {
-    this.getUser(this.studentId)
-    this.getLesson(this.studentId)
-  },
   methods: {
-    async getUser(studentId) {
-      this.user = await this.$store.dispatch(
-        'student/getById',
-        studentId
+    async setUser() {
+      await this.$store.dispatch(
+        'student/createFromTeacher',
+        this.$store.state.student.new
       )
     },
-    async getLesson(studentId) {
-      this.lesson = await this.$store.dispatch(
-        'lesson/getByStudentId',
-        studentId
-      )
-      this.lesson.map((lesson) => {
-        const timestampEnd = lesson.EndDate.seconds * 1000
-        const timestampStart = lesson.startDate.seconds * 1000
-
-        const dateEnd = new Date(timestampEnd)
-        const dateStart = new Date(timestampStart)
-
-        let eh = dateEnd.getHours()
-        if (eh < 10) {
-          eh = '0' + eh
+    validate() {
+      if (this.$refs.form.validate()) {
+        if (this.setUser()) {
+          window.location.href = '/student/list'
         }
-        let em = dateEnd.getMinutes()
-        if (em < 10) {
-          em = '0' + em
-        }
-
-        let sh = dateStart.getHours()
-        if (sh < 10) {
-          sh = '0' + sh
-        }
-        let sm = dateStart.getMinutes()
-        if (sm < 10) {
-          sm = '0' + sm
-        }
-
-        lesson.EndDate =
-          dateEnd.getDate() +
-          '/' +
-          (dateEnd.getMonth() + 1) +
-          '/' +
-          dateEnd.getFullYear() +
-          ' ' +
-          eh +
-          ':' +
-          em
-
-        lesson.startDate =
-          dateStart.getDate() +
-          '/' +
-          (dateStart.getMonth() + 1) +
-          '/' +
-          dateStart.getFullYear() +
-          ' ' +
-          sh +
-          ':' +
-          sm
-
-        return lesson
-      })
-      this.$store.commit('lesson/setByStudentId', this.lesson)
+      }
     },
   },
 }
 </script>
-
-<style>
-#page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-</style>

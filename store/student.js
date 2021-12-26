@@ -4,7 +4,8 @@ export const state = () => ({
     teacherList: [],
     fromLesson: [],
     notInLesson: [],
-    details: {}
+    details: {},
+    new : {},
 })
 
 export const mutations = {
@@ -34,10 +35,11 @@ export const mutations = {
 }
 
 export const actions = {
-    async setTeacherList({ state, commit }) {
+
+    async setTeacherList({ commit ,rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
-                .where('profesorIds', 'array-contains', state.user.id)
+            .where('teacherList', 'array-contains', rootState.user.id).get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
         } catch (error) {
@@ -66,39 +68,37 @@ export const actions = {
             students = readQuerySnapshot(students).filter(student => !studentInLessonIds.includes(student.id))
             commit('set', { stateName: 'notInLesson', student: students })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
     },
 
-    async removeFromTeacher({ commit }, { student }) {
+    async removeFromTeacher({ commit ,rootState }, student) {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
-            const teacherIds = student.teacherIds.reduce((newTeacherIds, currentId) => {
-                if (currentId !== student.id) newTeacherIds.push(currentId)
-                return newTeacherIds
-            }, [])
+            const lastTeacherList =  student.teacherList;
+
+                const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id);
 
             let isDeleted = true
             if (student.isRegistered) isDeleted = false
 
             await this.$fire.firestore.collection('user')
                 .doc(student.id)
-                .update({ teacherIds, isDeleted })
+                .update({ teacherList, isDeleted })
 
-            commit('notification/create', { description: 'l\'élève a été supprimé' }, { root: true })
+            commit('notification/create', { description: 'L\'élève a été supprimé' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la suppression ', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la suppression ', type: 'error' }, { root: true })
         }
     },
 
-    async createFromTeacher({ state, commit }, { student }) {
+    async createFromTeacher({ rootState, commit }, student ) {
         try {
-            const newStudent = { ...student, teacherIds: [state.user.id], isRegistered: false, isDeleted: false }
+            const newStudent = { ...student, teacherList: [rootState.user.id], isRegistered: false, isDeleted: false }
             commit('addToList', { stateName: 'teacherList', student: newStudent })
 
             await this.$fire.firestore.collection('user').add(newStudent)
-
             commit('notification/create', { description: 'élève créé' }, { root: true })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la création de l\'élève', type: 'error' }, { root: true })

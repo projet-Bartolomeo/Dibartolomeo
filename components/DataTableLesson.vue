@@ -15,8 +15,8 @@
         <v-btn
           v-if="$props.message"
           :disabled="selected.length === 0"
-          style="color: white"
-          color="blue darken-1"
+          style="color: white" 
+          color="teal lighten-2"
           @click="
             $store.commit('overlay/open', {
               component: 'MessageForm',
@@ -24,7 +24,7 @@
               title: 'Tapez votre message',
             })
           "
-          >send message</v-btn
+          >Envoyer message</v-btn
         >
       </v-card-title>
     </v-card>
