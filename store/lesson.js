@@ -1,5 +1,6 @@
 import { readQuerySnapshot, generateRandomId } from '../services/firestoreHelper'
 import { convertTimestampToDate } from '../services/dateHelper'
+import { DateTime } from "luxon";
 
 export const state = () => ({
     teacherList: [],
@@ -46,6 +47,23 @@ export const mutations = {
 }
 
 export const actions = {
+
+    async setStudentList({ commit }, StudentId ) {
+        try {
+            const studentListSnapshot = await this.$fire.firestore.collection("lesson")
+            .where("studentIdsList", "array-contains", StudentId ).get()
+            let studentList = readQuerySnapshot(studentListSnapshot)
+            studentList = studentList.map(lesson => {
+                lesson.startDate = convertTimestampToDate(lesson.startDate)
+                lesson.endDate = convertTimestampToDate(lesson.endDate)
+                return lesson
+            })
+            commit('set', { stateName: 'studentList', lesson: studentList })
+        } catch (error) {
+            commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
+        }
+    },
+
     async setTeacherList({ commit, rootState }, { startDateFilter, endDateFilter }) {
         try {
             const teacherListRef = this.$fire.firestore.collection('lesson')

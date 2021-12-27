@@ -13,7 +13,18 @@
       "
       >Envoyer message</v-btn
     >
-    <v-btn class="ma-4" color="error" width="200px"> Supprimer l'élève </v-btn>
+    <v-btn
+      class="ma-4"
+      color="error"
+      width="200px"
+      @click="
+        $store.commit('overlay/open', {
+          component: 'MessageForm',
+        })
+      "
+    >
+      Supprimer l'élève
+    </v-btn>
   </div>
 </template>
 <script>

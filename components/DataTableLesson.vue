@@ -115,7 +115,7 @@ export default {
       headers: [
         {
           text: 'Titre',
-          value: 'name',
+          value: 'title',
           initialValue: '',
           type: 'input',
           align: 'start',

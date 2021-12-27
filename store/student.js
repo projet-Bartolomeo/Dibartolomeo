@@ -35,15 +35,26 @@ export const mutations = {
 }
 
 export const actions = {
+    async setDetails({ commit }, studentId ) {
+        try {
+            const user = await this.$fire.firestore.collection('user')
+                .doc(studentId)
+                .get()
+            commit('set', { stateName: 'details', student: { ...user.data(), id: user.id } })
+        } catch (error) {
+            console.log(error)
+            commit('notification/create', { description: 'Problème lors de la récupération de votre élève', type: 'error' }, { root: true })
+        }
+    },
 
-    async setTeacherList({ commit, rootState }) {
+    async setTeacherList({ commit ,rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
                 .where('teacherList', 'array-contains', rootState.user.id).get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
     },
 
@@ -107,15 +118,19 @@ export const actions = {
         }
     },
 
-    async modify({ commit }, { studentId, payload }) {
+    async modify({ commit }, {studentId, payload} ) {
         try {
+            console.log(studentId)
+            console.log(payload)
+
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
 
             commit('notification/create', { description: 'élève mis à jour' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la suppression ', type: 'error' }, { root: true })
+            console.log(error)
+            commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
     }
 }
