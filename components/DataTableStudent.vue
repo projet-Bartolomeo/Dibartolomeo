@@ -212,6 +212,7 @@ export default {
     deleteStudentFromLesson() {
       this.deleteItemConfirm()
     },
+  
     async remove() {
       await this.$store.dispatch('student/removeFromTeacher', {
         student: this.editedItem,
