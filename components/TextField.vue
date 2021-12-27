@@ -10,15 +10,19 @@
       card-size
     "
   >
-    <div v-if="readonly" class="d-flex justify-center align-start">
-      {{ input }}
+    <div
+      v-if="readonly"
+      :class="`d-flex justify-center align-start ${titleStyle}`"
+    >
+      {{ input }}{{ $props.suffix }}
     </div>
     <v-text-field
       v-else
-      class="flex-none text-field-padding"
+      :class="`flex-none text-field-padding ${titleStyle}`"
       v-model="input"
       :rules="$props.rules"
       :autofocus="true"
+      :suffix="$props.suffix"
     ></v-text-field>
     <v-btn
       color="grey darken-2 auto-width"
@@ -49,7 +53,15 @@ export default {
     },
     rules: {
       type: Array,
-      require: false,
+      required: false,
+    },
+    suffix: {
+      type: String,
+      required: false,
+    },
+    title: {
+      type: Boolean,
+      required: false,
     },
   },
   computed: {
@@ -76,6 +88,9 @@ export default {
           stateName: this.state.stateName,
         })
       },
+    },
+    titleStyle() {
+      return this.$props.title ? 'display-1' : ''
     },
   },
   methods: {
