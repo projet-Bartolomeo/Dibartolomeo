@@ -3,27 +3,27 @@
     <v-form v-model="valid">
       <v-row class="justify-space-between ma-5">
         <v-col class="pa-0">
-          <v-row class="ma-0 align-center">
+          <v-row class="ma-0 align-center d-flex">
             <TextField
               :get="`lesson.${$props.datas}.title`"
               :rules="[(v) => !!v || 'Le titre est obligatoire']"
+              title
             />
           </v-row>
-          <v-row class="ma-0 align-center">
-            <p class="ma-0">
+          <v-row class="ma-0">
+            <p class="ma-0 align-center d-flex">
               {{ lesson.studentIdsList ? lesson.studentIdsList.length : 0 }}/
             </p>
-            <p class="ma-0">
-              <TextField
-                :get="`lesson.${$props.datas}.maximumStudents`"
-                :rules="[
-                  (v) => !!v || 'Le nombre maximum d\'étudiant est obligatoire',
-                  (v) =>
-                    !isNaN(Number(v)) ||
-                    'Le nombre maximum d\'étudiant doit etre un nombre',
-                ]"
-              />
-            </p>
+            <TextField
+              suffix=" élèves"
+              :get="`lesson.${$props.datas}.maximumStudents`"
+              :rules="[
+                (v) => !!v || 'Le nombre maximum d\'étudiant est obligatoire',
+                (v) =>
+                  !isNaN(Number(v)) ||
+                  'Le nombre maximum d\'étudiant doit etre un nombre',
+              ]"
+            />
           </v-row>
         </v-col>
         <div class="d-flex flex-column align-center">
@@ -88,9 +88,10 @@
                 </div>
               </div>
               <div class="d-flex justify-start align-center">
-                <p class="pa-4 text-no-wrap">Prix(en €):</p>
+                <p class="pa-4 text-no-wrap">Prix:</p>
                 <div class="pb-4 pl-4 pr-4">
                   <TextField
+                    suffix=" €"
                     :get="`lesson.${$props.datas}.price`"
                     :rules="[
                       (v) => !!v || 'Le prix est obligatoire',
