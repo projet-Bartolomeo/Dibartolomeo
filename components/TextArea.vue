@@ -8,26 +8,37 @@
       text-field-container
       auto-width
       card-size
+      pa-4
     "
   >
     <div
       v-if="readonly"
-      class="textarea-size d-flex justify-center align-center textarea-size"
+      class="
+        textarea-size
+        d-flex
+        justify-start
+        align-start
+        pa-3
+        textarea-text-color
+      "
     >
       {{ input }}
     </div>
     <v-textarea
       v-else
+      v-model="input"
+      height="100%"
+      min-height="100%"
+      class="textarea-size"
       :rules="$props.rules"
       :autofocus="true"
-      v-model="input"
-      class="textarea-size"
       auto-grow
       filled
     ></v-textarea>
     <div class="d-flex align-end textarea-readonly">
       <v-btn
-        color="grey darken-2 auto-width ma-2"
+        class="ma-2"
+        color="grey darken-2"
         fab
         text
         @click="readonly = !readonly"
@@ -97,10 +108,14 @@ export default {
 .textarea-size {
   height: 20vh;
   min-height: 200px;
+  width: 100%;
 }
 .textarea-readonly {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+.textarea-text-color {
+  color: rgb(87, 87, 87);
 }
 </style>
