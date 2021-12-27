@@ -8,7 +8,7 @@
         ></router-link
       >
     </v-row>
-    <DataTableStudent message :datas="$store.state.student.teacherList" />
+    <DataTableStudent message datas="teacherList" />
   </div>
 </template>
 

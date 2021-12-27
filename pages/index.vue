@@ -46,7 +46,7 @@
           ref="calendar"
           v-model="focus"
           color="primary"
-          :events="events"
+          :events="lessons"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
@@ -68,7 +68,10 @@
                     <v-icon>mdi-pencil</v-icon>
                     <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
                 ></v-toolbar-title>
-                <v-text>15/20 élèves</v-text>
+                <v-text
+                  >{{ selectedEvent.studentNbr }} /
+                  {{ selectedEvent.maximumStudents }} élèves</v-text
+                >
               </v-col>
               <v-row class="ma-0 pa-5 justify-end">
                 <v-btn text @click="selectedOpen = false">
@@ -82,23 +85,26 @@
               <v-row class="ma-0 justify-space-around pt-5">
                 <div class="d-flex">
                   <p class="ma-0 pr-3">Récurence :</p>
-                  <p>Unique</p>
+                  <p>{{ selectedEvent.recurrence }}</p>
                 </div>
                 <div class="d-flex">
                   <p class="ma-0 pr-3">Age :</p>
-                  <p>Sénior</p>
+                  <p>{{ selectedEvent.ageRange }}</p>
                 </div>
                 <div class="d-flex">
                   <p class="ma-0 pr-3">Prix :</p>
-                  <p>20</p>
+                  <p>{{ selectedEvent.price }}</p>
                   €
                 </div>
               </v-row>
               <v-col class="mt-5">
-                <DataTableStudent message lesson />
+                <DataTableStudent datas="fromLesson" message lesson />
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
-                <router-link class="text-decoration-none" to="/lesson">
+                <router-link
+                  class="text-decoration-none"
+                  :to="`/lesson/?id=${selectedEvent.id}`"
+                >
                   <v-btn
                     class="my-5"
                     style="color: white"
@@ -133,41 +139,27 @@ export default {
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
-    events: [
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-3 09:00',
-        end: '2021-12-3 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-8 09:00',
-        end: '2021-12-8 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-17 09:00',
-        end: '2021-12-17 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-27 09:00',
-        end: '2021-12-27 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-13 09:00',
-        end: '2021-12-13 10:00',
-        color: 'green',
-      },
-    ],
   }),
+  async created() {
+    await this.$store.dispatch('lesson/setTeacherList', {})
+  },
   mounted() {
     this.$refs.calendar.checkChange()
+  },
+  computed: {
+    lessons() {
+      const lessonList = this.$store.state.lesson.teacherList
+      lessonList.map((lesson) => {
+        lesson.start = lesson.startDate
+        lesson.end = lesson.endDate
+        lesson.name = lesson.title
+        lesson.studentNbr = lesson.studentIdsList.length
+
+        return lesson
+      })
+      console.log(lessonList)
+      return lessonList
+    },
   },
   methods: {
     viewDay({ date }) {
@@ -184,9 +176,13 @@ export default {
     next() {
       this.$refs.calendar.next()
     },
+    async showStudent(event){
+      await this.$store.dispatch('lesson/setDetails', { lessonId: event.id })
+    },
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event
+        this.showStudent(event)
         this.selectedElement = nativeEvent.target
         setTimeout(() => {
           this.selectedOpen = true

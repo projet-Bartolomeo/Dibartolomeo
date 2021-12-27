@@ -13,11 +13,11 @@ export function convertTimestampToDate(date) {
     }
 
     convertedDate =
-        convertedDate.getDate() +
-        '/' +
-        (convertedDate.getMonth() + 1) +
-        '/' +
         convertedDate.getFullYear() +
+        '-' +
+        (convertedDate.getMonth() + 1) +
+        '-' +
+        convertedDate.getDate() +
         ' ' +
         eh +
         ':' +

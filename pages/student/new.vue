@@ -3,7 +3,7 @@
     <Title value="Création d'un élève" />
     <v-col class="justify-center">
       <v-form ref="form" v-model="valid" lazy-validation>
-        <StudentForm class="mt-10" />
+        <StudentForm  datas="new" class="mt-10" />
         <v-row class="d-flex justify-center mb-6 align-center mt-5">
           <v-btn
             id="enregistrer"
@@ -28,21 +28,14 @@ export default {
       valid: true,
     }
   },
-  created() {
-    this.test()
-  },
   methods: {
-    async setUser() {
-      await this.$store.dispatch(
-        'student/createFromTeacher',
-        this.$store.state.student.new
-      )
-    },
-    validate() {
+    async validate() {
       if (this.$refs.form.validate()) {
-        if (this.setUser()) {
-          window.location.href = "/student/list"
-        }
+        await this.$store.dispatch(
+          'student/createFromTeacher',
+          this.$store.state.student.new
+        )
+        this.$router.push('/student/list')
       }
     },
   },

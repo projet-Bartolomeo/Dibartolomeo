@@ -4,10 +4,10 @@
     <v-col class="justify-center">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-row class="align-center my-10">
-          <StudentForm class="ma-5"  />
-          <ButtonStudent class="d-flex flex-column justify-space-around"/>
+          <StudentForm datas="details" class="ma-5" />
+          <ButtonStudent class="d-flex flex-column justify-space-around" />
         </v-row>
-        <DataTableLesson :datas="$store.state.lesson.getByStudentId" />
+        <DataTableLesson datas="studentList" />
         <v-row class="d-flex justify-center mb-6 align-center mt-5">
           <v-btn
             id="enregistrer"
@@ -32,18 +32,18 @@ export default {
       valid: true,
     }
   },
+  async created() {
+    await this.$store.dispatch('student/setDetails', this.$route.query.id)
+    await this.$store.dispatch('lesson/setStudentList', this.$route.query.id)
+  },
   methods: {
-    async setUser() {
-      await this.$store.dispatch(
-        'student/createFromTeacher',
-        this.$store.state.student.new
-      )
-    },
-    validate() {
+    async validate() {
       if (this.$refs.form.validate()) {
-        if (this.setUser()) {
-          window.location.href = '/student/list'
-        }
+        await this.$store.dispatch('student/modify', {
+          studentId: this.$route.query.id,
+          payload: this.$store.state.student.details,
+        })
+        this.$router.push('/student/list')
       }
     },
   },
