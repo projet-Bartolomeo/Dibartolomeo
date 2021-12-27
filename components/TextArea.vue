@@ -118,4 +118,7 @@ export default {
 .textarea-text-color {
   color: rgb(87, 87, 87);
 }
+.text-field-container {
+  position: relative;
+}
 </style>
