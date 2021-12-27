@@ -20,9 +20,9 @@ export const mutations = {
         }, [])
     },
 
-    modifyInList(state, { lessonListToUpdate, stateName }) {
+    modifyInList(state, { lessonListToModify, stateName }) {
         state[stateName] = state[stateName].map(lessonNotUpdated => {
-            const lessonUpdated = lessonListToUpdate.find(lessonUdpated => lessonUdpated.id === lessonNotUpdated.id)
+            const lessonUpdated = lessonListToModify.find(lessonUdpated => lessonUdpated.id === lessonNotUpdated.id)
             if (lessonUpdated === undefined) return lessonNotUpdated
             return lessonUpdated
         })
@@ -184,26 +184,22 @@ export const actions = {
     },
 
     async modify({ commit }, { lesson, payload, startDate, endDate, all }) {
-        const profesorReference = this.$fire.firestore.collection('lesson')
-        let notification = { type: 'success', description: 'vos cours ont bien été mis à jour' }
+        const lessonRef = this.$fire.firestore.collection('lesson')
+        let notification = { type: 'success', description: 'le cours a bien été mis à jour' }
 
         try {
             if (all) {
-                await profesorReference
+                const lessonsSnapshot = await lessonRef
                     .where('recurrenceId', '==', lesson.recurrenceId)
-                    .update(payload)
-            } else if (startDate !== null && endDate !== null) {
-                await profesorReference
-                    .where('recurrenceId', '==', lesson.recurrenceId)
-                    .where('startDate', '>=', startDate.getTime())
-                    .where('endDate', '<=', endDate.getTime())
-                    .update(payload)
-            } else if (lesson.recurrence !== 'unique') {
-                await profesorReference.doc(lesson.id).update({ ...payload, recurrence: 'unique', recurrenceId: null })
-                notification = { type: 'success', description: 'votre cours a bien été mis à jour' }
+                    .where('startDate', '>=', new Date())
+                    .get()
+                const lessons = readQuerySnapshot(lessonsSnapshot)
+                commit('modifyInList', { stateName: 'teacherList', lessonIdsToModify: lessons.map(lesson => lesson.id) })
+                await Promise.all([
+                    ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
+                ])
             } else {
-                await profesorReference.doc(lesson.id).update(payload)
-                notification = { type: 'success', description: 'votre cours a bien été mis à jour' }
+                await lessonRef.doc(lesson.id).update(payload)
             }
         } catch (error) {
             notification = { type: 'error', description: 'problème lors de la mise à jour' }
