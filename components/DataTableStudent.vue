@@ -15,7 +15,7 @@
         <v-btn
           v-if="$props.message"
           :disabled="selected.length === 0"
-          style="color: white" 
+          style="color: white"
           color="teal lighten-2"
           @click="
             $store.commit('overlay/open', {
@@ -125,6 +125,10 @@ export default {
       type: Boolean,
       required: false,
     },
+    new: {
+      type: Boolean,
+      required: false,
+    },
     datas: {
       type: String,
       required: true,
@@ -160,7 +164,7 @@ export default {
       singleSelect: false,
       selected: [],
       messageText: 'draw you lines',
-      delete : [] ,
+      delete: [],
     }
   },
   computed: {
@@ -202,7 +206,6 @@ export default {
 
     deleteItem(item) {
       this.editedItem = item
-      this.editedIndex = this.$store.state.student[this.$props.datas].indexOf(item)
       this.dialogDelete = true
     },
 
@@ -210,7 +213,9 @@ export default {
       this.deleteItemConfirm()
     },
     async remove() {
-      await this.$store.dispatch('student/removeFromTeacher' ,this.editedItem)
+      await this.$store.dispatch('student/removeFromTeacher', {
+        student: this.editedItem,
+      })
     },
 
     deleteStudent() {

@@ -1,6 +1,6 @@
 <template>
-  <div class="auto-width">
-    <v-dialog v-model="overlay" max-width="55vw">
+  <div>
+    <v-dialog class="auto-width" v-model="overlay" max-width="55vw">
       <v-card>
         <v-card-actions class="pa-4">
           <div
@@ -47,8 +47,8 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-.auto-width {
-  width: auto;
+<style>
+.v-dialog {
+  width: auto !important;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-card
+  <div
     v-click-outside="onClickOutside"
     class="
       d-flex
@@ -10,25 +10,32 @@
       card-size
     "
   >
-    <div v-if="readonly" class="d-flex justify-center align-start">
+    <div
+      v-if="readonly"
+      class="textarea-size d-flex justify-center align-center textarea-size"
+    >
       {{ input }}
     </div>
-    <v-text-field
+    <v-textarea
       v-else
-      class="flex-none text-field-padding"
-      v-model="input"
       :rules="$props.rules"
       :autofocus="true"
-    ></v-text-field>
-    <v-btn
-      color="grey darken-2 auto-width"
-      fab
-      text
-      @click="readonly = !readonly"
-    >
-      <v-icon> mdi-pencil </v-icon>
-    </v-btn>
-  </v-card>
+      v-model="input"
+      class="textarea-size"
+      auto-grow
+      filled
+    ></v-textarea>
+    <div class="d-flex align-end textarea-readonly">
+      <v-btn
+        color="grey darken-2 auto-width ma-2"
+        fab
+        text
+        @click="readonly = !readonly"
+      >
+        <v-icon> mdi-pencil </v-icon>
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -87,23 +94,13 @@ export default {
 </script>
 
 <style>
-.text-field-container {
-  height: 40px;
-  box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0) !important;
-  background-color: rgba(255, 255, 255, 0) !important;
+.textarea-size {
+  height: 20vh;
+  min-height: 200px;
 }
-.auto-width {
-  width: auto !important;
-}
-.flex-none {
-  flex: none !important;
-}
-.card-size {
-  height: auto !important;
-}
-.text-field-padding {
-  height: 56px !important;
-  padding-top: 12.2px !important;
-  margin-top: 0 !important;
+.textarea-readonly {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 </style>
