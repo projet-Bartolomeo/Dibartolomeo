@@ -7,5 +7,5 @@ export function readQuerySnapshot(querySnapshot) {
 }
 
 export function generateRandomId() {
-    return `dibartolomeo${(new Date().getTime() * Math.random()).toString()}`
+    return `${(new Date().getTime() * Math.random()).toString()}`
 }
