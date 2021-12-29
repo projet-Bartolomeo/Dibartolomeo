@@ -6,6 +6,7 @@ export const state = () => ({
     studentList: [],
     new: {},
     details: {},
+    form: {},
 })
 
 export const mutations = {
@@ -20,9 +21,9 @@ export const mutations = {
         }, [])
     },
 
-    modifyInList(state, { lessonListToModify, stateName }) {
+    modifyInList(state, { lessonToModify, stateName }) {
         state[stateName] = state[stateName].map(lessonNotUpdated => {
-            const lessonUpdated = lessonListToModify.find(lessonUdpated => lessonUdpated.id === lessonNotUpdated.id)
+            const lessonUpdated = lessonToModify.find(lessonUdpated => lessonUdpated.id === lessonNotUpdated.id)
             if (lessonUpdated === undefined) return lessonNotUpdated
             return lessonUpdated
         })
@@ -81,8 +82,8 @@ export const actions = {
             const teacherListSnapshot = await teacherListRef.get()
             let teacherList = readQuerySnapshot(teacherListSnapshot)
             teacherList = teacherList.map(lesson => {
-                lesson.startDate = convertTimestampToDate(lesson.startDate)
-                lesson.endDate = convertTimestampToDate(lesson.endDate)
+                lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
+                lesson.endDate = convertTimestampToReadableDate(lesson.endDate)
                 return lesson
             })
             commit('set', { stateName: 'teacherList', lesson: teacherList })
@@ -133,46 +134,6 @@ export const actions = {
         }
     },
 
-    async archive({ commit }, { lesson, startDate, endDate, all }) {
-        const lessonRef = this.$fire.firestore.collection('lesson')
-        let notification = { type: 'success', description: 'les cours ont bien été archivés' }
-
-        try {
-            if (all) {
-                if (startDate && endDate) {
-                    const lessonsSnapshot = await lessonRef
-                        .where('recurrenceId', '==', lesson.recurrenceId)
-                        .where('startDate', '>=', new Date(startDate))
-                        .where('startDate', '<=', new Date(endDate))
-                        .get()
-                    const lessons = readQuerySnapshot(lessonsSnapshot)
-                    commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
-                    await Promise.all([
-                        ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
-                    ])
-                } else {
-                    const lessonsSnapshot = await lessonRef
-                        .where('recurrenceId', '==', lesson.recurrenceId)
-                        .where('startDate', '>=', new Date())
-                        .get()
-                    const lessons = readQuerySnapshot(lessonsSnapshot)
-                    commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
-                    await Promise.all([
-                        ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
-                    ])
-                }
-            } else {
-                await lessonRef.doc(lesson.id).update({ isArchived: true })
-                commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: [lesson.id] })
-                notification = { type: 'success', description: 'le cours a bien été archivé' }
-            }
-
-        } catch (error) {
-            notification = { type: 'error', description: 'problème lors de l\'achivage' }
-        }
-        commit('notification/create', notification, { root: true })
-    },
-
     async removeStudentFromLesson({ state, commit }, { student }) {
         try {
             commit('removeInListField', { stateName: 'details', fieldName: 'studentIdsList', toRemove: student.id })
@@ -201,9 +162,9 @@ export const actions = {
         }
     },
 
-    async modify({ commit }, { lesson, payload, startDate, endDate, all }) {
+    async archive({ commit }, { lesson, startDate, endDate, all }) {
         const lessonRef = this.$fire.firestore.collection('lesson')
-        let notification = { type: 'success', description: 'le cours a bien été mis à jour' }
+        let notification = { type: 'success', description: 'les cours ont bien été archivés' }
 
         try {
             if (all) {
@@ -212,13 +173,63 @@ export const actions = {
                     .where('startDate', '>=', new Date())
                     .get()
                 const lessons = readQuerySnapshot(lessonsSnapshot)
-                commit('modifyInList', { stateName: 'teacherList', lessonIdsToModify: lessons.map(lesson => lesson.id) })
+                commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
+                await Promise.all([
+                    ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
+                ])
+            } else if (startDate && endDate) {
+                const lessonsSnapshot = await lessonRef
+                    .where('recurrenceId', '==', lesson.recurrenceId)
+                    .where('startDate', '>=', startDate)
+                    .where('startDate', '<=', endDate)
+                    .get()
+                const lessons = readQuerySnapshot(lessonsSnapshot)
+                commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: lessons.map(lesson => lesson.id) })
                 await Promise.all([
                     ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update({ isArchived: true }))
                 ])
             } else {
-                await lessonRef.doc(lesson.id).update(payload)
+                await lessonRef.doc(lesson.id).update({ isArchived: true })
+                commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: [lesson.id] })
+                notification = { type: 'success', description: 'le cours a bien été archivé' }
             }
+        } catch (error) {
+            notification = { type: 'error', description: 'problème lors de l\'achivage' }
+        }
+        commit('notification/create', notification, { root: true })
+    },
+
+    async modify({ commit }, { lesson, payload, startDate, endDate, all }) {
+        const lessonRef = this.$fire.firestore.collection('lesson')
+        let notification = { type: 'success', description: 'le cours a bien été mis à jour' }
+        let lessons = []
+
+        try {
+            if (all) {
+                const lessonsSnapshot = await lessonRef
+                    .where('recurrenceId', '==', lesson.recurrenceId)
+                    .where('startDate', '>=', new Date())
+                    .get()
+                lessons = readQuerySnapshot(lessonsSnapshot)
+                await Promise.all([
+                    ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update(payload))
+                ])
+            } else if (startDate && endDate) {
+                const lessonsSnapshot = await lessonRef
+                    .where('recurrenceId', '==', lesson.recurrenceId)
+                    .where('startDate', '>=', startDate)
+                    .where('startDate', '<=', endDate)
+                    .get()
+                lessons = readQuerySnapshot(lessonsSnapshot)
+                await Promise.all([
+                    ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update(payload))
+                ])
+            } else {
+                await lessonRef.doc(lesson.id).update(payload)
+                lessons = lesson
+            }
+            commit('modifyInList', { stateName: 'teacherList', lessonToModify: lessons })
+            commit('set', { stateName: 'form', lesson: { valid: true } })
         } catch (error) {
             notification = { type: 'error', description: 'problème lors de la mise à jour' }
         }

@@ -12,7 +12,11 @@
 </template>
 
 <script>
-import { getHoursAndMinutes, convertStringToDate, convertDateToIso } from '../services/dateHelper'
+import {
+  getHoursAndMinutes,
+  convertStringToDate,
+  convertDateToIso,
+} from '../services/dateHelper'
 export default {
   props: {
     getStart: {
@@ -25,54 +29,41 @@ export default {
     },
   },
   methods: {
-    commit(state, date, hourly) {
-      this.$store.commit(`${state.storeName}/modify`, {
-        payload: {
-          [state.fieldName]: convertStringToDate(date, hourly),
-        },
-        stateName: state.stateName,
+    dispatch(state, date, hourly) {
+      const newValue = convertStringToDate(date, hourly)
+      this.$store.dispatch('setFormField', {
+        stateInformations: state,
+        newValue,
       })
     },
   },
   computed: {
-    date() {
-      const date =
-        this.$store.state[this.startState.storeName][this.startState.stateName][
-          this.startState.fieldName
-        ]
-      if (date === undefined) return ''
-      return convertDateToIso(date)
-    },
     startState() {
       return this.$store.getters.getStateFromString(this.$props.getStart)
     },
     endState() {
       return this.$store.getters.getStateFromString(this.$props.getEnd)
     },
+    date() {
+      if (this.startState.value === undefined) return ''
+      return convertDateToIso(this.startState.value)
+    },
     startHour: {
       get() {
-        const startHour =
-          this.$store.state[this.startState.storeName][
-            this.startState.stateName
-          ][this.startState.fieldName]
-        if (startHour === undefined) return ''
-        return getHoursAndMinutes(new Date(startHour))
+        if (this.startState.value === undefined) return ''
+        return getHoursAndMinutes(new Date(this.startState.value))
       },
       set(newValue) {
-        this.commit(this.startState, this.date, newValue)
+        this.dispatch(this.startState, this.date, newValue)
       },
     },
     endHour: {
       get() {
-        const endHour =
-          this.$store.state[this.endState.storeName][this.endState.stateName][
-            this.endState.fieldName
-          ]
-        if (endHour === undefined) return ''
-        return getHoursAndMinutes(new Date(endHour))
+        if (this.endState.value === undefined) return ''
+        return getHoursAndMinutes(new Date(this.endState.value))
       },
       set(newValue) {
-        this.commit(this.endState, this.date, newValue)
+        this.dispatch(this.endState, this.date, newValue)
       },
     },
   },

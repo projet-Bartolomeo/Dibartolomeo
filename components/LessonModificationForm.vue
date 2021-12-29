@@ -8,11 +8,26 @@
       lesson-modification-form
     "
   >
-    <v-radio-group v-model="optionSelected">
+    <v-card-title
+      v-if="$props.lesson.recurrence === 'unique'"
+      class="text-h5 overflow-wrap-normal"
+    >
+      {{
+        $props.archive
+          ? 'Voulez-vous archiver ce cours ?'
+          : 'Voulez-vous enregistrer vos modifications?'
+      }}
+    </v-card-title>
+
+    <v-radio-group
+      v-if="$props.lesson.recurrence === 'everyWeek'"
+      v-model="optionSelected"
+    >
       <v-radio label="uniquement ce cours"></v-radio>
       <v-radio label="plusieurs cours avec la meme récurrence"></v-radio>
       <v-radio label="tous les cours avec la meme récurrence"></v-radio>
     </v-radio-group>
+
     <div v-if="optionSelected === 1" class="d-flex ma-4">
       <v-menu
         v-model="startDateMenu"
@@ -63,6 +78,7 @@
         ></v-date-picker>
       </v-menu>
     </div>
+
     <div class="mt-4 mb-4">
       <v-btn
         class="white--text ml-3 mr-3"
@@ -85,7 +101,7 @@ export default {
   props: {
     lesson: {
       type: Object,
-      required: false,
+      required: true,
     },
     payload: {
       type: Object,
@@ -118,6 +134,11 @@ export default {
       optionSelected: 0,
     }
   },
+  computed: {
+    isRecurrent() {
+      return this.$props.lesson.recurrence !== 'unique'
+    },
+  },
   methods: {
     modifyLesson() {
       this.changeLessonInDatabase('modify')
@@ -135,9 +156,15 @@ export default {
       const parameters = {
         lesson: this.$props.lesson,
         payload: this.$props.payload,
-        all: this.optionSelected === 2,
-        startDate: this.optionSelected === 1 ? this.startDate : null,
-        endDate: this.optionSelected === 1 ? this.endDate : null,
+        all: this.optionSelected === 2 && this.isRecurrent,
+        startDate:
+          this.optionSelected === 1 && this.isRecurrent
+            ? new Date(this.startDate)
+            : null,
+        endDate:
+          this.optionSelected === 1 && this.isRecurrent
+            ? new Date(this.endDate)
+            : null,
       }
       return parameters
     },

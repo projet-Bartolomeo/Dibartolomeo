@@ -41,7 +41,7 @@
         color="grey darken-2"
         fab
         text
-        @click="readonly = !readonly"
+        @click="changeState"
       >
         <v-icon> mdi-pencil </v-icon>
       </v-btn>
@@ -61,10 +61,6 @@ export default {
       type: String,
       required: true,
     },
-    set: {
-      type: String,
-      required: false,
-    },
     rules: {
       type: Array,
       require: false,
@@ -72,34 +68,27 @@ export default {
   },
   computed: {
     state() {
-      const state = this.$props.get.split('.')
-      return {
-        storeName: state[0],
-        stateName: state[1],
-        fieldName: state[2],
-      }
-    },
-    commit() {
-      return this.$props.set ?? `${this.state.storeName}/modify`
+      return this.$store.getters.getStateFromString(this.$props.get)
     },
     input: {
       get() {
-        return this.$store.state[this.state.storeName][this.state.stateName][
-          this.state.fieldName
-        ]
+        return this.state.value
       },
       set(newValue) {
-        this.$store.commit(this.commit, {
-          payload: { [this.state.fieldName]: newValue },
-          stateName: this.state.stateName,
+        this.$store.dispatch('setFormField', {
+          stateInformations: this.state,
+          newValue
         })
       },
     },
   },
   methods: {
     onClickOutside() {
-      this.readonly = true
+      this.readonly = this.$store.state[this.state.storeName].form.valid ? true : this.readonly
     },
+    changeState() {
+      this.readonly = this.$store.state[this.state.storeName].form.valid ? !this.readonly : this.readonly
+    }
   },
 }
 </script>

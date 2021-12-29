@@ -48,15 +48,14 @@ export default {
 
       return resultDate
     },
-    commit(state, date) {
-      this.$store.commit(`${state.storeName}/modify`, {
-        payload: {
-          [state.fieldName]: convertStringToDate(
-            date,
-            getHoursAndMinutes(state.value)
-          ),
-        },
-        stateName: state.stateName,
+    dispatch(state, date) {
+      const newValue = convertStringToDate(
+        date,
+        getHoursAndMinutes(state.value)
+      )
+      this.$store.dispatch('setFormField', {
+        stateInformations: state,
+        newValue,
       })
     },
   },
@@ -69,17 +68,13 @@ export default {
     },
     day: {
       get() {
-        const date =
-          this.$store.state[this.startState.storeName][
-            this.startState.stateName
-          ][this.startState.fieldName]
-        if (date === undefined) return 0
-        return new Date(date).getDay()
+        if (this.startState.value === undefined) return 0
+        return new Date(this.startState.value).getDay()
       },
       set(newValue) {
         newValue = this.getNextDayOfWeek(new Date(), newValue)
-        this.commit(this.startState, newValue)
-        this.commit(this.endState, newValue)
+        this.dispatch(this.startState, newValue)
+        this.dispatch(this.endState, newValue)
       },
     },
   },
