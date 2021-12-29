@@ -27,28 +27,30 @@
             />
           </v-row>
         </v-col>
-        <div class="d-flex flex-column align-center">
-          <v-row>
+        <div class="d-flex">
+          <v-btn
+            color="grey darken-2"
+            fab
+            text
+            @click="
+              $store.commit('overlay/open', {
+                component: 'LessonModificationForm',
+                props: {
+                  lesson,
+                  archive: true,
+                  redirectPath: '/lesson/list',
+                },
+                title: lesson.recurrenceId ? 'Voulez-vous archiver :' : '',
+              })
+            "
+          >
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
+          <div v-if="hasModifications && valid">
             <v-btn
-              class="pa-4"
-              color="error"
-              @click="
-                $store.commit('overlay/open', {
-                  component: 'LessonModificationForm',
-                  props: {
-                    lesson,
-                    archive: true,
-                    redirectPath: '/lesson/list',
-                  },
-                  title: lesson.recurrenceId ? 'Voulez-vous archiver :' : '',
-                })
-              "
-              >Archiver</v-btn
-            >
-          </v-row>
-          <div class="d-flex flex-column pa-4" v-if="hasModifications && valid">
-            <v-btn
-              color="success"
+              color="grey darken-2"
+              fab
+              text
               @click="
                 $store.commit('overlay/open', {
                   component: 'LessonModificationForm',
@@ -60,13 +62,22 @@
                   title: lesson.recurrenceId ? 'Voulez-vous enregistrer :' : '',
                 })
               "
-              >Enregistrer</v-btn
             >
+              <v-icon> mdi-content-save </v-icon>
+            </v-btn>
             <v-btn
-              class="white--text"
-              color="blue darken-1"
-              >Réinitialiser</v-btn
+              color="grey darken-2"
+              fab
+              text
+              @click="
+                $store.dispatch('resetForm', {
+                  storeName: 'lesson',
+                  stateName: $props.datas,
+                })
+              "
             >
+              <v-icon> mdi-arrow-u-down-left </v-icon>
+            </v-btn>
           </div>
         </div>
       </v-row>
@@ -179,7 +190,10 @@ export default {
     },
   },
   created() {
-    this.$store.commit('set', { stateName: 'form', lesson: { valid: true } })
+    this.$store.commit('lesson/set', {
+      stateName: 'form',
+      lesson: { valid: true },
+    })
   },
 }
 </script>
