@@ -55,15 +55,11 @@ export default {
     }
   },
   methods: {
-    commit(state, date) {
-      this.$store.commit(`${state.storeName}/modify`, {
-        payload: {
-          [state.fieldName]: convertStringToDate(
-            date,
-            getHoursAndMinutes(state.value)
-          ),
-        },
-        stateName: state.stateName,
+    dispatch(state, date) {
+      const newValue = convertStringToDate(date, getHoursAndMinutes(state.value))
+      this.$store.dispatch('setFormField', {
+        stateInformations: state,
+        newValue,
       })
     },
   },
@@ -84,8 +80,8 @@ export default {
         return convertDateToIso(date)
       },
       set(newValue) {
-        this.commit(this.startState, newValue)
-        this.commit(this.endState, newValue)
+        this.dispatch(this.startState, newValue)
+        this.dispatch(this.endState, newValue)
       },
     },
   },

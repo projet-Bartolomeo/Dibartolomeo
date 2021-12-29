@@ -22,33 +22,19 @@ export default {
       type: Array,
       required: true,
     },
-    set: {
-      type: String,
-      required: false,
-    },
   },
   computed: {
     state() {
-      const state = this.$props.get.split('.')
-      return {
-        storeName: state[0],
-        stateName: state[1],
-        fieldName: state[2],
-      }
-    },
-    commit() {
-      return this.$props.set ?? `${this.state.storeName}/modify`
+      return this.$store.getters.getStateFromString(this.$props.get)
     },
     input: {
       get() {
-        return this.$store.state[this.state.storeName][this.state.stateName][
-          this.state.fieldName
-        ]
+        return this.state.value
       },
       set(newValue) {
-        this.$store.commit(this.commit, {
-          payload: { [this.state.fieldName]: newValue },
-          stateName: this.state.stateName,
+        this.$store.dispatch('setFormField', {
+          stateInformations: this.state,
+          newValue,
         })
       },
     },
