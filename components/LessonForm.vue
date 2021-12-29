@@ -65,12 +65,6 @@
             <v-btn
               class="white--text"
               color="blue darken-1"
-              @click="
-                $store.commit('set', {
-                  stateName: 'form',
-                  lesson: { valid: true },
-                })
-              "
               >Réinitialiser</v-btn
             >
           </div>
