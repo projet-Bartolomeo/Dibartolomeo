@@ -1,7 +1,6 @@
 <template>
   <div>
-    <LessonForm datas="details" />
-    <v-row class="ma-0 justify-space-around align-center"> </v-row>
+    <LessonForm datas="new" />
     <v-col class="mt-5">
       <DataTableStudent datas="new" lesson>
         <v-btn
