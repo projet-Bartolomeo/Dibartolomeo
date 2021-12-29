@@ -1,6 +1,5 @@
 import { readQuerySnapshot, generateRandomId } from '../services/firestoreHelper'
-import { convertTimestampToDate } from '../services/dateHelper'
-import { DateTime } from "luxon";
+import { convertTimestampToDate, convertTimestampToReadableDate } from '../services/dateHelper'
 
 export const state = () => ({
     teacherList: [],
@@ -47,15 +46,14 @@ export const mutations = {
 }
 
 export const actions = {
-
-    async setStudentList({ commit }, StudentId ) {
+    async setStudentList({ commit }, StudentId) {
         try {
             const studentListSnapshot = await this.$fire.firestore.collection("lesson")
-            .where("studentIdsList", "array-contains", StudentId ).get()
+                .where("studentIdsList", "array-contains", StudentId).get()
             let studentList = readQuerySnapshot(studentListSnapshot)
             studentList = studentList.map(lesson => {
-                lesson.startDate = convertTimestampToDate(lesson.startDate)
-                lesson.endDate = convertTimestampToDate(lesson.endDate)
+                lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
+                lesson.endDate = convertTimestampToReadableDate(lesson.endDate)
                 return lesson
             })
             commit('set', { stateName: 'studentList', lesson: studentList })
@@ -98,7 +96,9 @@ export const actions = {
             const lesson = await this.$fire.firestore.collection('lesson')
                 .doc(lessonId)
                 .get()
-            commit('set', { stateName: 'details', lesson: { ...lesson.data(), id: lesson.id } })
+            const startDate = convertTimestampToDate(lesson.data().startDate)
+            const endDate = convertTimestampToDate(lesson.data().endDate)
+            commit('set', { stateName: 'details', lesson: { ...lesson.data(), id: lesson.id, startDate, endDate } })
             dispatch('student/setFromLesson', {}, { root: true })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
