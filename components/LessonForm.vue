@@ -23,38 +23,62 @@
                   !isNaN(Number(v)) ||
                   'Le nombre maximum d\'étudiant doit etre un nombre',
               ]"
+              number
             />
           </v-row>
         </v-col>
-        <div class="d-flex flex-column align-center">
-          <v-row>
+        <div class="d-flex">
+          <v-btn
+            color="grey darken-2"
+            fab
+            text
+            @click="
+              $store.commit('overlay/open', {
+                component: 'LessonModificationForm',
+                props: {
+                  lesson,
+                  archive: true,
+                  redirectPath: '/lesson/list',
+                },
+                title: lesson.recurrenceId ? 'Voulez-vous archiver :' : '',
+              })
+            "
+          >
+            <v-icon> mdi-delete </v-icon>
+          </v-btn>
+          <div v-if="hasModifications && valid">
             <v-btn
-              color="error"
-              @click="
-                $store.commit('overlay/open', {
-                  component: 'DeleteForm',
-                  props: {
-                    dataToDelete: lesson,
-                    type: 'lesson',
-                  },
-                })
-              "
-              >Archiver le cours</v-btn
-            >
-          </v-row>
-          <v-row>
-            <v-btn
-              color="success"
+              color="grey darken-2"
+              fab
+              text
               @click="
                 $store.commit('overlay/open', {
                   component: 'LessonModificationForm',
-                  props: { lesson: initialLesson, payload, modify: true },
-                  title: 'Voulez-vous modifier :',
+                  props: {
+                    lesson,
+                    payload: $store.state.lesson.form.payload,
+                    modify: true,
+                  },
+                  title: lesson.recurrenceId ? 'Voulez-vous enregistrer :' : '',
                 })
               "
-              >Enregistrer le cours</v-btn
             >
-          </v-row>
+              <v-icon> mdi-content-save </v-icon>
+            </v-btn>
+            <v-btn
+              color="grey darken-2"
+              fab
+              text
+              @click="
+                $store.dispatch('resetForm', {
+                  storeName: 'lesson',
+                  stateName: $props.datas,
+                })
+              "
+            >
+              <v-icon> mdi-arrow-u-down-left </v-icon>
+            </v-btn>
+          </div>
         </div>
       </v-row>
       <v-col>
@@ -64,7 +88,7 @@
               <div class="d-flex justify-start align-center">
                 <p class="pa-4 text-no-wrap">Récurrence :</p>
                 <div class="pa-4 recurrence-title">
-                  {{ $store.state.lesson[$props.datas].recurrence }}
+                  {{ recurrence }}
                 </div>
               </div>
               <div class="d-flex justify-start align-center">
@@ -91,6 +115,7 @@
                       (v) => !!v || 'Le prix est obligatoire',
                       (v) => !isNaN(Number(v)) || 'Le prix doit etre un nombre',
                     ]"
+                    number
                   />
                 </div>
               </div>
@@ -131,6 +156,7 @@
 </template>
 
 <script>
+import { Recurrence } from '../enums/Recurrence'
 export default {
   props: {
     datas: {
@@ -144,15 +170,30 @@ export default {
     },
     valid: {
       get() {
-        return this.$store.state.lesson[this.$props.datas].valid
+        return this.$store.state.lesson.form.valid
       },
       set(newValue) {
         this.$store.commit('lesson/modify', {
-          stateName: this.$props.datas,
+          stateName: 'form',
           payload: { valid: newValue },
         })
       },
     },
+    recurrence() {
+      if (this.$store.state.lesson[this.$props.datas] === undefined) return ''
+      const recurrence = this.$store.state.lesson[this.$props.datas].recurrence
+      return Recurrence[recurrence]
+    },
+    hasModifications() {
+      if (this.$store.state.lesson.form.payload === undefined) return false
+      return Object.keys(this.$store.state.lesson.form.payload).length > 0
+    },
+  },
+  created() {
+    this.$store.commit('lesson/set', {
+      stateName: 'form',
+      lesson: { valid: true },
+    })
   },
 }
 </script>

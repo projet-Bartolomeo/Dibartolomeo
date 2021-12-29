@@ -15,7 +15,7 @@
         <v-btn
           v-if="$props.message"
           :disabled="selected.length === 0"
-          style="color: white" 
+          style="color: white"
           color="teal lighten-2"
           @click="
             $store.commit('overlay/open', {
@@ -43,25 +43,6 @@
         item-key="id"
         :show-select="getShowSelect"
       >
-        <template v-slot:top>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5 overflow-wrap-normal"
-                >Etes-vous sur de vouloir archiver ce cours ?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Annuler</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >Supprimer</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <div class="d-flex">
             <v-icon
@@ -79,7 +60,20 @@
             <NuxtLink class="nuxtlink" :to="`/lesson/?id=${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
-            <v-icon v-if="$props.delete" class="mr-1" @click="deleteItem(item)">
+            <v-icon
+              v-if="$props.delete"
+              class="mr-1"
+              @click="
+                $store.commit('overlay/open', {
+                  component: 'LessonModificationForm',
+                  props: {
+                    lesson: item,
+                    archive: true,
+                  },
+                  title: item.recurrenceId ? 'Voulez-vous archiver :' : '',
+                })
+              "
+            >
               mdi-delete
             </v-icon>
           </div>
