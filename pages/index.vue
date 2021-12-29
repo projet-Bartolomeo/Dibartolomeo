@@ -157,7 +157,6 @@ export default {
 
         return lesson
       })
-      console.log(lessonList)
       return lessonList
     },
   },
