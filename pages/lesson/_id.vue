@@ -1,27 +1,24 @@
 <template>
   <div>
     <LessonForm datas="details" />
-    <v-row class="ma-0 justify-space-around align-center"> </v-row>
-    <v-col class="mt-5">
-      <DataTableStudent datas="fromLesson" lesson>
-        <v-btn
-          style="color: white"
-          color="blue darken-1"
-          class="mr-4"
-          @click="
-            $store.commit('overlay/open', {
-              component: 'DataTableStudent',
-              props: {
-                datas: 'notInLesson',
-                add: true,
-              },
-              title: 'Choisissez les élèves à ajouter à votre cours',
-            })
-          "
-          >Ajouter un élève</v-btn
-        >
-      </DataTableStudent>
-    </v-col>
+    <DataTableStudent datas="fromLesson" lesson>
+      <v-btn
+        style="color: white"
+        color="blue darken-1"
+        class="mr-4"
+        @click="
+          $store.commit('overlay/open', {
+            component: 'DataTableStudent',
+            props: {
+              datas: 'notInLesson',
+              add: true,
+            },
+            title: 'Choisissez les élèves à ajouter à votre cours',
+          })
+        "
+        >Ajouter un élève</v-btn
+      >
+    </DataTableStudent>
   </div>
 </template>
 
@@ -57,7 +54,9 @@ export default {
     ],
   }),
   async created() {
-    await this.$store.dispatch('lesson/setDetails', { lessonId: this.$route.query.id })
+    await this.$store.dispatch('lesson/setDetails', {
+      lessonId: this.$route.query.id,
+    })
   },
 
   methods: {
