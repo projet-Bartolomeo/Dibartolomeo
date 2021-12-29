@@ -226,7 +226,7 @@ export const actions = {
                 ])
             } else {
                 await lessonRef.doc(lesson.id).update(payload)
-                lessons = lesson
+                lessons = [lesson]
             }
             commit('modifyInList', { stateName: 'teacherList', lessonToModify: lessons })
             commit('set', { stateName: 'form', lesson: { valid: true } })
