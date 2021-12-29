@@ -5,7 +5,7 @@ export const state = () => ({
     fromLesson: [],
     notInLesson: [],
     details: {},
-    new : {},
+    new: {},
 })
 
 export const mutations = {
@@ -35,12 +35,8 @@ export const mutations = {
 }
 
 export const actions = {
-
-
-    
     async setDetails({ commit }, studentId ) {
         try {
-            console.log(studentId)
             const user = await this.$fire.firestore.collection('user')
                 .doc(studentId)
                 .get()
@@ -51,11 +47,10 @@ export const actions = {
         }
     },
 
-
     async setTeacherList({ commit ,rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
-            .where('teacherList', 'array-contains', rootState.user.id).get()
+                .where('teacherList', 'array-contains', rootState.user.id).get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
         } catch (error) {
@@ -80,7 +75,9 @@ export const actions = {
     async setNotInLesson({ rootState, commit }) {
         try {
             const studentInLessonIds = rootState.lesson.details.studentIdsList
-            let students = await this.$fire.firestore.collection('user').get()
+            let students = await this.$fire.firestore.collection('user')
+                .where('teacherList', 'array-contains', rootState.user.id)
+                .get()
             students = readQuerySnapshot(students).filter(student => !studentInLessonIds.includes(student.id))
             commit('set', { stateName: 'notInLesson', student: students })
         } catch (error) {
@@ -88,13 +85,13 @@ export const actions = {
         }
     },
 
-    async removeFromTeacher({ commit ,rootState }, student) {
+    async removeFromTeacher({ commit, rootState }, student) {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
-            const lastTeacherList =  student.teacherList;
+            const lastTeacherList = student.teacherList;
 
-                const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id);
+            const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id);
 
             let isDeleted = true
             if (student.isRegistered) isDeleted = false
@@ -109,7 +106,7 @@ export const actions = {
         }
     },
 
-    async createFromTeacher({ rootState, commit }, student ) {
+    async createFromTeacher({ rootState, commit }, student) {
         try {
             const newStudent = { ...student, teacherList: [rootState.user.id], isRegistered: false, isDeleted: false }
             commit('addToList', { stateName: 'teacherList', student: newStudent })

@@ -1,5 +1,5 @@
 <template>
-  <v-card
+  <div
     v-click-outside="onClickOutside"
     class="
       d-flex
@@ -8,31 +8,45 @@
       text-field-container
       auto-width
       card-size
+      pa-4
     "
   >
     <div
       v-if="readonly"
-      :class="`d-flex justify-center align-start ${titleStyle}`"
+      class="
+        textarea-size
+        d-flex
+        justify-start
+        align-start
+        pa-3
+        textarea-text-color
+      "
     >
-      {{ input }}{{ $props.suffix }}
+      {{ input }}
     </div>
-    <v-text-field
+    <v-textarea
       v-else
-      :class="`flex-none text-field-padding ${titleStyle}`"
       v-model="input"
+      height="100%"
+      min-height="100%"
+      class="textarea-size"
       :rules="$props.rules"
       :autofocus="true"
-      :suffix="$props.suffix"
-    ></v-text-field>
-    <v-btn
-      color="grey darken-2 auto-width"
-      fab
-      text
-      @click="readonly = !readonly"
-    >
-      <v-icon> mdi-pencil </v-icon>
-    </v-btn>
-  </v-card>
+      auto-grow
+      filled
+    ></v-textarea>
+    <div class="d-flex align-end textarea-readonly">
+      <v-btn
+        class="ma-2"
+        color="grey darken-2"
+        fab
+        text
+        @click="readonly = !readonly"
+      >
+        <v-icon> mdi-pencil </v-icon>
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -53,15 +67,7 @@ export default {
     },
     rules: {
       type: Array,
-      required: false,
-    },
-    suffix: {
-      type: String,
-      required: false,
-    },
-    title: {
-      type: Boolean,
-      required: false,
+      require: false,
     },
   },
   computed: {
@@ -89,9 +95,6 @@ export default {
         })
       },
     },
-    titleStyle() {
-      return this.$props.title ? 'display-1' : ''
-    },
   },
   methods: {
     onClickOutside() {
@@ -102,23 +105,20 @@ export default {
 </script>
 
 <style>
+.textarea-size {
+  height: 20vh;
+  min-height: 200px;
+  width: 100%;
+}
+.textarea-readonly {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.textarea-text-color {
+  color: rgb(87, 87, 87);
+}
 .text-field-container {
-  height: 40px;
-  box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, 0) !important;
-  background-color: rgba(255, 255, 255, 0) !important;
-}
-.auto-width {
-  width: auto !important;
-}
-.flex-none {
-  flex: none !important;
-}
-.card-size {
-  height: auto !important;
-}
-.text-field-padding {
-  height: 56px !important;
-  padding-top: 12.2px !important;
-  margin-top: 0 !important;
+  position: relative;
 }
 </style>
