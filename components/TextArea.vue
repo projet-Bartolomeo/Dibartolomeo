@@ -31,18 +31,13 @@
       min-height="100%"
       class="textarea-size"
       :rules="$props.rules"
-      :autofocus="true"
+      :autofocus="!this.$props.open"
+      :placeholder="$props.placeholder"
       auto-grow
       filled
     ></v-textarea>
     <div class="d-flex align-end textarea-readonly">
-      <v-btn
-        class="ma-2"
-        color="grey darken-2"
-        fab
-        text
-        @click="changeState"
-      >
+      <v-btn class="ma-2" color="grey darken-2" fab text @click="changeState">
         <v-icon> mdi-pencil </v-icon>
       </v-btn>
     </div>
@@ -53,7 +48,7 @@
 export default {
   data() {
     return {
-      readonly: true,
+      readonly: !this.$props.open,
     }
   },
   props: {
@@ -63,7 +58,15 @@ export default {
     },
     rules: {
       type: Array,
-      require: false,
+      required: false,
+    },
+    open: {
+      type: Boolean,
+      required: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
     },
   },
   computed: {
@@ -77,18 +80,26 @@ export default {
       set(newValue) {
         this.$store.dispatch('setFormField', {
           stateInformations: this.state,
-          newValue
+          newValue,
         })
       },
     },
   },
   methods: {
     onClickOutside() {
-      this.readonly = this.$store.state[this.state.storeName].form.valid ? true : this.readonly
+      if (!this.$props.open) {
+        this.readonly = this.$store.state[this.state.storeName].form.valid
+          ? true
+          : this.readonly
+      }
     },
     changeState() {
-      this.readonly = this.$store.state[this.state.storeName].form.valid ? !this.readonly : this.readonly
-    }
+      if (!this.$props.open) {
+        this.readonly = this.$store.state[this.state.storeName].form.valid
+          ? !this.readonly
+          : this.readonly
+      }
+    },
   },
 }
 </script>

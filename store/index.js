@@ -49,11 +49,11 @@ export const actions = {
             })
         }
     },
-    resetForm({ commit, rootState }, { storeName, stateToReinitialize }) {
-        commit(`${storeName}/set`,  { stateName: stateToReinitialize,  })
+    resetEditionForm({ commit, rootState }, { storeName, stateName }) {
+        commit(`${storeName}/modify`,  { stateName, payload: rootState[storeName].form.oldValues })
         commit(`${storeName}/set`, {
             stateName: 'form',
             lesson: { valid: true },
         })
-    }
+    },
 }

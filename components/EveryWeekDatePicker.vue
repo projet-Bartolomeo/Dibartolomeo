@@ -1,9 +1,8 @@
 <template>
-  <div>
+  <div width="auto">
     <v-select
       v-model="day"
       :items="weekDays"
-      :label="$props.label"
       @change="getNextDayOfWeek(new Date(), day)"
     ></v-select>
     <HourIntervalPicker :getStart="$props.getStart" :getEnd="$props.getEnd" />
@@ -34,10 +33,6 @@ export default {
     getEnd: {
       type: String,
       required: true,
-    },
-    label: {
-      type: String,
-      required: false,
     },
   },
   methods: {

@@ -1,26 +1,39 @@
 <template>
   <div>
     <LessonForm datas="new" />
-    <v-col class="mt-5">
-      <DataTableStudent datas="new" lesson>
-        <v-btn
-          style="color: white"
-          color="blue darken-1"
-          class="mr-4"
-          @click="
-            $store.commit('overlay/open', {
-              component: 'DataTableStudent',
-              props: {
-                datas: 'notInLesson',
-                add: true,
-              },
-              title: 'Choisissez les élèves à ajouter à votre cours',
-            })
-          "
-          >Ajouter un élève</v-btn
-        >
-      </DataTableStudent>
-    </v-col>
+    <DataTableStudent datas="fromLesson" lesson isNew>
+      <v-btn
+        style="color: white"
+        color="blue darken-1"
+        class="mr-4"
+        @click="
+          $store.commit('overlay/open', {
+            component: 'DataTableStudent',
+            props: {
+              datas: 'notInLesson',
+              add: true,
+              isNew: true,
+            },
+            title: 'Choisissez les élèves à ajouter à votre cours',
+          })
+        "
+        >Ajouter un élève</v-btn
+      >
+    </DataTableStudent>
+    <div class="button-icons-container">
+      <v-btn v-if="valid" color="grey darken-2" fab text @click="create">
+        <v-icon> mdi-content-save </v-icon>
+      </v-btn>
+      <v-btn
+        v-if="hasModifications"
+        color="grey darken-2"
+        fab
+        text
+        @click="$store.dispatch('lesson/resetNewForm')"
+      >
+        <v-icon> mdi-arrow-u-down-left </v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -55,26 +68,31 @@ export default {
       'Dimanche',
     ],
   }),
-  async created() {
-    await this.$store.dispatch('lesson/setDetails', { lessonId: this.$route.query.id })
-  },
-
   methods: {
-    HideShow(idHide, idShow, iconHide, iconShow) {
-      idHide.className = 'hide'
-      idShow.className = 'show'
-      iconHide.className = 'hide'
-      iconShow.className = 'show'
+    create() {
+      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      this.$router.push('/lesson/list')
     },
-
-    showSave(field, value) {
-      this.$refs.enregistrer.className = 'show'
-      this.addToPayload(field, value)
+  },
+  computed: {
+    hasModifications() {
+      if (this.$store.state.lesson.form.payload === undefined) return false
+      return Object.keys(this.$store.state.lesson.form.payload).length > 0
     },
-
-    addToPayload(field, value) {
-      this.payload = { ...this.payload, [field]: value }
+    valid: {
+      get() {
+        return this.$store.state.lesson.form.valid
+      },
+      set(newValue) {
+        this.$store.commit('lesson/modify', {
+          stateName: 'form',
+          payload: { valid: newValue },
+        })
+      },
     },
+  },
+  created() {
+    this.$store.dispatch('lesson/setNew')
   },
 }
 </script>
@@ -92,5 +110,11 @@ export default {
 .input input {
   padding: 0;
   margin-top: 19px;
+}
+
+.button-icons-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 </style>
