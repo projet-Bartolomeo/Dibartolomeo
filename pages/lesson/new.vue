@@ -1,26 +1,24 @@
 <template>
   <div>
     <LessonForm datas="new" />
-    <v-col class="mt-5">
-      <DataTableStudent datas="new" lesson>
-        <v-btn
-          style="color: white"
-          color="blue darken-1"
-          class="mr-4"
-          @click="
-            $store.commit('overlay/open', {
-              component: 'DataTableStudent',
-              props: {
-                datas: 'notInLesson',
-                add: true,
-              },
-              title: 'Choisissez les élèves à ajouter à votre cours',
-            })
-          "
-          >Ajouter un élève</v-btn
-        >
-      </DataTableStudent>
-    </v-col>
+    <!-- <DataTableStudent datas="new" lesson>
+      <v-btn
+        style="color: white"
+        color="blue darken-1"
+        class="mr-4"
+        @click="
+          $store.commit('overlay/open', {
+            component: 'DataTableStudent',
+            props: {
+              datas: 'notInLesson',
+              add: true,
+            },
+            title: 'Choisissez les élèves à ajouter à votre cours',
+          })
+        "
+        >Ajouter un élève</v-btn
+      >
+    </DataTableStudent> -->
   </div>
 </template>
 
@@ -55,27 +53,6 @@ export default {
       'Dimanche',
     ],
   }),
-  async created() {
-    await this.$store.dispatch('lesson/setDetails', { lessonId: this.$route.query.id })
-  },
-
-  methods: {
-    HideShow(idHide, idShow, iconHide, iconShow) {
-      idHide.className = 'hide'
-      idShow.className = 'show'
-      iconHide.className = 'hide'
-      iconShow.className = 'show'
-    },
-
-    showSave(field, value) {
-      this.$refs.enregistrer.className = 'show'
-      this.addToPayload(field, value)
-    },
-
-    addToPayload(field, value) {
-      this.payload = { ...this.payload, [field]: value }
-    },
-  },
 }
 </script>
 
