@@ -47,10 +47,10 @@ export const actions = {
         }
     },
 
-    async setTeacherList({ commit ,rootState }) {
+    async setTeacherList({ commit, rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
-                .where('teacherList', 'array-contains', rootState.user.id).get()
+                .where('teacherIdsList', 'array-contains', rootState.user.id).get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
         } catch (error) {
@@ -58,25 +58,25 @@ export const actions = {
         }
     },
 
-    async setFromLesson({ rootState, commit, dispatch }) {
+    async setFromLesson({ rootState, commit, dispatch }, { stateName }) {
         try {
-            const studentIds = rootState.lesson.details.studentIdsList
+            const studentIds = rootState.lesson[stateName].studentIdsList
             const students = await Promise.all([...studentIds.map(async id => {
                 const user = await this.$fire.firestore.collection('user').doc(id).get()
                 return { ...user.data(), id: user.id }
             })])
             commit('set', { stateName: 'fromLesson', student: students })
-            dispatch('setNotInLesson')
+            dispatch('setNotInLesson', { stateName })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
     },
 
-    async setNotInLesson({ rootState, commit }) {
+    async setNotInLesson({ rootState, commit }, { stateName }) {
         try {
-            const studentInLessonIds = rootState.lesson.details.studentIdsList
+            const studentInLessonIds = rootState.lesson[stateName].studentIdsList
             let students = await this.$fire.firestore.collection('user')
-                .where('teacherList', 'array-contains', rootState.user.id)
+                .where('teacherIdsList', 'array-contains', rootState.user.id)
                 .get()
             students = readQuerySnapshot(students).filter(student => !studentInLessonIds.includes(student.id))
             commit('set', { stateName: 'notInLesson', student: students })
@@ -89,9 +89,9 @@ export const actions = {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
-            const lastTeacherList = student.teacherList;
+            const lastTeacherList = student.teacherIdsList
 
-            const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id);
+            const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
 
             let isDeleted = true
             if (student.isRegistered) isDeleted = false
@@ -108,7 +108,7 @@ export const actions = {
 
     async createFromTeacher({ rootState, commit }, student) {
         try {
-            const newStudent = { ...student, teacherList: [rootState.user.id], isRegistered: false, isDeleted: false }
+            const newStudent = { ...student, teacherIdsList: [rootState.user.id], isRegistered: false, isDeleted: false }
             commit('addToList', { stateName: 'teacherList', student: newStudent })
 
             await this.$fire.firestore.collection('user').add(newStudent)
@@ -120,16 +120,12 @@ export const actions = {
 
     async modify({ commit }, {studentId, payload} ) {
         try {
-            console.log(studentId)
-            console.log(payload)
-
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
 
             commit('notification/create', { description: 'élève mis à jour' }, { root: true })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
     }
