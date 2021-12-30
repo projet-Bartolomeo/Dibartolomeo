@@ -125,10 +125,6 @@ export default {
       type: Boolean,
       required: false,
     },
-    new: {
-      type: Boolean,
-      required: false,
-    },
     datas: {
       type: String,
       required: true,

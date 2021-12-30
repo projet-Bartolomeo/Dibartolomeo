@@ -31,18 +31,13 @@
       min-height="100%"
       class="textarea-size"
       :rules="$props.rules"
-      :autofocus="true"
+      :autofocus="!this.$props.open"
+      :placeholder="$props.placeholder"
       auto-grow
       filled
     ></v-textarea>
     <div class="d-flex align-end textarea-readonly">
-      <v-btn
-        class="ma-2"
-        color="grey darken-2"
-        fab
-        text
-        @click="changeState"
-      >
+      <v-btn class="ma-2" color="grey darken-2" fab text @click="changeState">
         <v-icon> mdi-pencil </v-icon>
       </v-btn>
     </div>
@@ -53,7 +48,7 @@
 export default {
   data() {
     return {
-      readonly: true,
+      readonly: !this.$props.open,
     }
   },
   props: {
@@ -63,8 +58,16 @@ export default {
     },
     rules: {
       type: Array,
-      require: false,
+      required: false,
     },
+    open: {
+      type: Boolean,
+      required: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+    }
   },
   computed: {
     state() {
