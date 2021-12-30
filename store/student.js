@@ -50,7 +50,7 @@ export const actions = {
     async setTeacherList({ commit, rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
-                .where('teacherIdsList', 'array-contains', rootState.user.id).get()
+                .where('teacherIds', 'array-contains', rootState.user.id).get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
         } catch (error) {
@@ -60,7 +60,7 @@ export const actions = {
 
     async setFromLesson({ rootState, commit, dispatch }, { stateName }) {
         try {
-            const studentIds = rootState.lesson[stateName].studentIdsList
+            const studentIds = rootState.lesson[stateName].teacherIds
             const students = await Promise.all([...studentIds.map(async id => {
                 const user = await this.$fire.firestore.collection('user').doc(id).get()
                 return { ...user.data(), id: user.id }
@@ -74,9 +74,9 @@ export const actions = {
 
     async setNotInLesson({ rootState, commit }, { stateName }) {
         try {
-            const studentInLessonIds = rootState.lesson[stateName].studentIdsList
+            const studentInLessonIds = rootState.lesson[stateName].teacherIds
             let students = await this.$fire.firestore.collection('user')
-                .where('teacherIdsList', 'array-contains', rootState.user.id)
+                .where('teacherIds', 'array-contains', rootState.user.id)
                 .get()
             students = readQuerySnapshot(students).filter(student => !studentInLessonIds.includes(student.id))
             commit('set', { stateName: 'notInLesson', student: students })
@@ -89,7 +89,7 @@ export const actions = {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
-            const lastTeacherList = student.teacherIdsList
+            const lastTeacherList = student.teacherIds
 
             const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
 
@@ -108,7 +108,7 @@ export const actions = {
 
     async createFromTeacher({ rootState, commit }, student) {
         try {
-            const newStudent = { ...student, teacherIdsList: [rootState.user.id], isRegistered: false, isDeleted: false }
+            const newStudent = { ...student, teacherIds: [rootState.user.id], isRegistered: false, isDeleted: false }
             commit('addToList', { stateName: 'teacherList', student: newStudent })
 
             await this.$fire.firestore.collection('user').add(newStudent)

@@ -50,7 +50,7 @@ export const actions = {
     async setStudentList({ commit }, StudentId) {
         try {
             const studentListSnapshot = await this.$fire.firestore.collection("lesson")
-                .where("studentIdsList", "array-contains", StudentId).get()
+                .where("teacherIds", "array-contains", StudentId).get()
             let studentList = readQuerySnapshot(studentListSnapshot)
             studentList = studentList.map(lesson => {
                 lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
@@ -144,13 +144,13 @@ export const actions = {
 
     async removeStudentFromLesson({ state, commit }, { student, stateName, notUpdateInDatabase }) {
         try {
-            commit('removeInListField', { stateName, fieldName: 'studentIdsList', toRemove: student.id })
+            commit('removeInListField', { stateName, fieldName: 'teacherIds', toRemove: student.id })
             commit('student/addToList', { stateName: 'notInLesson', student }, { root: true })
             commit('student/removeFromList', { stateName: 'fromLesson', studentId: student.id }, { root: true })
             if (!notUpdateInDatabase) {
                 await this.$fire.firestore.collection('lesson')
                     .doc(state.details.id)
-                    .update({ studentIdsList: state.details.studentIdsList })
+                    .update({ teacherIds: state.details.teacherIds })
             }
             commit('notification/create', { description: 'élève supprimé du cours' }, { root: true })
         } catch (error) {
@@ -160,13 +160,13 @@ export const actions = {
 
     async addStudentInLesson({ state, commit }, { student, stateName, notUpdateInDatabase }) {
         try {
-            commit('addToListField', { stateName, fieldName: 'studentIdsList', toAdd: student.id })
+            commit('addToListField', { stateName, fieldName: 'teacherIds', toAdd: student.id })
             commit('student/addToList', { stateName: 'fromLesson', student }, { root: true })
             commit('student/removeFromList', { stateName: 'notInLesson', studentId: student.id }, { root: true })
             if (!notUpdateInDatabase) {
                 await this.$fire.firestore.collection('lesson')
                     .doc(state.details.id)
-                    .update({ studentIdsList: state.details.studentIdsList })
+                    .update({ teacherIds: state.details.teacherIds })
             }
             commit('notification/create', { description: 'élève ajouté au cours' }, { root: true })
         } catch (error) {
@@ -256,7 +256,7 @@ export const actions = {
                 endDate: new Date(),
                 recurrence: 'everyWeek',
                 ageRange: 'adult',
-                studentIdsList: []
+                teacherIds: []
             },
         })
     }

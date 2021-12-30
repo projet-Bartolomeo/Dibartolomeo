@@ -14,7 +14,7 @@
           </v-row>
           <v-row class="ma-0">
             <p class="ma-0 align-center d-flex">
-              {{ lesson.studentIdsList ? lesson.studentIdsList.length : 0 }}/
+              {{ lesson.teacherIds ? lesson.teacherIds.length : 0 }}/
             </p>
             <TextField
               :suffix="$props.datas === 'new' ? '' : 'élèves'"
