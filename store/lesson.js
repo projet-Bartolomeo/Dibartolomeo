@@ -66,7 +66,7 @@ export const actions = {
     async setTeacherList({ commit, rootState }, { startDateFilter, endDateFilter }) {
         try {
             const teacherListRef = this.$fire.firestore.collection('lesson')
-                .where('profesorId', '==', rootState.user.id)
+                .where('teacherId', '==', rootState.user.id)
                 .where('isArchived', '==', false)
 
             if (startDateFilter && endDateFilter) {
@@ -116,7 +116,7 @@ export const actions = {
 
     async create({ rootState, commit, dispatch }, lessonDatas) {
         try {
-            const newLesson = { ...lessonDatas, profesorId: rootState.user.id, isArchived: false }
+            const newLesson = { ...lessonDatas, teacherId: rootState.user.id, isArchived: false }
             if (newLesson.recurrence === 'everyWeek') {
                 const weekInYear = 52
                 const dateList = [newLesson.startDate]
