@@ -78,7 +78,6 @@ export const actions = {
                     .where('startDate', '>=', (new Date()).getTime())
                     .where('startDate', '<=', (new Date()).getTime() + 7 * 24 * 60 * 60 * 1000)
             }
-
             const teacherListSnapshot = await teacherListRef.get()
             let teacherList = readQuerySnapshot(teacherListSnapshot)
             teacherList = teacherList.map(lesson => {
@@ -106,20 +105,20 @@ export const actions = {
         }
     },
 
-    async create({ commit, dispatch }, newLesson) {
+    async create({ rootState, commit, dispatch }, lessonDatas) {
         try {
-            commit('set', { stateName: 'newLesson', lesson: {} })
-            if (newLesson === 'everyWeek') {
-                const weekInYear = 52
+            const newLesson = { ...lessonDatas, profesorId: rootState.user.id, isArchived: false }
+            if (newLesson.recurrence === 'everyWeek') {
+                const weekInYear = 4
                 const dateList = [newLesson.startDate]
                 const recurrenceId = generateRandomId()
 
                 for (let i = 0; i < weekInYear; i++) {
                     dateList.push(new Date(dateList[i].getTime() + 7 * 24 * 60 * 60 * 1000))
                 }
-
-                if (newLesson.recurrence === 'everyWeek') await Promise.all([
+                await Promise.all([
                     ...dateList.map(async date => {
+                        console.log('fsdf')
                         const lesson = { ...newLesson, startDate: date, endDate: date, recurrenceId }
                         return await this.$fire.firestore.collection('lesson').add(lesson)
                     })
@@ -127,8 +126,9 @@ export const actions = {
             } else {
                 await this.$fire.firestore.collection('lesson').add(newLesson)
             }
+            console.log('fssdf')
             commit('notification/create', { description: 'votre cours a bien été créé' }, { root: true })
-            await dispatch('setTeacherList')
+            dispatch('setTeacherList', {})
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la création de votre cours', type: 'error' }, { root: true })
         }
@@ -235,4 +235,17 @@ export const actions = {
         }
         commit('notification/create', notification, { root: true })
     },
+
+    resetNewForm({ commit }) {
+        commit('set', {
+            stateName: 'new',
+            lesson: {
+                startDate: new Date(),
+                endDate: new Date(),
+                recurrence: 'everyWeek',
+                ageRange: 'adult',
+                studentIdsList: []
+            },
+        })
+    }
 }
