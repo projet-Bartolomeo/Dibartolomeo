@@ -7,11 +7,12 @@
       <v-spacer></v-spacer>
       <v-btn
         class="white--text ma-4"
+        text
         color="blue darken-1"
         @click="$store.commit('overlay/close')"
         >Annuler</v-btn
       >
-      <v-btn class="white--text ma-4" color="blue darken-1" @click="remove"
+      <v-btn text class="white--text ma-4" color="blue darken-1" @click="remove"
         >Confirmer</v-btn
       >
       <v-spacer></v-spacer>
@@ -35,6 +36,11 @@ export default {
     remove() {
       this.$store.dispatch(this.datas.dispatch.key, this.datas.dispatch.value)
       this.$store.commit('overlay/close')
+      if (this.$props.type === 'lesson') {
+        this.$router.push('/lesson/list')
+      } else {
+        this.$router.push('/student/list')
+      }
     },
   },
   computed: {
@@ -51,7 +57,7 @@ export default {
             },
           }
         : {
-            text: 'Etes-vous sur de vouloir retirer supprimer cet élève',
+            text: 'Etes-vous sur de vouloir supprimer cet élève',
             dispatch: {
               key: 'student/removeFromTeacher',
               value: { student: this.$props.dataToDelete },
