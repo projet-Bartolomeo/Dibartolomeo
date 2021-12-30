@@ -113,6 +113,10 @@
 <script>
 export default {
   props: {
+    datas: {
+      type: String,
+      required: true,
+    },
     message: {
       type: Boolean,
       required: false,
@@ -125,9 +129,9 @@ export default {
       type: Boolean,
       required: false,
     },
-    datas: {
-      type: String,
-      required: true,
+    isNew: {
+      type: Boolean,
+      required: false,
     },
   },
   data() {
@@ -196,10 +200,6 @@ export default {
   },
 
   methods: {
-    async addToLesson(student) {
-      await this.$store.dispatch('lesson/addStudentInLesson', { student })
-    },
-
     deleteItem(item) {
       this.editedItem = item
       this.dialogDelete = true
@@ -208,7 +208,7 @@ export default {
     deleteStudentFromLesson() {
       this.deleteItemConfirm()
     },
-  
+
     async remove() {
       await this.$store.dispatch('student/removeFromTeacher', {
         student: this.editedItem,
@@ -239,9 +239,19 @@ export default {
       } else {
         this.$store.dispatch('lesson/removeStudentFromLesson', {
           student: this.editedItem,
+          stateName: this.$props.isNew ? 'new' : 'details',
+          notUpdateInDatabase: this.$props.isNew,
         })
       }
       this.closeDelete()
+    },
+
+    async addToLesson(student) {
+      await this.$store.dispatch('lesson/addStudentInLesson', {
+        student,
+        stateName: this.$props.isNew ? 'new' : 'details',
+        notUpdateInDatabase: this.$props.isNew,
+      })
     },
   },
 }

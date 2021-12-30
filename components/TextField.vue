@@ -91,14 +91,18 @@ export default {
   },
   methods: {
     onClickOutside() {
-      this.readonly = this.$store.state[this.state.storeName].form.valid
-        ? true
-        : this.readonly
+      if (!this.$props.open) {
+        this.readonly = this.$store.state[this.state.storeName].form.valid
+          ? true
+          : this.readonly
+      }
     },
     changeState() {
-      this.readonly = this.$store.state[this.state.storeName].form.valid
-        ? !this.readonly
-        : this.readonly
+      if (!this.$props.open) {
+        this.readonly = this.$store.state[this.state.storeName].form.valid
+          ? !this.readonly
+          : this.readonly
+      }
     },
   },
 }

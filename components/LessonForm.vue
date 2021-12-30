@@ -256,14 +256,8 @@ export default {
   methods: {
     create() {
       this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      this.$router.push('/lesson/list')
     },
-  },
-  created() {
-    this.$store.dispatch('lesson/resetNewForm')
-    this.$store.commit('lesson/set', {
-      stateName: 'form',
-      lesson: { valid: false },
-    })
   },
 }
 </script>
