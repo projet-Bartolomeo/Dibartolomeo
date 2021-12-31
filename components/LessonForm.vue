@@ -75,7 +75,6 @@
               fab
               text
               @click="
-                create()
                 $store.commit('overlay/open', {
                   component: 'LessonModificationForm',
                   props: {
