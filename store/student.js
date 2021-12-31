@@ -6,6 +6,8 @@ export const state = () => ({
     notInLesson: [],
     details: {},
     new: {},
+    form: {},
+
 })
 
 export const mutations = {
@@ -84,11 +86,13 @@ export const actions = {
         }
     },
 
-    async removeFromTeacher({ commit, rootState }, student) {
+    async removeFromTeacher({ commit, rootState }, {student}) {
         try {
+            console.log(student);
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
             const lastTeacherList = student.teacherIds
+
 
             const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
 
@@ -112,6 +116,8 @@ export const actions = {
 
             await this.$fire.firestore.collection('user').add(newStudent)
             commit('notification/create', { description: 'élève créé' }, { root: true })
+            commit('set', { stateName: 'form', student: { valid: false } })
+
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la création de l\'élève', type: 'error' }, { root: true })
         }
@@ -119,11 +125,14 @@ export const actions = {
 
     async modify({ commit }, {studentId, payload} ) {
         try {
+
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
 
             commit('notification/create', { description: 'élève mis à jour' }, { root: true })
+            commit('set', { stateName: 'form', student: { valid: true } })
+
         } catch (error) {
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
