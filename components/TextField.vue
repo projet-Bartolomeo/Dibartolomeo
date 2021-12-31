@@ -21,15 +21,11 @@
       :class="`flex-none text-field-padding ${titleStyle}`"
       v-model="input"
       :rules="$props.rules"
-      :autofocus="true"
+      :autofocus="!this.$props.open"
       :suffix="$props.suffix"
+      :placeholder="$props.placeholder"
     ></v-text-field>
-    <v-btn
-      color="grey darken-2 auto-width"
-      fab
-      text
-      @click="changeState"
-    >
+    <v-btn color="grey darken-2 auto-width" fab text @click="changeState">
       <v-icon> mdi-pencil </v-icon>
     </v-btn>
   </v-card>
@@ -40,7 +36,7 @@ import { tryConvertStringToNumber } from '../services/numberHelper'
 export default {
   data() {
     return {
-      readonly: true,
+      readonly: !this.$props.open,
     }
   },
   props: {
@@ -61,6 +57,14 @@ export default {
       required: false,
     },
     number: {
+      type: Boolean,
+      required: false,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+    },
+    open: {
       type: Boolean,
       required: false,
     },
@@ -87,11 +91,19 @@ export default {
   },
   methods: {
     onClickOutside() {
-      this.readonly = this.$store.state[this.state.storeName].form.valid ? true : this.readonly
+      if (!this.$props.open) {
+        this.readonly = this.$store.state[this.state.storeName].form.valid
+          ? true
+          : this.readonly
+      }
     },
     changeState() {
-      this.readonly = this.$store.state[this.state.storeName].form.valid ? !this.readonly : this.readonly
-    }
+      if (!this.$props.open) {
+        this.readonly = this.$store.state[this.state.storeName].form.valid
+          ? !this.readonly
+          : this.readonly
+      }
+    },
   },
 }
 </script>

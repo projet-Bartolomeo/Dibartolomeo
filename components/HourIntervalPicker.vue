@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="d-flex ml-6">
+    <div class="d-flex">
       <div class="ml-4">de</div>
       <input class="ml-6" v-model="startHour" type="time" />
     </div>
-    <div class="d-flex ml-6">
+    <div class="d-flex">
       <div class="ml-6">à</div>
       <input class="ml-6" v-model="endHour" type="time" />
     </div>

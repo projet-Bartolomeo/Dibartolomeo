@@ -8,27 +8,32 @@
               :get="`lesson.${$props.datas}.title`"
               :rules="[(v) => !!v || 'Le titre est obligatoire']"
               title
+              :open="open"
+              placeholder="Entrez le titre"
             />
           </v-row>
           <v-row class="ma-0">
             <p class="ma-0 align-center d-flex">
-              {{ lesson.studentIdsList ? lesson.studentIdsList.length : 0 }}/
+              {{ lesson.teacherIds ? lesson.teacherIds.length : 0 }}/
             </p>
             <TextField
-              suffix=" élèves"
+              :suffix="$props.datas === 'new' ? '' : 'élèves'"
               :get="`lesson.${$props.datas}.maximumStudents`"
               :rules="[
-                (v) => !!v || 'Le nombre maximum d\'étudiant est obligatoire',
+                (v) => !!v || 'Le nombre maximum d\'élèves est obligatoire',
                 (v) =>
                   !isNaN(Number(v)) ||
-                  'Le nombre maximum d\'étudiant doit etre un nombre',
+                  'Le nombre maximum d\'élèves doit etre un nombre',
               ]"
               number
+              :open="open"
+              placeholder="Entrez le nb max d'élèves"
             />
           </v-row>
         </v-col>
         <div class="d-flex">
           <v-btn
+            v-if="$props.datas !== 'new'"
             color="grey darken-2"
             fab
             text
@@ -46,7 +51,25 @@
           >
             <v-icon> mdi-delete </v-icon>
           </v-btn>
-          <div v-if="hasModifications && valid">
+          <v-btn
+            v-if="valid && $props.datas === 'new'"
+            color="grey darken-2"
+            fab
+            text
+            @click="create"
+          >
+            <v-icon> mdi-content-save </v-icon>
+          </v-btn>
+          <v-btn
+            v-if="$props.datas === 'new' && hasModifications"
+            color="grey darken-2"
+            fab
+            text
+            @click="$store.dispatch('lesson/resetNewForm')"
+          >
+            <v-icon> mdi-arrow-u-down-left </v-icon>
+          </v-btn>
+          <div v-if="$props.datas !== 'new' && hasModifications && valid">
             <v-btn
               color="grey darken-2"
               fab
@@ -70,7 +93,7 @@
               fab
               text
               @click="
-                $store.dispatch('resetForm', {
+                $store.dispatch('resetEditionForm', {
                   storeName: 'lesson',
                   stateName: $props.datas,
                 })
@@ -85,7 +108,24 @@
         <v-row class="justify-center">
           <v-card width="450" class="ma-6">
             <v-col>
-              <div class="d-flex justify-start align-center">
+              <div
+                v-if="$props.datas === 'new'"
+                class="d-flex justify-start align-center"
+              >
+                <p class="pa-4 text-no-wrap">Récurrence :</p>
+                <div class="pt-3 pl-2 recurrence-title">
+                  <SelectField
+                    :get="`lesson.${$props.datas}.recurrence`"
+                    :items="[
+                      { text: 'chaque semaine', value: 'everyWeek' },
+                      { text: 'unique', value: 'unique' },
+                    ]"
+                    :open="open"
+                    :defaultValue="$props.datas === 'new' ? 'everyWeek' : ''"
+                  />
+                </div>
+              </div>
+              <div v-else class="d-flex justify-start align-center">
                 <p class="pa-4 text-no-wrap">Récurrence :</p>
                 <div class="pa-4 recurrence-title">
                   {{ recurrence }}
@@ -102,6 +142,8 @@
                       { text: 'adulte', value: 'adult' },
                       { text: 'mixte', value: 'mixed' },
                     ]"
+                    :open="open"
+                    :defaultValue="$props.datas === 'new' ? 'mixed' : ''"
                   />
                 </div>
               </div>
@@ -116,37 +158,55 @@
                       (v) => !isNaN(Number(v)) || 'Le prix doit etre un nombre',
                     ]"
                     number
+                    :open="open"
+                    placeholder="Entrez le prix du cours "
                   />
                 </div>
               </div>
             </v-col>
           </v-card>
-          <v-card width="450" class="ma-6 pa-6">
-            <EveryWeekDatePicker
-              v-if="lesson.recurrence === 'everyWeek'"
-              :getStart="`lesson.${$props.datas}.startDate`"
-              :getEnd="`lesson.${$props.datas}.endDate`"
-              label="Sélectionnez le jour du cours"
-            />
+          <v-card
+            width="450"
+            class="ma-6 pa-9 d-flex flex-column justify-start align-start"
+          >
+            <div>Jour du cours:</div>
             <UniqueDatePicker
               v-if="lesson.recurrence === 'unique'"
               :getStart="`lesson.${$props.datas}.startDate`"
               :getEnd="`lesson.${$props.datas}.endDate`"
-              label="Sélectionnez le date du cours"
+            />
+            <EveryWeekDatePicker
+              v-else
+              :getStart="`lesson.${$props.datas}.startDate`"
+              :getEnd="`lesson.${$props.datas}.endDate`"
             />
           </v-card>
         </v-row>
         <v-row class="justify-center">
           <v-card width="450" class="ma-6 pa-4">
             <div class="pa-3">
-              <p class="mb-0">Description du cours:</p>
-              <TextArea :get="`lesson.${$props.datas}.description`" />
+              <p v-if="$props.datas === 'new'" class="mb-0">
+                Description du cours (optionnel):
+              </p>
+              <p v-else class="mb-0">Description du cours:</p>
+              <TextArea
+                :get="`lesson.${$props.datas}.description`"
+                :open="open"
+                placeholder="Entrez la description"
+              />
             </div>
           </v-card>
           <v-card width="450" class="ma-6 pa-4">
             <div class="pa-3">
-              <p class="mb-0">Note pour le professeur:</p>
-              <TextArea :get="`lesson.${$props.datas}.teacherNote`" />
+              <p v-if="$props.datas === 'new'" class="mb-0">
+                Note pour le professeur (optionnel):
+              </p>
+              <p v-else class="mb-0">Note pour le professeur:</p>
+              <TextArea
+                :get="`lesson.${$props.datas}.teacherNote`"
+                :open="open"
+                placeholder="Entrez la note du cours"
+              />
             </div>
           </v-card>
         </v-row>
@@ -188,12 +248,15 @@ export default {
       if (this.$store.state.lesson.form.payload === undefined) return false
       return Object.keys(this.$store.state.lesson.form.payload).length > 0
     },
+    open() {
+      return this.$props.datas === 'new'
+    },
   },
-  created() {
-    this.$store.commit('lesson/set', {
-      stateName: 'form',
-      lesson: { valid: true },
-    })
+  methods: {
+    create() {
+      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      this.$router.push('/lesson/list')
+    },
   },
 }
 </script>

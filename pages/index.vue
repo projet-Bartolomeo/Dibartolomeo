@@ -153,7 +153,7 @@ export default {
         lesson.start = lesson.startDate
         lesson.end = lesson.endDate
         lesson.name = lesson.title
-        lesson.studentNbr = lesson.studentIdsList.length
+        lesson.studentNbr = lesson.teacherIds.length
 
         return lesson
       })

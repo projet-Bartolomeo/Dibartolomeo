@@ -19,6 +19,39 @@
         >Ajouter un élève</v-btn
       >
     </DataTableStudent>
+    <div v-if="hasModifications && valid" class="button-icons-container">
+      <v-btn
+        color="grey darken-2"
+        fab
+        text
+        @click="
+          $store.commit('overlay/open', {
+            component: 'LessonModificationForm',
+            props: {
+              lesson: $store.state.lesson.details,
+              payload: $store.state.lesson.form.payload,
+              modify: true,
+            },
+            title: lesson.recurrenceId ? 'Voulez-vous enregistrer :' : '',
+          })
+        "
+      >
+        <v-icon> mdi-content-save </v-icon>
+      </v-btn>
+      <v-btn
+        color="grey darken-2"
+        fab
+        text
+        @click="
+          $store.dispatch('resetEditionForm', {
+            storeName: 'lesson',
+            stateName: 'details',
+          })
+        "
+      >
+        <v-icon> mdi-arrow-u-down-left </v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -76,6 +109,16 @@ export default {
       this.payload = { ...this.payload, [field]: value }
     },
   },
+
+  computed: {
+    valid() {
+      return this.$store.state.lesson.form.valid
+    },
+    hasModifications() {
+      if (this.$store.state.lesson.form.payload === undefined) return false
+      return Object.keys(this.$store.state.lesson.form.payload).length > 0
+    },
+  },
 }
 </script>
 
@@ -92,5 +135,11 @@ export default {
 .input input {
   padding: 0;
   margin-top: 19px;
+}
+
+.button-icons-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 </style>
