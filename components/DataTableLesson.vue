@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-card class="ma-4 mb-6">
+      
       <v-card-title>
+      <IntervalDateFilter></IntervalDateFilter>
+      
         <v-text-field
           class="ma-2 text-field pa-0"
           v-model="search"
@@ -160,6 +163,10 @@ export default {
       singleSelect: false,
       selected: [],
       messageText: 'draw your lines',
+       startDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      startDateMenu:false,      
+      endDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      endDateMenu:false,
     }
   },
   computed: {
