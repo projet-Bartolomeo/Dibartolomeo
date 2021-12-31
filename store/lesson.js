@@ -127,7 +127,6 @@ export const actions = {
                 }
                 await Promise.all([
                     ...dateList.map(async date => {
-                        console.log('fsdf')
                         const lesson = { ...newLesson, startDate: date, endDate: date, recurrenceId }
                         return await this.$fire.firestore.collection('lesson').add(lesson)
                     })

@@ -42,7 +42,6 @@ export const actions = {
                 .get()
             commit('set', { stateName: 'details', student: { ...user.data(), id: user.id } })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'Problème lors de la récupération de votre élève', type: 'error' }, { root: true })
         }
     },
