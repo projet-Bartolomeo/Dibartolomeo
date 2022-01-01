@@ -6,6 +6,7 @@
           <v-row class="align-center justify-center">
             <p class="ma-0 mr-2">Nom de famille :</p>
             <TextField
+              :open="open"
               :get="`student.${$props.datas}.lastName`"
               :rules="[(v) => !!v || 'Le nom est obligatoire']"
             />
@@ -15,6 +16,7 @@
           <v-row class="align-center justify-center">
             <p class="ma-0 mr-2">Prénom :</p>
             <TextField
+              :open="open"
               :get="`student.${$props.datas}.firstName`"
               :rules="[(v) => !!v || 'Le prénom est obligatoire']"
             />
@@ -25,6 +27,7 @@
           <v-row class="align-center justify-center">
             <p class="ma-0 mr-2">Email :</p>
             <TextField
+              :open="open"
               :get="`student.${$props.datas}.email`"
               :rules="[
                 (v) => !!v || 'Le mail est obligatoire',
@@ -39,7 +42,11 @@
       v-if="$props.datas == 'details'"
       class="d-flex flex-column justify-center"
     >
-      <v-btn class="ma-2" v-if="valid && hasModifications" color="success" @click="validate()"
+      <v-btn
+        v-if="valid && hasModifications"
+        class="ma-2"
+        color="success"
+        @click="validate()"
         >Enregistrer</v-btn
       >
       <v-btn
@@ -59,7 +66,7 @@
       >
     </div>
     <div v-if="$props.datas == 'new'" class="d-flex flex-column justify-center">
-      <v-btn class="ma-2" v-if="valid" color="success" @click="validate()"
+      <v-btn v-if="valid" class="ma-2" color="success" @click="create()"
         >Enregistrer</v-btn
       >
     </div>
@@ -71,41 +78,13 @@ export default {
   props: {
     datas: {
       type: String,
-      required: false,
+      required: true,
     },
-  },
-
-  methods: {
-    async validate() {
-      if (this.valid) {
-        if (this.$props.datas === 'details') {
-          await this.$store.dispatch('student/modify', {
-            studentId: this.$route.query.id,
-            payload: this.$store.state.student.details,
-          })
-        } else {
-          await this.$store.dispatch(
-            'student/createFromTeacher',
-            this.$store.state.student.new
-          )
-        }
-
-        this.$router.push('/student/list')
-      }
-    },
-  },
-  created() {
-    this.$store.commit('student/set', {
-      stateName: 'form',
-
-      student: { valid: true },
-    })
   },
   computed: {
     student() {
       return this.$store.state.student[this.$props.datas]
     },
-
     valid: {
       get() {
         return this.$store.state.student.form.valid
@@ -120,6 +99,30 @@ export default {
     hasModifications() {
       if (this.$store.state.student.form.payload === undefined) return false
       return Object.keys(this.$store.state.student.form.payload).length > 0
+    },
+    open() {
+      return this.$props.datas === 'new'
+    },
+  },
+  methods: {
+    create() {
+      if (this.valid) {
+        this.$store.dispatch(
+          'student/createFromTeacher',
+          this.$store.state.student.new
+        )
+        this.$router.push('/student/list')
+      }
+    },
+    async validate() {
+      if (this.valid) {
+        await this.$store.dispatch('student/modify', {
+          studentId: this.$route.query.id,
+          payload: this.$store.state.student.details,
+        })
+
+        this.$router.push('/student/list')
+      }
     },
   },
 }

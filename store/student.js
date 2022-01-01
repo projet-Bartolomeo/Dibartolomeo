@@ -37,18 +37,24 @@ export const mutations = {
 }
 
 export const actions = {
-    async setDetails({ commit }, studentId ) {
+    async setDetails({ commit }, studentId) {
         try {
             const user = await this.$fire.firestore.collection('user')
                 .doc(studentId)
                 .get()
             commit('set', { stateName: 'details', student: { ...user.data(), id: user.id } })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'Problème lors de la récupération de votre élève', type: 'error' }, { root: true })
         }
     },
 
+    setNew({ commit, dispatch }) {
+        dispatch('resetNewForm')
+        commit('set', {
+            stateName: 'form',
+            student: { valid: false },
+        })
+    },
     async setTeacherList({ commit, rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
@@ -87,22 +93,21 @@ export const actions = {
         }
     },
 
-    async removeFromTeacher({ commit, rootState }, {student}) {
+    async removeFromTeacher({ commit, rootState }, { student }) {
         try {
-            console.log(student);
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
             const lastTeacherList = student.teacherIds
 
 
-            const teacherList = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
+            const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
 
             let isDeleted = true
             if (student.isRegistered) isDeleted = false
 
             await this.$fire.firestore.collection('user')
                 .doc(student.id)
-                .update({ teacherList, isDeleted })
+                .update({ teacherIds, isDeleted })
 
             commit('notification/create', { description: 'L\'élève a été supprimé' }, { root: true })
         } catch (error) {
@@ -117,25 +122,31 @@ export const actions = {
 
             await this.$fire.firestore.collection('user').add(newStudent)
             commit('notification/create', { description: 'élève créé' }, { root: true })
-            commit('set', { stateName: 'form', student: { valid: false } })
 
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la création de l\'élève', type: 'error' }, { root: true })
         }
     },
 
-    async modify({ commit }, {studentId, payload} ) {
+    async modify({ commit }, { studentId, payload }) {
         try {
-
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
 
-            commit('notification/create', { description: 'élève mis à jour' }, { root: true })
             commit('set', { stateName: 'form', student: { valid: true } })
+            commit('notification/create', { description: 'élève mis à jour' }, { root: true })
 
         } catch (error) {
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
+    },
+
+    resetNewForm({ commit }) {
+        commit('set', {
+            stateName: 'new',
+            student: {
+            },
+        })
     }
 }
