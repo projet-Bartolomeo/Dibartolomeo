@@ -1,5 +1,5 @@
 import { readQuerySnapshot, generateRandomId } from '../services/firestoreHelper'
-import { convertTimestampToDate, convertTimestampToReadableDate } from '../services/dateHelper'
+import { convertTimestampToDate } from '../services/dateHelper'
 
 export const state = () => ({
     teacherList: [],
@@ -51,12 +51,9 @@ export const actions = {
         try {
             const studentListSnapshot = await this.$fire.firestore.collection("lesson")
                 .where("teacherIds", "array-contains", StudentId).get()
-            let studentList = readQuerySnapshot(studentListSnapshot)
-            studentList = studentList.map(lesson => {
-                lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
-                lesson.endDate = convertTimestampToReadableDate(lesson.endDate)
-                return lesson
-            })
+            const studentList = readQuerySnapshot(studentListSnapshot)
+
+
             commit('set', { stateName: 'studentList', lesson: studentList })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
@@ -79,14 +76,11 @@ export const actions = {
                     .where('startDate', '<=', (new Date()).getTime() + 7 * 24 * 60 * 60 * 1000)
             }
             const teacherListSnapshot = await teacherListRef.get()
-            let teacherList = readQuerySnapshot(teacherListSnapshot)
-            teacherList = teacherList.map(lesson => {
-                lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
-                lesson.endDate = convertTimestampToReadableDate(lesson.endDate)
-                return lesson
-            })
+            const teacherList = readQuerySnapshot(teacherListSnapshot)
+
             commit('set', { stateName: 'teacherList', lesson: teacherList })
         } catch (error) {
+            console.log(error)
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },

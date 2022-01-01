@@ -31,7 +31,7 @@
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="$store.state.lesson[$props.datas]"
+        :items="lessons"
         sort-by="calories"
         class="elevation-1"
         :footer-props="{
@@ -70,7 +70,7 @@
                     lesson: item,
                     archive: true,
                   },
-                  title: item.recurrenceId ? 'Voulez-vous archiver :' : '',
+                  title: 'Voulez-vous archiver :',
                 })
               "
             >
@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import { convertTimestampToReadableDate } from '../services/dateHelper'
 export default {
   props: {
     message: {
@@ -136,13 +137,13 @@ export default {
         { text: 'prix', value: 'price', initialValue: [], type: 'input' },
         {
           text: 'début',
-          value: 'startDate',
+          value: 'start',
           initialValue: new Date(),
           type: 'input',
         },
         {
           text: 'fin',
-          value: 'endDate',
+          value: 'end',
           initialValue: new Date(),
           type: 'input',
         },
@@ -163,6 +164,16 @@ export default {
     }
   },
   computed: {
+    lessons() {
+      const lessonList = this.$store.state.lesson[this.$props.datas]
+      lessonList.map((lesson) => {
+        lesson.start = convertTimestampToReadableDate(lesson.startDate)
+        lesson.end = convertTimestampToReadableDate(lesson.endDate)
+        return lesson
+      })
+      return lessonList
+    },
+
     formTitle() {
       return this.editedIndex === -1
         ? `Créer un ${this.type}`

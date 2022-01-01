@@ -15,30 +15,66 @@ function getHours(date) {
     return eh
 }
 
+function getMonth(date) {
+    let eM = date.getMonth() +1
+    if (eM < 10) {
+        eM = '0' + eM
+    }
+    return eM
+}
+
+function getDate(date) {
+    let eD = date.getDate()
+    if (eD < 10) {
+        eD = '0' + eD
+    }
+    return eD
+}
+
 export function convertTimestampToDate(timestamp) {
     return new Date(timestamp.seconds * 1000)
 }
 
-export function convertTimestampToReadableDate(timestamp) {
+export function convertTimestampToReadableDateForPanning(timestamp) {
     let timestampConverted = timestamp.seconds * 1000
     timestampConverted = new Date(timestampConverted)
 
     const date =
         timestampConverted.getFullYear() +
         '-' +
-        (timestampConverted.getMonth() + 1) +
+        (timestampConverted.getMonth()+1) +
         '-' +
         timestampConverted.getDate() +
         ' ' +
-        getMinutes(timestampConverted) +
+        getHours(timestampConverted)+
         ':' +
-        getHours(timestampConverted)
+        getMinutes(timestampConverted) 
+        
+
+    return date
+}
+
+
+export function convertTimestampToReadableDate(timestamp) {
+    let timestampConverted = timestamp.seconds * 1000
+    timestampConverted = new Date(timestampConverted)
+
+    const date =
+        getDate(timestampConverted) +
+        '/' +
+        getMonth(timestampConverted) +
+        '/' +
+        timestampConverted.getFullYear() +
+        ' ' +
+        getHours(timestampConverted)+
+        ':' +
+        getMinutes(timestampConverted) 
 
     return date
 }
 
 export function convertDateToIso(date) {
-    return `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()}`
+    return `${date.getFullYear()}-${(getMonth(date) )}-${getDate(date)}`
 }
 
 export function getHoursAndMinutes(date) {
@@ -49,9 +85,9 @@ export function convertStringToDate(date, hourly) {
     const newDate = new Date(date)
     const convertedDate = newDate.getFullYear() +
         '-' +
-        (newDate.getMonth() + 1) +
+        (getMonth(newDate)) +
         '-' +
-        newDate.getDate() +
+        getDate(newDate) +
         ' ' +
         hourly
 

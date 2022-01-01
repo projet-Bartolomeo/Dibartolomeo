@@ -1,6 +1,6 @@
 export class Recurrence {
-    static everyWeek = 'chaque semaine'
-    static unique = 'unique'
+    static everyWeek = 'Chaque semaine'
+    static unique = 'Unique'
 
     constructor(name) {
         this.name = name
