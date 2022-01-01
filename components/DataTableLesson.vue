@@ -32,7 +32,7 @@
       <v-data-table
         :headers="headers"
         :items="lessons"
-        sort-by="calories"
+        sort-by="startDate"
         class="elevation-1"
         :footer-props="{
           'items-per-page-text': `${type} par page`,
@@ -88,6 +88,9 @@
 
 <script>
 import { convertTimestampToReadableDate } from '../services/dateHelper'
+import { Recurrence } from '../enums/Recurrence'
+import { Age } from '../enums/Age'
+
 export default {
   props: {
     message: {
@@ -124,13 +127,13 @@ export default {
 
         {
           text: 'récurrence',
-          value: 'recurrence',
+          value: 'recurrenceName',
           initialValue: [],
           type: 'input',
         },
         {
           text: "plage d'ages",
-          value: 'ageRange',
+          value: 'age',
           initialValue: [],
           type: 'input',
         },
@@ -138,14 +141,16 @@ export default {
         {
           text: 'début',
           value: 'start',
-          initialValue: new Date(),
+          initialValue: '',
           type: 'input',
+          sortable: false,
         },
         {
           text: 'fin',
           value: 'end',
-          initialValue: new Date(),
+          initialValue: '',
           type: 'input',
+          sortable: false,
         },
         { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
       ],
@@ -169,6 +174,9 @@ export default {
       lessonList.map((lesson) => {
         lesson.start = convertTimestampToReadableDate(lesson.startDate)
         lesson.end = convertTimestampToReadableDate(lesson.endDate)
+        lesson.recurrenceName = Recurrence[lesson.recurrence]
+        lesson.age = Age[lesson.ageRange]
+
         return lesson
       })
       return lessonList
