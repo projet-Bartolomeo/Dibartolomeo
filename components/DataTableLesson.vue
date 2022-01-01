@@ -35,7 +35,7 @@
       <v-data-table
         :headers="headers"
         :items="$store.state.lesson[$props.datas]"
-        sort-by="calories"
+        sort-by="startDate"
         class="elevation-1"
         :footer-props="{
           'items-per-page-text': `${type} par page`,
