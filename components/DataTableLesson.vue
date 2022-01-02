@@ -36,8 +36,9 @@
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="items"
+        :items="lessons"
         sort-by="startDate"
+        :sort-desc="true"
         class="elevation-1"
         :footer-props="{
           'items-per-page-text': `${type} par page`,
@@ -47,6 +48,7 @@
         :single-select="singleSelect"
         item-key="id"
         :show-select="getShowSelect"
+        :customSort="customSort"
       >
         <template v-slot:[`item.actions`]="{ item }">
           <div class="d-flex">
@@ -92,7 +94,11 @@
 </template>
 
 <script>
-import { convertTimestampToReadableDate } from '../services/dateHelper'
+import {
+  convertTimestampToReadableDate,
+  convertTimestampToDate,
+  convertReadableToDate,
+} from '../services/dateHelper'
 import { Recurrence } from '../enums/Recurrence'
 import { Age } from '../enums/Age'
 
@@ -119,45 +125,30 @@ export default {
         {
           text: 'Titre',
           value: 'title',
-          initialValue: '',
-          type: 'input',
           align: 'start',
         },
         {
           text: 'étudiants maximum',
           value: 'maximumStudents',
-          initialValue: [],
-          type: 'input',
         },
-
         {
           text: 'récurrence',
-          value: 'recurrenceName',
-          initialValue: [],
-          type: 'input',
+          value: 'recurrence',
         },
         {
           text: "plage d'ages",
-          value: 'age',
-          initialValue: [],
-          type: 'input',
+          value: 'ageRange',
         },
-        { text: 'prix', value: 'price', initialValue: [], type: 'input' },
+        { text: 'prix', value: 'price' },
         {
           text: 'début',
-          value: 'start',
-          initialValue: '',
-          type: 'input',
-          sortable: false,
+          value: 'startDate',
         },
         {
           text: 'fin',
-          value: 'end',
-          initialValue: '',
-          type: 'input',
-          sortable: false,
+          value: 'endDate',
         },
-        { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
       showSelect: false,
       search: '',
@@ -183,16 +174,37 @@ export default {
   },
   computed: {
     lessons() {
-      const lessonList = this.$store.state.lesson[this.$props.datas]
-      lessonList.map((lesson) => {
-        lesson.start = convertTimestampToReadableDate(lesson.startDate)
-        lesson.end = convertTimestampToReadableDate(lesson.endDate)
-        lesson.recurrenceName = Recurrence[lesson.recurrence]
-        lesson.age = Age[lesson.ageRange]
+      return this.$store.state.lesson[this.$props.datas].reduce(
+        (newlessonList, lesson) => {
+          const date = convertTimestampToDate(lesson.startDate)
+          const startDateTime = date.getTime()
 
-        return lesson
-      })
-      return lessonList
+          const startDateFilter = new Date(
+            this.$store.state.lesson.filter.startDate
+          ).getTime()
+          const endDateFilter = new Date(
+            this.$store.state.lesson.filter.endDate
+          ).getTime()
+          if (
+            startDateTime >= startDateFilter &&
+            startDateTime <= endDateFilter
+          ) {
+            const startDate = convertTimestampToReadableDate(lesson.startDate)
+            const endDate = convertTimestampToReadableDate(lesson.endDate)
+            const recurrence = Recurrence[lesson.recurrence]
+            const ageRange = Age[lesson.ageRange]
+            newlessonList.push({
+              ...lesson,
+              endDate,
+              recurrence,
+              ageRange,
+              startDate,
+            })
+          }
+          return newlessonList
+        },
+        []
+      )
     },
 
     formTitle() {
@@ -207,22 +219,6 @@ export default {
     getShowSelect() {
       if (this.$props.message) return true
       return false
-    },
-    items() {
-      if (!this.$store.state.lesson[this.$props.datas]) return []
-      const filteredDatas = this.$store.state.lesson[this.$props.datas].filter(
-        (lesson) => {
-          const startDate = new Date(lesson.startDate).getTime()
-          const startDateFilter = new Date(
-            this.$store.state.lesson.filter.startDate
-          ).getTime()
-          const endDateFilter = new Date(
-            this.$store.state.lesson.filter.endDate
-          ).getTime()
-          return startDate >= startDateFilter && startDate <= endDateFilter
-        }
-      )
-      return filteredDatas
     },
   },
 
@@ -273,6 +269,27 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
+    },
+
+    orderbyDate(first, second) {
+      const firstDate = convertReadableToDate(first)
+      const secondDate = convertReadableToDate(second)
+      return firstDate.getTime() - secondDate.getTime()
+    },
+
+    customSort(items, index, isDesc) {
+      items.sort((a, b) => {
+        const [ first, second ] = !isDesc[0] ? [ a[index], b[index] ] : [ b[index], a[index] ]
+        if (index[0] === 'startDate' || index[0] === 'endDate') {
+            return this.orderbyDate(first, second)
+        } else if (typeof a[index] === 'number') {
+          return first - second
+        } else if (typeof a[index] !== 'undefined') {
+          return first.toLowerCase().localeCompare(second.toLowerCase())
+        }
+        return true
+      })
+      return items
     },
   },
 }
