@@ -12,7 +12,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="startDate"
-              label="Picker in menu"
+              label="Date de début"
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
@@ -35,7 +35,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="endDate"
-              label="Picker in menu"
+              label="Date de fin"
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
