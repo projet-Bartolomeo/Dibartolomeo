@@ -63,22 +63,14 @@ export const actions = {
         }
     },
 
-    async setTeacherList({ commit, rootState }, { startDateFilter, endDateFilter }) {
+    async setTeacherList({ commit, rootState }) {
         try {
             const teacherListRef = this.$fire.firestore.collection('lesson')
                 .where('teacherId', '==', rootState.user.id)
                 .where('isArchived', '==', false)
 
-            if (startDateFilter && endDateFilter) {
-                teacherListRef
-                    .where('startDate', '>=', new Date(startDateFilter))
-                    .where('startDate', '<=', new Date(endDateFilter))
-            } else {
-                teacherListRef
-                    .where('startDate', '>=', (new Date()).getTime())
-                    .where('startDate', '<=', (new Date()).getTime() + 7 * 24 * 60 * 60 * 1000)
-            }
             const teacherListSnapshot = await teacherListRef.get()
+
             let teacherList = readQuerySnapshot(teacherListSnapshot)
             teacherList = teacherList.map(lesson => {
                 lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
