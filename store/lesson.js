@@ -1,5 +1,5 @@
 import { readQuerySnapshot, generateRandomId } from '../services/firestoreHelper'
-import { convertTimestampToDate, convertTimestampToReadableDate, convertDateToIso } from '../services/dateHelper'
+import { convertTimestampToDate, convertDateToIso } from '../services/dateHelper'
 
 export const state = () => ({
     teacherList: [],
@@ -9,7 +9,7 @@ export const state = () => ({
     form: {},
     filter: {
         startDate: convertDateToIso(new Date()),
-        endDate: convertDateToIso(new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000))
+        endDate: convertDateToIso(new Date((new Date()).getTime() + 30 * 24 * 60 * 60 * 1000))
     },
 })
 
@@ -57,7 +57,6 @@ export const actions = {
                 .where("teacherIds", "array-contains", StudentId).get()
             const studentList = readQuerySnapshot(studentListSnapshot)
 
-
             commit('set', { stateName: 'studentList', lesson: studentList })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
@@ -71,16 +70,10 @@ export const actions = {
                 .where('isArchived', '==', false)
 
             const teacherListSnapshot = await teacherListRef.get()
+            const teacherList = readQuerySnapshot(teacherListSnapshot)
 
-            let teacherList = readQuerySnapshot(teacherListSnapshot)
-            teacherList = teacherList.map(lesson => {
-                lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
-                lesson.endDate = convertTimestampToReadableDate(lesson.endDate)
-                return lesson
-            })
             commit('set', { stateName: 'teacherList', lesson: teacherList })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },
