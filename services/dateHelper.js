@@ -27,7 +27,7 @@ export function convertTimestampToDate(timestamp) {
     return new Date(timestamp.seconds * 1000)
 }
 
-export function convertTimestampToReadableDate(timestamp) {
+export function convertTimestampToReadableDateForPanning(timestamp) {
     let timestampConverted = timestamp.seconds * 1000
     timestampConverted = new Date(timestampConverted)
 

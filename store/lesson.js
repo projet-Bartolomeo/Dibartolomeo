@@ -55,12 +55,9 @@ export const actions = {
         try {
             const studentListSnapshot = await this.$fire.firestore.collection("lesson")
                 .where("teacherIds", "array-contains", StudentId).get()
-            let studentList = readQuerySnapshot(studentListSnapshot)
-            studentList = studentList.map(lesson => {
-                lesson.startDate = convertTimestampToReadableDate(lesson.startDate)
-                lesson.endDate = convertTimestampToReadableDate(lesson.endDate)
-                return lesson
-            })
+            const studentList = readQuerySnapshot(studentListSnapshot)
+
+
             commit('set', { stateName: 'studentList', lesson: studentList })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
@@ -83,6 +80,7 @@ export const actions = {
             })
             commit('set', { stateName: 'teacherList', lesson: teacherList })
         } catch (error) {
+            console.log(error)
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },

@@ -75,7 +75,7 @@
                     lesson: item,
                     archive: true,
                   },
-                  title: item.recurrenceId ? 'Voulez-vous archiver :' : '',
+                  title: 'Voulez-vous archiver :',
                 })
               "
             >
@@ -92,6 +92,10 @@
 </template>
 
 <script>
+import { convertTimestampToReadableDate } from '../services/dateHelper'
+import { Recurrence } from '../enums/Recurrence'
+import { Age } from '../enums/Age'
+
 export default {
   props: {
     message: {
@@ -128,28 +132,30 @@ export default {
 
         {
           text: 'récurrence',
-          value: 'recurrence',
+          value: 'recurrenceName',
           initialValue: [],
           type: 'input',
         },
         {
           text: "plage d'ages",
-          value: 'ageRange',
+          value: 'age',
           initialValue: [],
           type: 'input',
         },
         { text: 'prix', value: 'price', initialValue: [], type: 'input' },
         {
           text: 'début',
-          value: 'startDate',
-          initialValue: new Date(),
+          value: 'start',
+          initialValue: '',
           type: 'input',
+          sortable: false,
         },
         {
           text: 'fin',
-          value: 'endDate',
-          initialValue: new Date(),
+          value: 'end',
+          initialValue: '',
           type: 'input',
+          sortable: false,
         },
         { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
       ],
@@ -176,6 +182,19 @@ export default {
     }
   },
   computed: {
+    lessons() {
+      const lessonList = this.$store.state.lesson[this.$props.datas]
+      lessonList.map((lesson) => {
+        lesson.start = convertTimestampToReadableDate(lesson.startDate)
+        lesson.end = convertTimestampToReadableDate(lesson.endDate)
+        lesson.recurrenceName = Recurrence[lesson.recurrence]
+        lesson.age = Age[lesson.ageRange]
+
+        return lesson
+      })
+      return lessonList
+    },
+
     formTitle() {
       return this.editedIndex === -1
         ? `Créer un ${this.type}`
