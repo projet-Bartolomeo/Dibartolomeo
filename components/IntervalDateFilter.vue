@@ -1,84 +1,108 @@
 <template>
-  <div >
-       <v-container
-    class="spacing-playground pa-6"
-    fluid
-  >
+  <div>
+    <v-container class="spacing-playground pa-6" fluid>
       <v-row>
-      
-   
-       <v-menu
-      ref="menu"
-      v-model="startDateMenu"
-      
-      :return-value.sync="startDate"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          v-model="startDate"
-          label="Picker in menu"
-          prepend-icon="mdi-calendar"
-          readonly
-          v-bind="attrs"
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-
-        v-model="startDate"
-        @input="startDateMenu = false"
-      ></v-date-picker>
-      
-    </v-menu>
-
-    <v-menu
-      ref="menu"
-      v-model="menu"
-     
-      :return-value.sync="date"
-      transition="scale-transition"
-      offset-y
-      min-width="auto"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          v-model="endDate"
-          label="Picker in menu"
-          prepend-icon="mdi-calendar"
-          readonly
-          v-bind="attrs"
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-   
-        v-model="endDate"
-        @input="endDateMenu = false"
-      ></v-date-picker>
-     
-    </v-menu>
-  
-    </v-row>
-     </v-container>
+        <v-menu
+          ref="menu"
+          v-model="startDateMenu"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="startDate"
+              label="Picker in menu"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="startDate"
+            @input="startDateMenu = false"
+            :max="endDate"
+          ></v-date-picker>
+        </v-menu>
+        <v-menu
+          ref="menu"
+          v-model="endDateMenu"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="endDate"
+              label="Picker in menu"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="endDate"
+            @input="endDateMenu = false"
+            :min="startDate"
+          ></v-date-picker>
+        </v-menu>
+      </v-row>
+    </v-container>
   </div>
-      
 </template>
 
 <script>
 export default {
-
+  props: {
+    getStart: {
+      type: String,
+      reuqired: true,
+    },
+    getEnd: {
+      type: String,
+      reuqired: true,
+    },
+  },
   data() {
     return {
-       startDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      startDateMenu:false,      
-      endDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      endDateMenu:false,
+      startDateMenu: false,
+      endDateMenu: false,
     }
   },
- 
+  computed: {
+    startState() {
+      return this.$store.getters.getStateFromString(this.$props.getStart)
+    },
+    endState() {
+      return this.$store.getters.getStateFromString(this.$props.getEnd)
+    },
+    startDate: {
+      get() {
+        return this.startState.value
+      },
+      set(newValue) {
+        this.filter(this.startState, newValue)
+      },
+    },
+    endDate: {
+      get() {
+        return this.endState.value
+      },
+      set(newValue) {
+        this.filter(this.endState, newValue)
+      },
+    },
+  },
+  methods: {
+    filter(state, newValue) {
+      this.$store.commit('lesson/modify', {
+        stateName: state.stateName,
+        payload: { [state.fieldName]: newValue },
+      })
+    },
+  },
 }
 </script>
 
@@ -86,5 +110,4 @@ export default {
 .Datapicker {
   display: flex;
 }
-
 </style>
