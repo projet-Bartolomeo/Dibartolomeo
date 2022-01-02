@@ -54,7 +54,7 @@ export function convertStringToDate(date, hourly) {
     const month = getMonth(newDate)
     const day = getDay(newDate)
 
-    const convertedDate = `${newDate.getFullYear()}-${month}-${day} hourly`
+    const convertedDate = `${newDate.getFullYear()}-${month}-${day} ${hourly}`
 
     return new Date(convertedDate)
 }
