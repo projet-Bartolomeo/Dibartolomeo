@@ -43,6 +43,7 @@
       </v-sheet>
       <v-sheet elevation="7" height="600">
         <v-calendar
+          locale="fr"
           ref="calendar"
           v-model="focus"
           color="primary"
