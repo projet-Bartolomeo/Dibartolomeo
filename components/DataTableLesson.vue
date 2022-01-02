@@ -1,10 +1,12 @@
 <template>
   <div>
     <v-card class="ma-4 mb-6">
-      
       <v-card-title>
-      <IntervalDateFilter></IntervalDateFilter>
-      
+        <IntervalDateFilter
+          getEnd="lesson.filter.endDate"
+          getStart="lesson.filter.startDate"
+        />
+
         <v-text-field
           class="ma-2 text-field pa-0"
           v-model="search"
@@ -34,7 +36,7 @@
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="$store.state.lesson[$props.datas]"
+        :items="items"
         sort-by="startDate"
         class="elevation-1"
         :footer-props="{
@@ -163,10 +165,14 @@ export default {
       singleSelect: false,
       selected: [],
       messageText: 'draw your lines',
-       startDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      startDateMenu:false,      
-      endDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      endDateMenu:false,
+      startDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      startDateMenu: false,
+      endDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      endDateMenu: false,
     }
   },
   computed: {
@@ -182,6 +188,22 @@ export default {
     getShowSelect() {
       if (this.$props.message) return true
       return false
+    },
+    items() {
+      if (!this.$store.state.lesson[this.$props.datas]) return []
+      const filteredDatas = this.$store.state.lesson[this.$props.datas].filter(
+        (lesson) => {
+          const startDate = new Date(lesson.startDate).getTime()
+          const startDateFilter = new Date(
+            this.$store.state.lesson.filter.startDate
+          ).getTime()
+          const endDateFilter = new Date(
+            this.$store.state.lesson.filter.endDate
+          ).getTime()
+          return startDate >= startDateFilter && startDate <= endDateFilter
+        }
+      )
+      return filteredDatas
     },
   },
 
