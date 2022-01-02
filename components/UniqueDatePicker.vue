@@ -19,6 +19,7 @@
         ></v-text-field>
       </template>
       <v-date-picker
+        locale="fr"
         v-model="date"
         @input="menu = false"
         :min="new Date().toISOString()"
@@ -56,7 +57,10 @@ export default {
   },
   methods: {
     dispatch(state, date) {
-      const newValue = convertStringToDate(date, getHoursAndMinutes(state.value))
+      const newValue = convertStringToDate(
+        date,
+        getHoursAndMinutes(state.value)
+      )
       this.$store.dispatch('setFormField', {
         stateInformations: state,
         newValue,
