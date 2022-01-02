@@ -1,5 +1,5 @@
 import { readQuerySnapshot, generateRandomId } from '../services/firestoreHelper'
-import { convertTimestampToDate, convertTimestampToReadableDate } from '../services/dateHelper'
+import { convertTimestampToDate, convertTimestampToReadableDate, convertDateToIso } from '../services/dateHelper'
 
 export const state = () => ({
     teacherList: [],
@@ -7,6 +7,10 @@ export const state = () => ({
     new: {},
     details: {},
     form: {},
+    filter: {
+        startDate: convertDateToIso(new Date()),
+        endDate: convertDateToIso(new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000))
+    },
 })
 
 export const mutations = {
