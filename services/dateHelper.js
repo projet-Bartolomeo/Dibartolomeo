@@ -1,80 +1,59 @@
-
 function getMinutes(date) {
     let em = date.getMinutes()
-    if (em < 10) {
-        em = '0' + em
-    }
+    if (em < 10) em = '0' + em
     return em
 }
 
 function getHours(date) {
     let eh = date.getHours()
-    if (eh < 10) {
-        eh = '0' + eh
-    }
+    if (eh < 10) eh = '0' + eh
     return eh
 }
 
-function getMonth(date) {
-    let eM = date.getMonth() +1
-    if (eM < 10) {
-        eM = '0' + eM
-    }
-    return eM
+function getDay(date) {
+    let day = date.getDate()
+    if (day < 10) day = `0${day}`
+    return day
 }
 
-function getDate(date) {
-    let eD = date.getDate()
-    if (eD < 10) {
-        eD = '0' + eD
-    }
-    return eD
+function getMonth(date) {
+    let month = date.getMonth() + 1
+    if (month < 10) month = `0${month}`
+    return month
+}
+
+function getDateDetails(date) {
+    const year = date.getFullYear()
+    const month = getMonth(date)
+    const day = getDay(date)
+    const minutes = getMinutes(date)
+    const hours = getHours(date)
+
+    return { year, month, day, minutes, hours }
 }
 
 export function convertTimestampToDate(timestamp) {
     return new Date(timestamp.seconds * 1000)
 }
 
-export function convertTimestampToReadableDateForPanning(timestamp) {
-    let timestampConverted = timestamp.seconds * 1000
-    timestampConverted = new Date(timestampConverted)
+export function convertTimestampToReadableDate(timestamp) {
+    const timestampConverted = convertTimestampToDate(timestamp)
 
-    const date =
-        timestampConverted.getFullYear() +
-        '-' +
-        (timestampConverted.getMonth()+1) +
-        '-' +
-        timestampConverted.getDate() +
-        ' ' +
-        getHours(timestampConverted)+
-        ':' +
-        getMinutes(timestampConverted) 
-        
+    const { year, month, day, minutes, hours } = getDateDetails(timestampConverted)
 
-    return date
+    return `${day}/${month}/${year} ${hours}:${minutes}`
 }
 
+export function convertTimestampToPlanningDate(timestamp) {
+    const timestampConverted = convertTimestampToDate(timestamp)
 
-export function convertTimestampToReadableDate(timestamp) {
-    let timestampConverted = timestamp.seconds * 1000
-    timestampConverted = new Date(timestampConverted)
+    const { year, month, day, minutes, hours } = getDateDetails(timestampConverted)
 
-    const date =
-        getDate(timestampConverted) +
-        '/' +
-        getMonth(timestampConverted) +
-        '/' +
-        timestampConverted.getFullYear() +
-        ' ' +
-        getHours(timestampConverted)+
-        ':' +
-        getMinutes(timestampConverted) 
-
-    return date
+    return `${year}-${month}-${day} ${hours}:${minutes}`
 }
 
 export function convertDateToIso(date) {
-    return `${date.getFullYear()}-${(getMonth(date) )}-${getDate(date)}`
+    return `${date.getFullYear()}-${getMonth(date)}-${getDay(date)}`
 }
 
 export function getHoursAndMinutes(date) {
@@ -83,13 +62,17 @@ export function getHoursAndMinutes(date) {
 
 export function convertStringToDate(date, hourly) {
     const newDate = new Date(date)
-    const convertedDate = newDate.getFullYear() +
-        '-' +
-        (getMonth(newDate)) +
-        '-' +
-        getDate(newDate) +
-        ' ' +
-        hourly
+
+    const month = getMonth(newDate)
+    const day = getDay(newDate)
+
+    const convertedDate = `${newDate.getFullYear()}-${month}-${day} ${hourly}`
 
     return new Date(convertedDate)
+}
+
+export function convertReadableToDate(date) {
+    const [ day, month, year, hours, minutes ] = date.split(/[^0-9]/)
+    const dateConverted = `${year}-${month}-${day} ${hours}:${minutes}`
+    return new Date(dateConverted)
 }

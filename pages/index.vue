@@ -63,7 +63,7 @@
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-row class="ma-0">
               <v-col cols="12" sm="6">
-                <v-toolbar-title v-html="selectedEvent.name"
+                <v-toolbar-title v-html="selectedEvent.title"
                   ><v-btn icon>
                     <v-icon>mdi-pencil</v-icon>
                     <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
@@ -82,22 +82,22 @@
             <v-spacer></v-spacer>
 
             <v-card flat>
-              <v-row class="ma-0 justify-space-around pt-5">
+              <v-card class="d-flex justify-space-around pt-10 ml-5 mr-5">
                 <div class="d-flex">
                   <p class="ma-0 pr-3">Récurence :</p>
-                  <p>{{ selectedEvent.recurrenceName }}</p>
+                  <p>{{ selectedEvent.recurrence }}</p>
                 </div>
                 <div class="d-flex">
                   <p class="ma-0 pr-3">Age :</p>
-                  <p>{{ selectedEvent.age }}</p>
+                  <p>{{ selectedEvent.ageRange }}</p>
                 </div>
                 <div class="d-flex">
                   <p class="ma-0 pr-3">Prix :</p>
                   <p>{{ selectedEvent.price }}</p>
                   €
                 </div>
-              </v-row>
-              <v-col class="mt-5">
+              </v-card>
+              <v-col>
                 <DataTableStudent datas="fromLesson" message lesson />
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { convertTimestampToReadableDateForPanning } from '../services/dateHelper'
+import { convertTimestampToPlanningDate } from '../services/dateHelper'
 import { Recurrence } from '../enums/Recurrence'
 import { Age } from '../enums/Age'
 
@@ -162,18 +162,18 @@ export default {
   computed: {
     lessons() {
       const lessonList = this.$store.state.lesson.teacherList
-      lessonList.map((lesson) => {
-        lesson.start = convertTimestampToReadableDateForPanning(
-          lesson.startDate
-        )
-        lesson.end = convertTimestampToReadableDateForPanning(lesson.endDate)
-        lesson.name = lesson.title
-        lesson.recurrenceName = Recurrence[lesson.recurrence]
-        lesson.age = Age[lesson.ageRange]
-        lesson.studentNbr = lesson.teacherIds.length
-        return lesson
-      })
-      return lessonList
+      return lessonList.reduce((newLessonList, currentLesson) => {
+        const lesson = {
+          ...currentLesson,
+          start: convertTimestampToPlanningDate(currentLesson.startDate),
+          end: convertTimestampToPlanningDate(currentLesson.endDate),
+          recurrence: Recurrence[currentLesson.recurrence],
+          ageRange: Age[currentLesson.ageRange],
+          studentNbr: currentLesson.teacherIds.length,
+        }
+        newLessonList.push(lesson)
+        return newLessonList
+      }, [])
     },
   },
   async created() {

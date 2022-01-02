@@ -1,5 +1,5 @@
 import { readQuerySnapshot, generateRandomId } from '../services/firestoreHelper'
-import { convertTimestampToDate } from '../services/dateHelper'
+import { convertTimestampToDate, convertDateToIso } from '../services/dateHelper'
 
 export const state = () => ({
     teacherList: [],
@@ -7,6 +7,10 @@ export const state = () => ({
     new: {},
     details: {},
     form: {},
+    filter: {
+        startDate: convertDateToIso(new Date()),
+        endDate: convertDateToIso(new Date((new Date()).getTime() + 30 * 24 * 60 * 60 * 1000))
+    },
 })
 
 export const mutations = {
@@ -53,34 +57,23 @@ export const actions = {
                 .where("teacherIds", "array-contains", StudentId).get()
             const studentList = readQuerySnapshot(studentListSnapshot)
 
-
             commit('set', { stateName: 'studentList', lesson: studentList })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },
 
-    async setTeacherList({ commit, rootState }, { startDateFilter, endDateFilter }) {
+    async setTeacherList({ commit, rootState }) {
         try {
             const teacherListRef = this.$fire.firestore.collection('lesson')
                 .where('teacherId', '==', rootState.user.id)
                 .where('isArchived', '==', false)
 
-            if (startDateFilter && endDateFilter) {
-                teacherListRef
-                    .where('startDate', '>=', new Date(startDateFilter))
-                    .where('startDate', '<=', new Date(endDateFilter))
-            } else {
-                teacherListRef
-                    .where('startDate', '>=', (new Date()).getTime())
-                    .where('startDate', '<=', (new Date()).getTime() + 7 * 24 * 60 * 60 * 1000)
-            }
             const teacherListSnapshot = await teacherListRef.get()
             const teacherList = readQuerySnapshot(teacherListSnapshot)
 
             commit('set', { stateName: 'teacherList', lesson: teacherList })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },

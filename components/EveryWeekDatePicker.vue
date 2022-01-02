@@ -63,8 +63,8 @@ export default {
     },
     day: {
       get() {
-        if (this.startState.value === undefined) return 0
-        return new Date(this.startState.value).getDay()
+        const day = new Date(this.startState.value).getDay()
+        return day === 0 ? 7 : day
       },
       set(newValue) {
         newValue = this.getNextDayOfWeek(new Date(), newValue)
