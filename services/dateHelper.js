@@ -1,4 +1,3 @@
-
 function getMinutes(date) {
     let em = date.getMinutes()
     if (em < 10) em = '0' + em
@@ -23,21 +22,34 @@ function getMonth(date) {
     return month
 }
 
+function getDateDetails(date) {
+    const year = date.getFullYear()
+    const month = getMonth(date)
+    const day = getDay(date)
+    const minutes = getMinutes(date)
+    const hours = getHours(date)
+
+    return { year, month, day, minutes, hours }
+}
+
 export function convertTimestampToDate(timestamp) {
     return new Date(timestamp.seconds * 1000)
 }
 
-export function convertTimestampToReadableDateForPanning(timestamp) {
-    let timestampConverted = timestamp.seconds * 1000
-    timestampConverted = new Date(timestampConverted)
+export function convertTimestampToReadableDate(timestamp) {
+    const timestampConverted = convertTimestampToDate(timestamp)
 
-    const year = timestampConverted.getFullYear()
-    const month = getMonth(timestampConverted)
-    const day = getDay(timestampConverted)
-    const minutes = getMinutes(timestampConverted)
-    const hours = getHours(timestampConverted)
+    const { year, month, day, minutes, hours } = getDateDetails(timestampConverted)
 
-    return `${year}-${month}-${day} ${minutes}:${hours}`
+    return `${day}/${month}/${year} ${hours}:${minutes}`
+}
+
+export function convertTimestampToPlanningDate(timestamp) {
+    const timestampConverted = convertTimestampToDate(timestamp)
+
+    const { year, month, day, minutes, hours } = getDateDetails(timestampConverted)
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`
 }
 
 export function convertDateToIso(date) {
@@ -57,4 +69,10 @@ export function convertStringToDate(date, hourly) {
     const convertedDate = `${newDate.getFullYear()}-${month}-${day} ${hourly}`
 
     return new Date(convertedDate)
+}
+
+export function convertReadableToDate(date) {
+    const [ day, month, year, hours, minutes ] = date.split(/[^0-9]/)
+    const dateConverted = `${year}-${month}-${day} ${hours}:${minutes}`
+    return new Date(dateConverted)
 }
