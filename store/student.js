@@ -55,6 +55,7 @@ export const actions = {
             student: { valid: false },
         })
     },
+
     async setTeacherList({ commit, rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
