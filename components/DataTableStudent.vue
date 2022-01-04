@@ -90,7 +90,7 @@
               @click="
                 $store.commit('overlay/open', {
                   component: 'MessageForm',
-                  props: { recipients: [item.id], type: 'student' },
+                  props: { recipients: [item], type: 'student' },
                   title: 'Tapez votre message',
                 })
               "
