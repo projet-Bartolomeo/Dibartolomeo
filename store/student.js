@@ -69,7 +69,7 @@ export const actions = {
 
     async setFromLesson({ rootState, commit, dispatch }, { stateName }) {
         try {
-            const studentIds = rootState.lesson[stateName].teacherIds
+            const studentIds = rootState.lesson[stateName].studentIds
             const students = await Promise.all([...studentIds.map(async id => {
                 const user = await this.$fire.firestore.collection('user').doc(id).get()
                 return { ...user.data(), id: user.id }
@@ -83,7 +83,7 @@ export const actions = {
 
     async setNotInLesson({ rootState, commit }, { stateName }) {
         try {
-            const studentInLessonIds = rootState.lesson[stateName].teacherIds
+            const studentInLessonIds = rootState.lesson[stateName].studentIds
             let students = await this.$fire.firestore.collection('user')
                 .where('teacherIds', 'array-contains', rootState.user.id)
                 .get()
