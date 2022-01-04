@@ -1,19 +1,18 @@
-import { readQuerySnapshot } from '../services/firestoreHelper'
-
 export const actions = {
     async send({ commit }, { type, recipients, description, contentMessage, subjectType }) {
         try {
             let recipientsInformations = []
             if (type === 'lesson') {
-                console.log(recipients)
-                const recipientsSnapshot = await Promise.all([
+                await Promise.all([
                     ...recipients.map(async lesson => {
                         await Promise.all([
-                            ...lesson.studentIds.map(async id => await this.$fire.firestore.collection('user').doc(id).get())
+                            ...lesson.studentIds.map(async id => {
+                                const user = await this.$fire.firestore.collection('user').doc(id).get()
+                                recipientsInformations.push({ ...user.data(), name: user.data().firstName })
+                            })
                         ])
                     })
                 ])
-                recipientsInformations = readQuerySnapshot(recipientsSnapshot)
             } else {
                 recipientsInformations = recipients.map(recipient => { return { ...recipient, name: recipient.firstName } })
             }
@@ -32,6 +31,7 @@ export const actions = {
                     subject,
                     content,
                 })
+
             commit('notification/create', { description }, { root: true })
         } catch (error) {
             console.log(error)
