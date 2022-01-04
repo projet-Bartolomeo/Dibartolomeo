@@ -170,6 +170,7 @@ export default {
           recurrence: Recurrence[currentLesson.recurrence],
           ageRange: Age[currentLesson.ageRange],
           studentNbr: currentLesson.teacherIds.length,
+          name: currentLesson.title,
         }
         newLessonList.push(lesson)
         return newLessonList
