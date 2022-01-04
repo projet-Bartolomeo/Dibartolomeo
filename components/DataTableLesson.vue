@@ -74,10 +74,17 @@
                 $store.commit('overlay/open', {
                   component: 'LessonModificationForm',
                   props: {
-                    lesson: item,
+                    lesson: {
+                      ...item,
+                      recurrence:
+                        item.recurrence === 'Chaque semaine'
+                          ? 'everyWeek'
+                          : 'unique',
+                    },
                     archive: true,
+                    redirectPath: '/lesson/list',
                   },
-                  title: 'Voulez-vous archiver :',
+                  title: item.recurrenceId ? 'Voulez-vous archiver :' : '',
                 })
               "
             >
@@ -279,9 +286,11 @@ export default {
 
     customSort(items, index, isDesc) {
       items.sort((a, b) => {
-        const [ first, second ] = !isDesc[0] ? [ a[index], b[index] ] : [ b[index], a[index] ]
+        const [first, second] = !isDesc[0]
+          ? [a[index], b[index]]
+          : [b[index], a[index]]
         if (index[0] === 'startDate' || index[0] === 'endDate') {
-            return this.orderbyDate(first, second)
+          return this.orderbyDate(first, second)
         } else if (typeof a[index] === 'number') {
           return first - second
         } else if (typeof a[index] !== 'undefined') {
