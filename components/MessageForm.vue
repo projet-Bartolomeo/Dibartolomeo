@@ -47,8 +47,11 @@ export default {
         this.$props.recipients
       )
       this.$store.commit('overlay/close')
-      this.$store.commit('notification/create', {
+      this.$store.dispatch('message/send', {
+        type: this.$props.type,
+        recipients: this.$props.recipients,
         description,
+        contentMessage: this.message,
       })
       this.message = ''
     },
