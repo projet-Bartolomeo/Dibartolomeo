@@ -172,7 +172,8 @@ export default {
           end: convertTimestampToPlanningDate(currentLesson.endDate),
           recurrence: Recurrence[currentLesson.recurrence],
           ageRange: Age[currentLesson.ageRange],
-          studentNbr: currentLesson.teacherIds.length,
+          studentNbr: currentLesson.studentIds.length,
+          name: currentLesson.title,
         }
         newLessonList.push(lesson)
         return newLessonList

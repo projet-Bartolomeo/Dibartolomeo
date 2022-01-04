@@ -42,10 +42,16 @@ export default {
   },
   methods: {
     sendMessage() {
-      const description = createMessageDescription(this.$props.type, this.$props.recipients)
+      const description = createMessageDescription(
+        this.$props.type,
+        this.$props.recipients
+      )
       this.$store.commit('overlay/close')
-      this.$store.commit('notification/open', {
+      this.$store.dispatch('message/send', {
+        type: this.$props.type,
+        recipients: this.$props.recipients,
         description,
+        contentMessage: this.message,
       })
       this.message = ''
     },
