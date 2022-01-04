@@ -1,9 +1,9 @@
 <template>
   <v-form v-model="valid" class="d-flex justify-space-around">
     <v-card elevation="6" width="60vw" class="ma-auto pa-1">
-      <v-row class="justify-center ma-5">
+      <v-row class=" ma-5">
         <v-col md="6">
-          <v-row class="align-center justify-center">
+          <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Nom de famille :</p>
             <TextField
               :open="open"
@@ -13,7 +13,7 @@
           </v-row>
         </v-col>
         <v-col md="6">
-          <v-row class="align-center justify-center">
+          <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Prénom :</p>
             <TextField
               :open="open"
@@ -24,7 +24,7 @@
         </v-col>
 
         <v-col md="7">
-          <v-row class="align-center justify-center">
+          <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Email :</p>
             <TextField
               :open="open"
@@ -43,15 +43,20 @@
       class="d-flex flex-column justify-center"
     >
       <v-btn
+        fab
+        text
+        color="grey darken-2"
         v-if="valid && hasModifications"
         class="ma-2"
-        color="success"
         @click="validate()"
-        >Enregistrer</v-btn
       >
+        <v-icon> mdi-content-save </v-icon>
+      </v-btn>
       <v-btn
+        fab
+        text
+        color="grey darken-2"
         class="ma-2"
-        color="error"
         @click="
           $store.commit('overlay/open', {
             component: 'DeleteForm',
@@ -62,13 +67,21 @@
             title: '',
           })
         "
-        >Supprimer</v-btn
       >
+        <v-icon> mdi-delete </v-icon>
+      </v-btn>
     </div>
     <div v-if="$props.datas == 'new'" class="d-flex flex-column justify-center">
-      <v-btn v-if="valid" class="ma-2" color="success" @click="create()"
-        >Enregistrer</v-btn
+      <v-btn
+        fab
+        text
+        color="grey darken-2"
+        v-if="valid"
+        class="ma-2"
+        @click="create()"
       >
+        <v-icon> mdi-content-save </v-icon>
+      </v-btn>
     </div>
   </v-form>
 </template>
