@@ -57,8 +57,22 @@
     </v-card>
     <div
       v-if="$props.datas == 'details'"
-      class="d-flex flex-column justify-center"
+      class="d-flex flex-column justify-center align-center"
     >
+      <v-btn
+        color="grey darken-2"
+        fab
+        text
+        @click="
+          $store.commit('overlay/open', {
+            component: 'MessageForm',
+            props: { recipients: [$store.state.student.details], type: 'student' },
+            title: 'Tapez votre message',
+          })
+        "
+      >
+        <v-icon> mdi-message </v-icon>
+      </v-btn>
       <v-btn
         v-if="valid && hasModifications"
         fab
