@@ -106,15 +106,19 @@ export const actions = {
             const newLesson = { ...lessonDatas, teacherId: rootState.user.id, isArchived: false }
             if (newLesson.recurrence === 'everyWeek') {
                 const weekInYear = 52
-                const dateList = [newLesson.startDate]
+                const { startDate, endDate } = newLesson
+                const dateList = [{ startDate, endDate }]
                 const recurrenceId = generateRandomId()
 
                 for (let i = 0; i < weekInYear; i++) {
-                    dateList.push(new Date(dateList[i].getTime() + 7 * 24 * 60 * 60 * 1000))
+                    dateList.push({
+                        startDate: new Date(dateList[i].startDate.getTime() + 7 * 24 * 60 * 60 * 1000),
+                        endDate: new Date(dateList[i].endDate.getTime() + 7 * 24 * 60 * 60 * 1000),
+                    })
                 }
                 await Promise.all([
-                    ...dateList.map(async date => {
-                        const lesson = { ...newLesson, startDate: date, endDate: date, recurrenceId }
+                    ...dateList.map(async dates => {
+                        const lesson = { ...newLesson, startDate: dates.startDate, endDate: dates.endDate, recurrenceId }
                         return await this.$fire.firestore.collection('lesson').add(lesson)
                     })
                 ])
@@ -197,10 +201,12 @@ export const actions = {
         commit('notification/create', notification, { root: true })
     },
 
-    async modify({ commit }, { lesson, payload, startDate, endDate, all }) {
+    async modify({ state, commit }, { lesson, startDate, endDate, all }) {
         const lessonRef = this.$fire.firestore.collection('lesson')
         let notification = { type: 'success', description: 'le cours a bien été mis à jour' }
         let lessons = []
+        const payload = state.form.payload
+        const oldValues = state.form.oldValues
 
         try {
             if (all) {
@@ -209,8 +215,21 @@ export const actions = {
                     .where('startDate', '>=', new Date())
                     .get()
                 lessons = readQuerySnapshot(lessonsSnapshot)
+                let startDateDifference = 0
+                let endDateDifference = 0
+
+                if (payload.startDate !== undefined) startDateDifference = payload.startDate.getTime() - oldValues.startDate.getTime()
+                if (payload.endDate !== undefined) endDateDifference = payload.endDate.getTime() - oldValues.endDate.getTime()
+
                 await Promise.all([
-                    ...lessons.map(async lesson => await lessonRef.doc(lesson.id).update(payload))
+                    ...lessons.map(async lesson => {
+                        const startDate = new Date(convertTimestampToDate(lesson.startDate).getTime() + startDateDifference)
+                        const endDate = new Date(convertTimestampToDate(lesson.endDate).getTime() + endDateDifference)
+
+                        await lessonRef
+                            .doc(lesson.id)
+                            .update({ ...payload, startDate, endDate })
+                    })
                 ])
             } else if (startDate && endDate) {
                 const lessonsSnapshot = await lessonRef
@@ -229,6 +248,7 @@ export const actions = {
             commit('modifyInList', { stateName: 'teacherList', lessonToModify: lessons })
             commit('set', { stateName: 'form', lesson: { valid: true } })
         } catch (error) {
+            console.log(error)
             notification = { type: 'error', description: 'problème lors de la mise à jour' }
         }
         commit('notification/create', notification, { root: true })
