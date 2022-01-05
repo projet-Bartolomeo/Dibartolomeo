@@ -87,7 +87,10 @@ export default {
     ],
   }),
   async created() {
-    this.$store.dispatch('lesson/resetNewForm')
+    this.$store.dispatch('resetEditionForm', {
+      storeName: 'lesson',
+      stateName: 'details',
+    })
     await this.$store.dispatch('lesson/setDetails', {
       lessonId: this.$route.query.id,
     })
