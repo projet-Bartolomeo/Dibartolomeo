@@ -52,6 +52,21 @@
             <v-icon> mdi-delete </v-icon>
           </v-btn>
           <v-btn
+            v-if="$props.datas !== 'new'"
+            color="grey darken-2"
+            fab
+            text
+            @click="
+              $store.commit('overlay/open', {
+                component: 'MessageForm',
+                props: { recipients: [lesson], type: 'lesson' },
+                title: 'Tapez votre message',
+              })
+            "
+          >
+            <v-icon> mdi-message </v-icon>
+          </v-btn>
+          <v-btn
             v-if="valid && $props.datas === 'new'"
             color="grey darken-2"
             fab
