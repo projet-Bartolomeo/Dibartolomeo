@@ -20,6 +20,7 @@
             ></v-text-field>
           </template>
           <v-date-picker
+            locale="fr"
             v-model="startDate"
             @input="startDateMenu = false"
             :max="endDate"
@@ -43,6 +44,7 @@
             ></v-text-field>
           </template>
           <v-date-picker
+            locale="fr"
             v-model="endDate"
             @input="endDateMenu = false"
             :min="startDate"

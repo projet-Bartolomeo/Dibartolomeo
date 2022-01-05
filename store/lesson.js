@@ -54,7 +54,7 @@ export const actions = {
     async setStudentList({ commit }, StudentId) {
         try {
             const studentListSnapshot = await this.$fire.firestore.collection("lesson")
-                .where("studentIds", "array-contains", StudentId).get()
+                .where("studentIds", "array-contains", StudentId).where("isArchived", "==", false).get()
             const studentList = readQuerySnapshot(studentListSnapshot)
 
             commit('set', { stateName: 'studentList', lesson: studentList })
