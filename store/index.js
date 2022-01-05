@@ -56,4 +56,12 @@ export const actions = {
             lesson: { valid: true },
         })
     },
+
+    studentResetEditionForm({ commit, rootState }, { storeName, stateName }) {
+        commit(`${storeName}/modify`,  { stateName, payload: rootState[storeName].form.oldValues })
+        commit(`${storeName}/set`, {
+            stateName: 'form',
+            student: { valid: true },
+        })
+    },
 }

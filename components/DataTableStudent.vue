@@ -32,7 +32,7 @@
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="$store.state.student[$props.datas]"
+        :items="student"
         sort-by="calories"
         class="elevation-1"
         :footer-props="{
@@ -153,6 +153,12 @@ export default {
           initialValue: '',
           type: 'input',
         },
+        {
+          text: 'Compte enregistré',
+          value: 'isRegistered',
+          initialValue: '',
+          type: 'input',
+        },
         { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
       ],
       showSelect: false,
@@ -168,6 +174,29 @@ export default {
     }
   },
   computed: {
+    student() {
+      return this.$store.state.student[this.$props.datas].reduce(
+        (newstudentList, student) => {
+          if (student.isRegistered === true) {
+           const isRegistered = 'Oui'
+            newstudentList.push({
+            ...student,
+            isRegistered,
+          })
+          } else {
+           const isRegistered = 'Non'
+            newstudentList.push({
+            ...student,
+            isRegistered,
+          })
+          }
+         
+          return newstudentList
+        },
+        []
+      )
+    },
+
     formTitle() {
       return this.editedIndex === -1
         ? `Créer un ${this.type}`
