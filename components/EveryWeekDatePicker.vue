@@ -15,13 +15,13 @@ export default {
   data() {
     return {
       weekDays: [
-        { text: 'lundi', value: 1 },
-        { text: 'mardi', value: 2 },
-        { text: 'mercredi', value: 3 },
-        { text: 'jeudi', value: 4 },
-        { text: 'vendredi', value: 5 },
-        { text: 'samedi', value: 6 },
-        { text: 'dimanche', value: 7 },
+        { text: 'Lundi', value: 1 },
+        { text: 'Mardi', value: 2 },
+        { text: 'Mercredi', value: 3 },
+        { text: 'Jeudi', value: 4 },
+        { text: 'Vendredi', value: 5 },
+        { text: 'Samedi', value: 6 },
+        { text: 'Dimanche', value: 7 },
       ],
     }
   },
