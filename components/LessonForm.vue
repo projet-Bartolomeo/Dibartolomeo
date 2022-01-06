@@ -132,8 +132,8 @@
                   <SelectField
                     :get="`lesson.${$props.datas}.recurrence`"
                     :items="[
-                      { text: 'chaque semaine', value: 'everyWeek' },
-                      { text: 'unique', value: 'unique' },
+                      { text: 'Chaque semaine', value: 'everyWeek' },
+                      { text: 'Unique', value: 'unique' },
                     ]"
                     :open="open"
                     :defaultValue="$props.datas === 'new' ? 'everyWeek' : ''"
@@ -152,10 +152,10 @@
                   <SelectField
                     :get="`lesson.${$props.datas}.ageRange`"
                     :items="[
-                      { text: 'enfant', value: 'child' },
-                      { text: 'adolescent', value: 'teenager' },
-                      { text: 'adulte', value: 'adult' },
-                      { text: 'mixte', value: 'mixed' },
+                      { text: 'Enfant', value: 'child' },
+                      { text: 'Adolescent', value: 'teenager' },
+                      { text: 'Adulte', value: 'adult' },
+                      { text: 'Mixte', value: 'mixed' },
                     ]"
                     :open="open"
                     :defaultValue="$props.datas === 'new' ? 'mixed' : ''"
