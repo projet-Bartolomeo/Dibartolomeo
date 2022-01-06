@@ -135,24 +135,24 @@ export default {
           align: 'start',
         },
         {
-          text: 'étudiants maximum',
+          text: 'Étudiants maximum',
           value: 'maximumStudents',
         },
         {
-          text: 'récurrence',
+          text: 'Récurrence',
           value: 'recurrence',
         },
         {
-          text: "plage d'ages",
+          text: "Plage d'âges",
           value: 'ageRange',
         },
-        { text: 'prix', value: 'price' },
+        { text: 'Prix', value: 'price' },
         {
-          text: 'début',
+          text: 'Début',
           value: 'startDate',
         },
         {
-          text: 'fin',
+          text: 'Fin',
           value: 'endDate',
         },
         { text: 'Actions', value: 'actions', sortable: false },

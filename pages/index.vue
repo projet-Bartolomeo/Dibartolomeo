@@ -85,7 +85,7 @@
               <v-col>
                 <v-card class="d-flex justify-space-around pt-5 ml-5 mr-5">
                   <div class="d-flex">
-                    <p class="ma-0 pr-3">Récurence :</p>
+                    <p class="ma-0 pr-3">Récurrence :</p>
                     <p>{{ selectedEvent.recurrence }}</p>
                   </div>
                   <div class="d-flex">
