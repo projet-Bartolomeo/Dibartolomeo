@@ -11,8 +11,8 @@
     "
   >
     <div
-      v-if="readonly"
-      :class="`d-flex justify-center align-start ${titleStyle}`"
+      v-if="readonly " class=" text-truncate d-flex justify-center align-start ${titleStyle}"
+    
     >
       {{ input }}{{ $props.suffix }}
     </div>
@@ -41,8 +41,10 @@ export default {
   },
   props: {
     get: {
+      
       type: String,
       required: true,
+       
     },
     rules: {
       type: Array,

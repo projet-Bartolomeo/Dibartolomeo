@@ -1,8 +1,11 @@
 <template>
   <v-app style="background: #f5f5f5">
-    <v-navigation-drawer app>
+    <v-navigation-drawer app class="sidebar">
       <side-bar />
     </v-navigation-drawer>
+    <v-bottom-navigation class="navebar">
+      <Naviguation />
+    </v-bottom-navigation>
     <v-main>
       <v-container fluid>
         <Overlay />
@@ -18,11 +21,30 @@
 </template>
 
 <script>
-export default {}
+import Naviguation from '~/components/Naviguation.vue'
+export default {
+  components: { Naviguation },
+}
 </script>
 
 <style>
 .nuxtlink {
   text-decoration: none;
+}
+.navebar {
+  @media (max-width: 900px) {
+    display: none;
+  }
+  @media (max-width: 500px) {
+    display: flex;
+  }
+}
+.sidebar {
+  @media (max-width: 500px) {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    display: flex;
+  }
 }
 </style>

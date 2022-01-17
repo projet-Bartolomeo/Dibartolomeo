@@ -21,7 +21,7 @@ export const actions = {
                 ? 'Dibartoloméo - création du compte'
                 : 'Dibartoloméo - vous avez recu un message de votre professeur'
 
-            const content = `<a>${contentMessage}</a>`
+            const content = `<center><img src="assets/logocouleur.jpg"></center><a>${contentMessage}</a>`
 
             await this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email',
                 {

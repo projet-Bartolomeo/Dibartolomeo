@@ -1,7 +1,9 @@
 <template>
   <div>
     <LessonForm datas="details" />
-    <DataTableStudent datas="fromLesson" lesson>
+    
+    <DataTableStudent datas="fromLesson" lesson align-center>
+    
       <v-btn
         style="color: white"
         color="blue darken-1"

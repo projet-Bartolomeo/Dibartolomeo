@@ -7,7 +7,9 @@
         </v-btn>
       </router-link>
     </Title>
+    <center>
     <DataTableLesson message delete datas="teacherList" />
+    </center>
   </div>
 </template>
 
