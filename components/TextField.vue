@@ -12,7 +12,7 @@
   >
     <div
       v-if="readonly"
-      :class="`d-flex justify-center align-start ${titleStyle}`"
+      :class="`d-inline-block text-truncate d-flex justify-center align-start ${titleStyle}`"
     >
       {{ input }}{{ $props.suffix }}
     </div>

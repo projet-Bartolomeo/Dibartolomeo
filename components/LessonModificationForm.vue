@@ -23,9 +23,9 @@
       v-if="$props.lesson.recurrence === 'everyWeek'"
       v-model="optionSelected"
     >
-      <v-radio label="uniquement ce cours"></v-radio>
-      <v-radio label="plusieurs cours avec la meme récurrence"></v-radio>
-      <v-radio label="tous les cours avec la meme récurrence"></v-radio>
+      <v-radio label="Uniquement ce cours"></v-radio>
+      <v-radio label="Plusieurs cours avec la même récurrence"></v-radio>
+      <v-radio label="Tous les cours avec la même récurrence"></v-radio>
     </v-radio-group>
 
     <div v-if="optionSelected === 1" class="d-flex ma-4">
@@ -39,7 +39,7 @@
       >
         <template #activator="{ on, attrs }">
           <v-text-field
-            v-model="startDate"
+            v-model="startDateFormatted"
             class="ma-2"
             label="Date de début"
             prepend-icon="mdi-calendar"
@@ -49,6 +49,8 @@
           ></v-text-field>
         </template>
         <v-date-picker
+          locale="fr"
+          color="teal lighten-2"
           v-model="startDate"
           @input="startDateMenu = false"
         ></v-date-picker>
@@ -63,7 +65,7 @@
       >
         <template #activator="{ on, attrs }">
           <v-text-field
-            v-model="endDate"
+            v-model="endDateFormatted"
             class="ma-2"
             label="Date de fin"
             prepend-icon="mdi-calendar"
@@ -73,6 +75,8 @@
           ></v-text-field>
         </template>
         <v-date-picker
+          locale="fr"
+          color="teal lighten-2"
           v-model="endDate"
           @input="endDateMenu = false"
         ></v-date-picker>
@@ -82,13 +86,15 @@
     <div class="mt-4 mb-4">
       <v-btn
         class="white--text ml-3 mr-3"
-        color="blue darken-1"
+        text
+        color="blue-grey darken-1"
         @click="$store.commit('overlay/close')"
         >annuler</v-btn
       >
       <v-btn
         class="white--text ml-3 mr-3"
-        color="blue darken-1"
+        text
+        color="blue-grey darken-1"
         @click="$props.modify ? modifyLesson() : archiveLesson()"
         >confirmer</v-btn
       >
@@ -138,8 +144,20 @@ export default {
     isRecurrent() {
       return this.$props.lesson.recurrence !== 'unique'
     },
+    endDateFormatted() {
+      return this.formatDate(this.endDate)
+    },
+    startDateFormatted() {
+      return this.formatDate(this.startDate)
+    },
   },
   methods: {
+    formatDate(date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
     modifyLesson() {
       this.changeLessonInDatabase('modify')
     },

@@ -1,11 +1,10 @@
 <template>
   <div>
     <LessonForm datas="details" />
-    <DataTableStudent datas="fromLesson" lesson>
+   <DataTableStudent datas="fromLesson" lesson>
       <v-btn
         style="color: white"
-        color="blue darken-1"
-        class="mr-4"
+        color="teal lighten-2"
         @click="
           $store.commit('overlay/open', {
             component: 'DataTableStudent',

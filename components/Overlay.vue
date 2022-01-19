@@ -16,6 +16,7 @@
             min-width="auto"
             height="40px"
             width="40px"
+            color="grey darken-2"
             text
           >
             <v-icon>mdi-close</v-icon>
