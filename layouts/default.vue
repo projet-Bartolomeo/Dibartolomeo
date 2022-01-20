@@ -35,12 +35,12 @@ export default {
   @media (max-width: 900px) {
     display: none;
   }
-  @media (max-width: 500px) {
+  @media (min-width: 200px) {
     display: flex;
   }
 }
 .sidebar {
-  @media (max-width: 500px) {
+  @media (min-width: 200px) {
     display: none;
   }
   @media (max-width: 900px) {

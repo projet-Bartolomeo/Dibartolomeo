@@ -1,6 +1,20 @@
 <template>
 
+
 <div id="app">
+  <v-toolbar
+          :color="bar.class"
+          :dark="bar.dark"
+        >
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+          <v-toolbar-title> <v-img
+            src="/image/logo.png"
+            max-height="170"
+            max-width="220"
+          /></v-toolbar-title>
+          <v-spacer></v-spacer>
+         
+        </v-toolbar>
   <v-app id="inspire">
     <v-bottom-navigation
       v-model="value"

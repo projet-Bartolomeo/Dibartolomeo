@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="ma-4 mb-6">
+    <v-card class="ma-4 mb-6 card" >
       <v-card-title>
         <IntervalDateFilter
           getEnd="lesson.filter.endDate"
@@ -318,4 +318,9 @@ export default {
   min-width: 200px;
   width: 24vw;
 }
+.card {
+    align-items: center;
+    justify-content: center;
+}
+
 </style>
