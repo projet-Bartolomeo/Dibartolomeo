@@ -9,9 +9,9 @@
           offset-y
           min-width="auto"
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-text-field
-              v-model="startDate"
+              v-model="startDateFormatted"
               label="Date de début"
               prepend-icon="mdi-calendar"
               readonly
@@ -20,10 +20,11 @@
             ></v-text-field>
           </template>
           <v-date-picker
-            locale="fr"
             v-model="startDate"
-            @input="startDateMenu = false"
+            color="teal lighten-2"
+            locale="fr"
             :max="endDate"
+            @input="startDateMenu = false"
           ></v-date-picker>
         </v-menu>
         <v-menu
@@ -33,9 +34,9 @@
           offset-y
           min-width="auto"
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-text-field
-              v-model="endDate"
+              v-model="endDateFormatted"
               label="Date de fin"
               prepend-icon="mdi-calendar"
               readonly
@@ -44,10 +45,11 @@
             ></v-text-field>
           </template>
           <v-date-picker
-            locale="fr"
             v-model="endDate"
-            @input="endDateMenu = false"
+            locale="fr"
+            color="teal lighten-2"
             :min="startDate"
+            @input="endDateMenu = false"
           ></v-date-picker>
         </v-menu>
       </v-row>
@@ -74,6 +76,12 @@ export default {
     }
   },
   computed: {
+    endDateFormatted() {
+      return this.formatDate(this.endState.value)
+    },
+    startDateFormatted() {
+      return this.formatDate(this.startState.value)
+    },
     startState() {
       return this.$store.getters.getStateFromString(this.$props.getStart)
     },
@@ -103,6 +111,12 @@ export default {
         stateName: state.stateName,
         payload: { [state.fieldName]: newValue },
       })
+    },
+    formatDate(date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
     },
   },
 }

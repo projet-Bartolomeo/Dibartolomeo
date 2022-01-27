@@ -48,30 +48,30 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card v-if="$props.lesson">
               <v-card-title class="text-h5 overflow-wrap-normal"
-                >Etes-vous sur de vouloir supprimer cet élève de votre cours
+                >Êtes-vous sur de vouloir supprimer cet élève de votre cours
                 ?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="blue-grey darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                <v-btn color="blue-grey darken-1" text @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
             <v-card v-else>
-              <v-card-title class="text-h5 overflow-wrap-normal"
-                >Etes-vous sur de vouloir supprimer cet élève?</v-card-title
+              <v-card-title class="overflow-wrap-normal" 
+               >Êtes-vous sur de vouloir supprimer cet élève?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="blue-grey darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                <v-btn color="blue-grey darken-1" text @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -178,19 +178,19 @@ export default {
       return this.$store.state.student[this.$props.datas].reduce(
         (newstudentList, student) => {
           if (student.isRegistered === true) {
-           const isRegistered = 'Oui'
+            const isRegistered = 'Oui'
             newstudentList.push({
-            ...student,
-            isRegistered,
-          })
+              ...student,
+              isRegistered,
+            })
           } else {
-           const isRegistered = 'Non'
+            const isRegistered = 'Non'
             newstudentList.push({
-            ...student,
-            isRegistered,
-          })
+              ...student,
+              isRegistered,
+            })
           }
-         
+
           return newstudentList
         },
         []

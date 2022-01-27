@@ -4,8 +4,7 @@
     <DataTableStudent datas="fromLesson" lesson isNew>
       <v-btn
         style="color: white"
-        color="blue darken-1"
-        class="mr-4"
+        color="teal lighten-2"
         @click="
           $store.commit('overlay/open', {
             component: 'DataTableStudent',

@@ -46,7 +46,7 @@
           locale="fr"
           ref="calendar"
           v-model="focus"
-          color="primary"
+          color="blue-grey lighten-4"
           :events="lessons"
           :type="type"
           @click:event="showEvent"
@@ -126,7 +126,7 @@
                         archive: true,
                         redirectPath: '',
                       },
-                      title: 'Voulez-vous archiver :',
+                      title: 'Voulez-vous archiver ce cours',
                     })
                   "
                 >
@@ -166,6 +166,12 @@ export default {
     lessons() {
       const lessonList = this.$store.state.lesson.teacherList
       return lessonList.reduce((newLessonList, currentLesson) => {
+        if (currentLesson.studentIds.length < currentLesson.maximumStudents) {
+          currentLesson.color = 'teal lighten-2'
+        } else {
+          currentLesson.color = 'red lighten-1'
+        }
+
         const lesson = {
           ...currentLesson,
           start: convertTimestampToPlanningDate(currentLesson.startDate),
@@ -173,6 +179,7 @@ export default {
           recurrence: Recurrence[currentLesson.recurrence],
           ageRange: Age[currentLesson.ageRange],
           studentNbr: currentLesson.studentIds.length,
+          color: currentLesson.color,
           name: currentLesson.title,
         }
         newLessonList.push(lesson)

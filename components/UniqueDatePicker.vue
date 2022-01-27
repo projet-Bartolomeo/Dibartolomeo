@@ -10,7 +10,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
-          v-model="date"
+          v-model="dateFormatted"
           :label="$props.label"
           prepend-icon="mdi-calendar"
           readonly
@@ -21,6 +21,7 @@
       <v-date-picker
         locale="fr"
         v-model="date"
+        color="teal lighten-2"
         @input="menu = false"
         :min="new Date().toISOString()"
       ></v-date-picker>
@@ -66,8 +67,19 @@ export default {
         newValue,
       })
     },
+
+    formatDate(date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
   },
   computed: {
+    dateFormatted() {
+      return this.formatDate(this.date)
+    },
+
     startState() {
       return this.$store.getters.getStateFromString(this.$props.getStart)
     },

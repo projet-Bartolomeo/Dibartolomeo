@@ -8,11 +8,11 @@
       <v-btn
         class="white--text ma-4"
         text
-        color="blue darken-1"
+        color="blue-grey darken-1"
         @click="$store.commit('overlay/close')"
         >Annuler</v-btn
       >
-      <v-btn text class="white--text ma-4" color="blue darken-1" @click="remove"
+      <v-btn text class="white--text ma-4" color="blue-grey darken-1" @click="remove"
         >Confirmer</v-btn
       >
       <v-spacer></v-spacer>
