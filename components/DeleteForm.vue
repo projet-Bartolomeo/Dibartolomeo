@@ -37,9 +37,9 @@ export default {
       this.$store.dispatch(this.datas.dispatch.key, this.datas.dispatch.value)
       this.$store.commit('overlay/close')
       if (this.$props.type === 'lesson') {
-        this.$router.push('/lesson/list')
+        this.$router.push('/professor/lesson/list')
       } else {
-        this.$router.push('/student/list')
+        this.$router.push('/professor/student/list')
       }
     },
   },

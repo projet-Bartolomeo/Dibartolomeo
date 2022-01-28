@@ -106,7 +106,7 @@
               <v-row class="ma-0 justify-space-around align-center">
                 <router-link
                   class="text-decoration-none"
-                  :to="`/lesson/?id=${selectedEvent.id}`"
+                  :to="`/professor/lesson/?id=${selectedEvent.id}`"
                 >
                   <v-btn
                     class="my-5"
@@ -142,9 +142,9 @@
 </template>
 
 <script>
-import { convertTimestampToPlanningDate } from '../services/dateHelper'
-import { Recurrence } from '../enums/Recurrence'
-import { Age } from '../enums/Age'
+import { convertTimestampToPlanningDate } from '../../services/dateHelper'
+import { Recurrence } from '../../enums/Recurrence'
+import { Age } from '../../enums/Age'
 
 export default {
   data: () => ({

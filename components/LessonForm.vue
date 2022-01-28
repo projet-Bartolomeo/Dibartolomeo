@@ -43,7 +43,7 @@
                 props: {
                   lesson,
                   archive: true,
-                  redirectPath: '/lesson/list',
+                  redirectPath: '/professor/lesson/list',
                 },
                 title: lesson.recurrenceId ? 'Voulez-vous archiver :' : '',
               })
@@ -270,7 +270,7 @@ export default {
   methods: {
     create() {
       this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
-      this.$router.push('/lesson/list')
+      this.$router.push('/professor/lesson/list')
     },
   },
 }

@@ -185,7 +185,7 @@ export default {
           'student/createFromTeacher',
           this.$store.state.student.new
         )
-        this.$router.push('/student/list')
+        this.$router.push('/professor/student/list')
       }
     },
     async validate() {
@@ -195,7 +195,7 @@ export default {
           payload: this.$store.state.student.details,
         })
 
-        this.$router.push('/student/list')
+        this.$router.push('/professor/student/list')
       }
     },
   },
