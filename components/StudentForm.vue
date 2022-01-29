@@ -53,6 +53,26 @@
             </p>
           </v-row>
         </v-col>
+        <v-col md="6">
+          <v-row class="align-center justify-start">
+            <p class="ma-0 mr-2">Téléphone :</p>
+            <TextField :open="open" :get="`student.${$props.datas}.phone`" />
+          </v-row>
+        </v-col>
+        <v-col md="6">
+          <v-row class="align-center justify-start">
+            <p class="ma-0 mr-2">Niveau :</p>
+            <SelectField
+              :get="`student.${$props.datas}.level`"
+              :items="[
+                { text: 'Débutant', value: 'beginner' },
+                { text: 'Intermédiaire', value: 'intermediate' },
+                { text: 'Élevé ', value: 'high' },
+              ]"
+              :open="open"
+            />
+          </v-row>
+        </v-col>
       </v-row>
     </v-card>
     <div
@@ -66,7 +86,10 @@
         @click="
           $store.commit('overlay/open', {
             component: 'MessageForm',
-            props: { recipients: [$store.state.student.details], type: 'student' },
+            props: {
+              recipients: [$store.state.student.details],
+              type: 'student',
+            },
             title: 'Tapez votre message',
           })
         "
@@ -154,6 +177,14 @@ export default {
       type: String,
       required: true,
     },
+    idStudent: {
+      type: String,
+      required: true,
+    },
+    redirect: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
     student() {
@@ -191,11 +222,11 @@ export default {
     async validate() {
       if (this.valid) {
         await this.$store.dispatch('student/modify', {
-          studentId: this.$route.query.id,
+          studentId: this.$props.idStudent,
           payload: this.$store.state.student.details,
         })
 
-        this.$router.push('/professor/student/list')
+        this.$router.push(this.$props.redirect)
       }
     },
   },
