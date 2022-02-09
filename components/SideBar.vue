@@ -42,6 +42,7 @@ export default {
     return {
       items: [
         { title: 'Planning', icon: 'mdi-bulletin-board', route: '/professor' },
+        { title: 'compte', icon: 'mdi-bulletin-board', route: '/student/account' },
         { title: 'Liste des cours', icon: 'mdi-image', route: '/professor/lesson/list' },
         {
           title: 'Liste des éleves',

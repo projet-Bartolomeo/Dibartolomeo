@@ -4,11 +4,15 @@
     <v-card>
       <v-list-item
         three-line
-        v-for="paticipant in $store.state.student.paticipant"
-        :key="paticipant"
+        v-for=" (participant, index) in $store.state.student.participant"
+        :key="participant"
       >
-        {{ paticipant.firstName }}
-        {{ paticipant.lastName }}
+            <ParticipantForm datas="participant" :index="index" />
+        {{ participant.firstName }}
+        {{ participant.lastName }}
+        <v-icon class="mr-1" @click="$store.dispatch('student/removeFromTeacher', {
+        student: participant,
+      }) , fetchData()"> mdi-delete </v-icon>
       </v-list-item>
     </v-card>
   </div>

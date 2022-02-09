@@ -7,7 +7,7 @@ export const state = () => ({
     details: {},
     new: {},
     form: {},
-    paticipant: {}
+    participant: {}
 
 })
 
@@ -72,11 +72,11 @@ export const actions = {
         try {
             const participantSnapshot = await this.$fire.firestore.collection('user')
 
-            .where("isPrincipal", "==", false).where("idUserPrincipal", "==", idUserPrincipal).get()
+            .where("isPrincipal", "==", false).where("idUserPrincipal", "==", idUserPrincipal).where("isDeleted", "==", false).get()
 
             const participant = readQuerySnapshot(participantSnapshot)
             console.log(participant);
-            commit('set', { stateName: 'paticipant', student: participant })
+            commit('set', { stateName: 'participant', student: participant })
         } catch (error) {
             console.log(error);
 
@@ -121,11 +121,9 @@ export const actions = {
 
             const lastTeacherList = student.teacherIds
 
-
             const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
 
-            let isDeleted = true
-            if (student.isRegistered) isDeleted = false
+            const isDeleted = true
 
             await this.$fire.firestore.collection('user')
                 .doc(student.id)
@@ -133,6 +131,7 @@ export const actions = {
 
             commit('notification/create', { description: 'L\'élève a été supprimé' }, { root: true })
         } catch (error) {
+            console.log(error);
             commit('notification/create', { description: 'Problème lors de la suppression ', type: 'error' }, { root: true })
         }
     },
