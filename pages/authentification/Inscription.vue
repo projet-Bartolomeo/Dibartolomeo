@@ -24,21 +24,21 @@
               name="login"
               prepend-icon="mdi-account"
               type="text"
-              v-model="auth.email"
+              v-model="NewUser.nom"
             ></v-text-field>
             <v-text-field
               label="Prenom"
               name="login"
               prepend-icon="mdi-account"
               type="text"
-              v-model="auth.email"
+              v-model="NewUser.Prenom"
             ></v-text-field>
             <v-text-field
               label="Login"
               name="login"
               prepend-icon="mdi-email"
               type="text"
-              v-model="auth.email"
+              v-model="authenti.email"
             ></v-text-field>
 
             <v-text-field
@@ -46,14 +46,14 @@
               name="password"
               prepend-icon="mdi-lock"
               type="password"
-              v-model="auth.password"
+              v-model="NewUser.password"
             ></v-text-field>
             <v-text-field
               label="Confirm Password"
               name="password"
               prepend-icon="mdi-lock"
               type="password"
-              v-model="auth.password"
+              v-model="authenti.forgot"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { user } from '../../model/User'
+
 export default {
   layout: 'connexion',
   data() {
@@ -81,13 +81,17 @@ export default {
       snackbar: false,
       snackbarText: 'No error message',
       id: '',
-      auth: {
-        email: '',
-        password: '',
+      NewUser: {
         nom: '',
-        prenom:'',
+        prenom: '',
+        
       },
-      user,
+      authenti:{
+login:'',
+mot_pass:'',
+forgot:'',
+      },
+    
     }
   },
   methods: {
@@ -96,6 +100,7 @@ export default {
         this.auth.email,
         this.auth.password
       );
+    
       
 
       }
