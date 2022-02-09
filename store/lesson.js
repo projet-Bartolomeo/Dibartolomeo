@@ -51,15 +51,19 @@ export const mutations = {
 }
 
 export const actions = {
-    async setStudentList({ commit }, StudentId) {
+    async setStudentList({ rootState, commit }, studentId) {
         try {
+            const id = studentId ?? rootState.user.id
             const studentListSnapshot = await this.$fire.firestore.collection("lesson")
-                .where("studentIds", "array-contains", StudentId).where("isArchived", "==", false).get()
+                .where("studentIds", "array-contains", id)
+                .where("isArchived", "==", false)
+                .get()
             const studentList = readQuerySnapshot(studentListSnapshot)
 
             commit('set', { stateName: 'studentList', lesson: studentList })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
+            console.log(error)
+            commit('notification/create', { description: 'problème lors de la récupération de vos cours', type: 'error' }, { root: true })
         }
     },
 
@@ -248,7 +252,6 @@ export const actions = {
             commit('modifyInList', { stateName: 'teacherList', lessonToModify: lessons })
             commit('set', { stateName: 'form', lesson: { valid: true } })
         } catch (error) {
-            console.log(error)
             notification = { type: 'error', description: 'problème lors de la mise à jour' }
         }
         commit('notification/create', notification, { root: true })
