@@ -107,22 +107,43 @@
                   message
                   lesson
                 />
-                <div
+
+                <v-card
                   v-else
                   class="
-                    d-inline-block
-                    text-truncate
                     d-flex
-                    justify-center
-                    align-start
+                    justify-space-around justify-center
+                    pt-5
+                    ml-5
+                    mr-5
                   "
                 >
                   {{ selectedEvent.description }}
-                </div>
+                </v-card>
               </v-col>
+              <div class="w-100 d-flex justify-center">
+                <v-btn
+                  v-if="!isRegister"
+                  class="ma-2"
+                  style="color: white"
+                  color="teal lighten-2"
+                  @click="$store.dispatch('lesson/subscribe')"
+                >
+                  S'INSCRIRE
+                </v-btn>
+                <v-btn
+                  v-if="isRegister"
+                  class="ma-2"
+                  style="color: white"
+                  color="teal lighten-2"
+                  @click="$store.dispatch('lesson/unsubscribe')"
+                >
+                  SE DESINSCRIRE
+                </v-btn>
+              </div>
               <v-row
                 v-if="userType === 'professor'"
-                class="ma-0 justify-space-around align-center"
+                class="ma-0 d-flex justify-center align-center pb-4"
               >
                 <router-link
                   class="text-decoration-none"
@@ -192,8 +213,8 @@ export default {
     lessons() {
       const lessonList =
         this.$props.userType === 'student'
-          ? this.$store.state.lesson.teacherList
-          : this.$store.state.lesson.studentList
+          ? this.$store.state.lesson.studentList
+          : this.$store.state.lesson.teacherList
 
       return lessonList.reduce((newLessonList, currentLesson) => {
         if (currentLesson.studentIds.length < currentLesson.maximumStudents) {
@@ -215,6 +236,10 @@ export default {
         newLessonList.push(lesson)
         return newLessonList
       }, [])
+    },
+    isRegister() {
+      const studentIds = this.$store.state.lesson.details.studentIds
+      return studentIds && studentIds.includes(this.$store.state.user.id)
     }
   },
   mounted() {
