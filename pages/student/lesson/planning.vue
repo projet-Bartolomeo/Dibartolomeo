@@ -1,6 +1,5 @@
 <template>
-  <!-- <Calendar userType="student" /> -->
-  <div></div>
+  <Calendar userType="student" />
 </template>
 
 <script>
