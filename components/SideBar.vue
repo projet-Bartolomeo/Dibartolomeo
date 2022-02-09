@@ -1,4 +1,4 @@
-<template>
+ya<template>
   <v-navigation-drawer app left class="navigation-drawer-color">
     <template #prepend>
       <v-list-item>
@@ -53,6 +53,12 @@ export default {
           type: UserType.professor
         },
         {
+          title: 'planning',
+          icon: 'mdi-image',
+          route: '/student/lesson/planning',
+          type: UserType.student
+        },
+        {
           title: 'Liste de mes cours',
           icon: 'mdi-image',
           route: '/student/lesson/list',
@@ -64,7 +70,9 @@ export default {
   },
   computed: {
     routeList() {
-      return this.items.filter(item => this.$store.state.user.type === item.type)
+      return this.items.filter(
+        (item) => this.$store.state.user.type === item.type
+      )
     }
   }
 }
