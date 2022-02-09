@@ -32,21 +32,6 @@
       >
         <v-icon> mdi-content-save </v-icon>
       </v-btn>
-            <v-btn
-        v-if="hasModifications"
-        color="grey darken-2"
-        fab
-        text
-        class="ma-2"
-        @click="
-          $store.dispatch('studentResetEditionForm', {
-            storeName: 'student',
-            stateName: $props.datas,
-          })
-        "
-      >
-        <v-icon> mdi-arrow-u-down-left </v-icon>
-      </v-btn>
     </v-form>
   </div>
 </template>
@@ -74,19 +59,15 @@ export default {
         })
       },
     },
-    hasModifications() {
-      if (this.$store.state.student.form.payload === undefined) return false
-      return Object.keys(this.$store.state.student.form.payload).length > 0
-    },
     open() {
       return this.$props.datas === 'new'
     },
   },
   methods: {
     create() {
-      this.$store.state.student.new.email =
-        this.$store.state.student.details.email
+      this.$store.state.student.new.email = this.$store.state.student.details.email
       this.$store.state.student.new.isPrincipal = false
+      this.$store.state.student.new.idUserPrincipal = this.$store.state.user.idStudent
       this.$store.dispatch(
         'student/createFromTeacher',
         this.$store.state.student.new

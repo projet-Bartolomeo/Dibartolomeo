@@ -9,15 +9,19 @@
       />
       <ParticipantForm datas="new" />
     </v-col>
+    <ParticipantList />
   </div>
 </template>
 
 <script>
 export default {
+   data() {
+    return {
+      participant : [],
+    }
+  },
   async created() {
-    await this.$store.dispatch('student/setParticipant', {})
-
-    this.$store.dispatch('student/setNew',  this.$store.state.user.idStudent)
+    this.$store.dispatch('student/setNew', this.$store.state.user.idStudent)
 
     await this.$store.dispatch(
       'student/setDetails',

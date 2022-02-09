@@ -68,14 +68,14 @@ export const actions = {
         }
     },
 
-    async setParticipant({ commit, rootState }) {
+    async setParticipant({ commit, rootState }, idUserPrincipal) {
         try {
-            console.log('test');
             const participantSnapshot = await this.$fire.firestore.collection('user')
 
-            .where("isPrincipal", "==", false , rootState.user.id).get()
+            .where("isPrincipal", "==", false).where("idUserPrincipal", "==", idUserPrincipal).get()
 
             const participant = readQuerySnapshot(participantSnapshot)
+            console.log(participant);
             commit('set', { stateName: 'paticipant', student: participant })
         } catch (error) {
             console.log(error);
@@ -83,10 +83,6 @@ export const actions = {
             commit('notification/create', { description: 'Problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
     },
-
-
-    
-
 
 
     async setFromLesson({ rootState, commit, dispatch }, { stateName }) {
@@ -160,7 +156,6 @@ export const actions = {
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
 
-            commit('set', { stateName: 'form', student: { valid: true , validParticipant: true } })
             commit('notification/create', { description: 'élève mis à jour' }, { root: true })
 
         } catch (error) {
@@ -180,7 +175,6 @@ export const actions = {
         commit(`${storeName}/modify`, { stateName, payload: rootState[storeName].form.oldValues })
         commit(`${storeName}/set`, {
             stateName: 'form',
-            student: { valid: true , validParticipant: true },
         })
     },
 }
