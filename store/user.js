@@ -11,5 +11,17 @@ export const actions = {
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la mise à jour de l\'utilisateur', type: 'error' }, { root: true })
         }
+    },
+    async add({user}){
+        try {
+            const newUser = await this.$fire.firestore.collection('user').add(user)
+            
+            return newUser
+        } catch (error) {
+            
+        
+        }
+    
+
     }
 }
