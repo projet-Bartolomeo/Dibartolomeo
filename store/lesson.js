@@ -51,18 +51,44 @@ export const mutations = {
 }
 
 export const actions = {
-    async setStudentList({ rootState, commit }, studentId) {
+    async subscribe({ commit, rootState, state }) {
         try {
-            const id = studentId ?? rootState.user.id
-            const studentListSnapshot = await this.$fire.firestore.collection("lesson")
-                .where("studentIds", "array-contains", id)
+            commit('addToListField', { stateName: 'details', fieldName: 'studentIds', toAdd: rootState.user.id })
+            await this.$fire.firestore.collection('lesson')
+                .doc(state.details.id)
+                .update({ studentIds: state.details.studentIds })
+                commit('notification/create', { description: `inscris au cours ${state.details.title}`, type: 'success' }, { root: true })
+        } catch (error) {
+            commit('notification/create', { description: `problème lors de l'inscription au cours ${state.details.title}`, type: 'error' }, { root: true })
+        }
+    },
+
+    async unsubscribe({ commit, rootState, state }) {
+        try {
+            commit('removeInListField', { stateName: 'details', fieldName: 'studentIds', toRemove: rootState.user.id })
+            await this.$fire.firestore.collection('lesson')
+                .doc(state.details.id)
+                .update({ studentIds: state.details.studentIds })
+                commit('notification/create', { description: `désinscris du cours ${state.details.title}`, type: 'success' }, { root: true })
+        } catch (error) {
+            commit('notification/create', { description: `problème lors de la désinscription au cours ${state.details.title}`, type: 'error' }, { root: true })
+        }
+    },
+
+    async setStudentList({ commit }, { studentId }) {
+        try {
+            let studentListRef = this.$fire.firestore.collection("lesson")
                 .where("isArchived", "==", false)
-                .get()
+
+            if (studentId) {
+                studentListRef = studentListRef.where("studentIds", "array-contains", studentId)
+            }
+            const studentListSnapshot = await studentListRef.get()
+
             const studentList = readQuerySnapshot(studentListSnapshot)
 
             commit('set', { stateName: 'studentList', lesson: studentList })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'problème lors de la récupération de vos cours', type: 'error' }, { root: true })
         }
     },
