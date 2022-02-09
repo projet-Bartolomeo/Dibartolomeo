@@ -8,7 +8,7 @@
       <v-col cols="12" sm="6">
         <v-select
           v-model="value"
-          :items="items"
+          :items="this.selected"
           chips
           label="Participants"
           multiple
@@ -101,32 +101,18 @@
 <script>
 export default {
   data: () => ({
-    items: [
-      'Dupont',
-      'ducon',
-      'Poutou',
-      // {
-      //   nom: 'Deneuve',
-      //   prénom: 'Catherine',
-      // },
-      // {
-      //   text: 'November',
-      //   icon: 'mdi-calendar-range',
-      // },
-      // {
-      //   text: 'Portland',
-      //   icon: 'mdi-map-marker',
-      // },
-      // {
-      //   text: 'Biking',
-      //   icon: 'mdi-bike',
-      // },
-    ],
+    items: {},
     value: [],
     loading: false,
     search: '',
     selected: [],
+    i:'',
+  
   }),
+  created(){
+this.getacompangnement()
+  },
+  
 
   computed: {
     allSelected() {
@@ -151,7 +137,7 @@ export default {
       }
 
       for (const item of this.items) {
-        selections.push(item)
+        selections.push(item.firstName)
         // if (selections.length < 1) {
         //   selections.push(item)
         // }
@@ -160,6 +146,7 @@ export default {
 
       return selections
     },
+    
   },
 
   watch: {
@@ -178,7 +165,13 @@ export default {
         this.loading = false
       }, 2000)
     },
+     async getacompangnement(){
+ 
+      this.items=await  this.$store.dispatch('user/recupuser' )
+
+    },
   },
+  
 }
 </script>
 

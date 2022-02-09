@@ -11,5 +11,9 @@ export const actions = {
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la mise à jour de l\'utilisateur', type: 'error' }, { root: true })
         }
+    },
+     async recupuser(id){
+        const user2= await this.$fire.firestore.collection('user').where('idUserPrincipal','==','mKopAfv3e7lYAPj4F63').get()
+        return user2
     }
 }

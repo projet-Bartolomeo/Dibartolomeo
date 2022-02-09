@@ -2,6 +2,7 @@
   <div>
     <v-col>
       <TestWass />
+      <Liste/>
       <!-- <v-btn elevation="6" color="success" @click="addParticipants = !addParticipants" 
         >+ Ajouter participants</v-btn
       >
