@@ -1,7 +1,14 @@
+import { readQuerySnapshot } from '../services/firestoreHelper'
 export const state = () => ({
-    id: '0kK1fyyWN8N2bkHNYLoo'
+    id: '0kK1fyyWN8N2bkHNYLoo',
+    participants:[],
 })
+export const mutations = {
+    set(state, { list, stateName }) {
+        state[stateName] = list
+    },
 
+}
 export const actions = {
     async modify({ commit }, { id, payload }) {
         try {
@@ -12,8 +19,9 @@ export const actions = {
             commit('notification/create', { description: 'problème lors de la mise à jour de l\'utilisateur', type: 'error' }, { root: true })
         }
     },
-     async recupuser(id){
-        const user2= await this.$fire.firestore.collection('user').where('idUserPrincipal','==','mKopAfv3e7lYAPj4F63').get()
-        return user2
+     async recupuser({ commit, dispatch }){
+        const participantSnapshot= await this.$fire.firestore.collection('user').where('email','==','johanna.dezarnaud@ynov.com').get()
+       const participants = readQuerySnapshot(participantSnapshot)
+        commit('set', { stateName: 'participants', list:  participants  })
     }
 }

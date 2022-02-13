@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-col>
-      <TestWass />
-      <Liste/>
+      <Selectparticipant :participants="$store.state.user.participants" />
+      <Liste :lesson="$store.state.lesson.details" />
       <!-- <v-btn elevation="6" color="success" @click="addParticipants = !addParticipants" 
         >+ Ajouter participants</v-btn
       >
@@ -24,10 +24,17 @@
 
 <script>
 export default {
+  
   data() {
     return {
       addParticipants: false,
     }
+  },
+  created() {
+    this.$store.dispatch('lesson/setDetails', {
+      lessonId: '0kaKEfN52KAwhh4nBf6n',
+    })
+    this.$store.dispatch('user/recupuser')
   },
 }
 </script>

@@ -1,12 +1,33 @@
 <template>
-<div>
-     <v-radio-group
-     
+  <div
+    class="
+      d-flex
+      align-center
+      justify-center
+      flex-column
+      lesson-modification-form
+    "
+  >
+    <v-card-title
+      v-if="$props.lesson.recurrence === 'unique'"
+      class="text-h5 overflow-wrap-normal"
     >
-      <v-radio label="S'inscrire Uniquement ce cours" value="0"></v-radio>
-      <v-radio label="S'inscrire du au " value="1"></v-radio>
-      <v-radio label="S'inscrire à tous les cours " value="3"></v-radio>
+      {{
+        $props.archive
+          ? 'Voulez-vous archiver ce cours ?'
+          : 'Voulez-vous enregistrer vos modifications?'
+      }}
+    </v-card-title>
+
+    <v-radio-group
+      v-if="$props.lesson.recurrence === 'everyWeek'"
+      v-model="optionSelected"
+    >
+      <v-radio label="Uniquement ce cours"></v-radio>
+      <v-radio label="Plusieurs cours avec la même récurrence"></v-radio>
+      <v-radio label="Tous les cours avec la même récurrence"></v-radio>
     </v-radio-group>
+
     <div v-if="optionSelected === 1" class="d-flex ma-4">
       <v-menu
         v-model="startDateMenu"
@@ -61,8 +82,26 @@
         ></v-date-picker>
       </v-menu>
     </div>
-</div>
+
+    <div class="mt-4 mb-4">
+      <v-btn
+        class="white--text ml-3 mr-3"
+        text
+        color="blue-grey darken-1"
+        @click="$store.commit('overlay/close')"
+        >annuler</v-btn
+      >
+      <v-btn
+        class="white--text ml-3 mr-3"
+        text
+        color="blue-grey darken-1"
+        @click="$props.modify ? modifyLesson() : archiveLesson()"
+        >confirmer</v-btn
+      >
+    </div>
+  </div>
 </template>
+
 <script>
 export default {
   props: {
