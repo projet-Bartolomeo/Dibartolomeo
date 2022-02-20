@@ -11,7 +11,6 @@ export const mutations = {
 export const getters = {
     getStateFromString: (state) => (stateToConvert) => {
         const stateInformation = stateToConvert.split('.')
-        console.log(stateInformation);
         if(stateInformation.length === 3) {
             return {
                 storeName: stateInformation[0],

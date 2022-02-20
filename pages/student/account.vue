@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Title value="Mon compte" />
     <v-col>
       <StudentForm
         datas="details"
@@ -8,17 +9,13 @@
         class="ma-5"
       />
     </v-col>
-    <ParticipantList />
+    <ParticipantList :idStudent="$store.state.user.idStudent" />
   </div>
 </template>
 
 <script>
 export default {
-   data() {
-    return {
-      participant : [],
-    }
-  },
+
   async created() {
     this.$store.dispatch('student/setNew', this.$store.state.user.idStudent)
     

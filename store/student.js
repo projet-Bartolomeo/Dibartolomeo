@@ -56,11 +56,12 @@ export const actions = {
             student: { valid: false, validParticipant: false },
         })
     },
-
     async setTeacherList({ commit, rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
-                .where('teacherIds', 'array-contains', rootState.user.id).get()
+                .where('teacherIds', 'array-contains', rootState.user.id)
+                .where("isPrincipal", "==", true)
+                .get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
         } catch (error) {
@@ -75,11 +76,8 @@ export const actions = {
             .where("isPrincipal", "==", false).where("idUserPrincipal", "==", idUserPrincipal).where("isDeleted", "==", false).get()
 
             const participant = readQuerySnapshot(participantSnapshot)
-            console.log(participant);
             commit('set', { stateName: 'participant', student: participant })
         } catch (error) {
-            console.log(error);
-
             commit('notification/create', { description: 'Problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
     },
@@ -119,6 +117,30 @@ export const actions = {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
+
+            if (student.isPrincipal === true) {
+
+                const participantSnapshot = await this.$fire.firestore.collection('user')
+
+                    .where("isPrincipal", "==", false).where("idUserPrincipal", "==", student.id).where("isDeleted", "==", false).get()
+
+                const participants = readQuerySnapshot(participantSnapshot);
+
+                await participants.forEach(participant => {
+                    console.log(participant)
+
+                    const lastTeacherList = participant.teacherIds
+
+                    const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
+
+                    const isDeleted = true
+
+                    this.$fire.firestore.collection('user')
+                        .doc(participant.id)
+                        .update({ teacherIds, isDeleted })
+                });
+            }
+
             const lastTeacherList = student.teacherIds
 
             const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
@@ -131,7 +153,6 @@ export const actions = {
 
             commit('notification/create', { description: 'L\'élève a été supprimé' }, { root: true })
         } catch (error) {
-            console.log(error);
             commit('notification/create', { description: 'Problème lors de la suppression ', type: 'error' }, { root: true })
         }
     },

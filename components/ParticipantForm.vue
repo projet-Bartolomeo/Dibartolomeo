@@ -1,43 +1,74 @@
 <template>
-  <div>
-    <h3>Ajouter participant additionel</h3>
-    <v-form ref="form" v-model="valid">
-      <v-col md="6">
-        <v-row class="align-center justify-start">
-          <p class="ma-0 mr-2">Prénom :</p>
-          <v-text-field
-            v-model="$store.state.student.participant[$props.index].firstName"
-            required
-          ></v-text-field>
-          <TextField
-            :open="open"
-            :get="`student.${$props.datas}[${$props.index}].firstName`"
-            :rules="[(v) => !!v || 'Le prénom est obligatoire']"
-          />
-        </v-row>
+  <v-form ref="form" v-model="valid" lazy-validation>
+    <v-row class="d-flex justify-space-between">
+      <v-col class="d-flex align-center" cols="12" sm="6" md="3">
+        <v-text-field
+          v-model="student.firstName"
+          @input="updateMessage"
+          :rules="[(v) => !!v || 'Le nom est obligatoire']"
+          label="Prénom"
+          required
+          filled
+          hide-details
+        ></v-text-field>
       </v-col>
-      <v-col md="6">
-        <v-row class="align-center justify-start">
-          <p class="ma-0 mr-2">Nom :</p>
-          <TextField
-            :open="open"
-            :get="`student.${$props.datas}.lastName`"
-            :rules="[(v) => !!v || 'Le nom est obligatoire']"
-          />
-        </v-row>
+      <v-col class="d-flex align-center" cols="12" sm="6" md="3">
+        <v-text-field
+          v-model="student.lastName"
+          :rules="[(v) => !!v || 'Le nom est obligatoire']"
+          label="Nom"
+          required
+          filled
+          hide-details
+        ></v-text-field> </v-col
+      ><v-col class="d-flex align-center" cols="14" sm="6" md="3">
+        <v-select
+          v-model="student.level"
+          :items="[
+            { text: 'Débutant', value: 'beginner' },
+            { text: 'Intermédiaire', value: 'intermediate' },
+            { text: 'Élevé ', value: 'high' },
+          ]"
+          filled
+          label="Niveau"
+          hide-details
+        ></v-select>
       </v-col>
-      <v-btn
-        v-if="valid"
-        fab
-        text
-        color="grey darken-2"
-        class="ma-2"
-        @click="create()"
-      >
-        <v-icon> mdi-content-save </v-icon>
-      </v-btn>
-    </v-form>
-  </div>
+      <v-col class="d-flex align-center justify-center" cols="12" sm="6" md="3">
+        <div v-if="$props.type == 'new'">
+          <v-icon
+            :disabled="!valid"
+            class="mr-4"
+            @click="create"
+            color="#7dd5a5"
+          >
+            mdi-content-save
+          </v-icon>
+        </div>
+        <div v-if="$props.type == 'participant'">
+          <v-icon
+            :disabled="!valid"
+            class="mr-4"
+            @click="modify"
+            color="#7dd5a5"
+          >
+            mdi-content-save
+          </v-icon>
+          <v-icon
+            class="mr-1"
+            @click="
+              $store.dispatch('student/removeFromTeacher', {
+                student: $props.datas,
+              }),
+                fetchData()
+            "
+          >
+            mdi-delete
+          </v-icon>
+        </div>
+      </v-col>
+    </v-row>
+  </v-form>
 </template>
 
 <script>
@@ -47,50 +78,55 @@ export default {
   }),
   props: {
     datas: {
+      type: Object,
+      required: true,
+    },
+    type: {
       type: String,
       required: true,
     },
-    index: {
-      type: Number,
+    idStudent: {
+      type: String,
       required: true,
     },
   },
   computed: {
     student() {
-      return this.$store.state.student[this.$props.datas]
-    },
-    open() {
-      return this.$props.datas === 'new'
+      return this.$props.datas
     },
   },
   methods: {
-    validate() {
-      this.$refs.form.validate()
-    },
     reset() {
       this.$refs.form.reset()
     },
-    resetValidation() {
-      this.$refs.form.resetValidation()
+    async modify() {
+      if (this.$refs.form.validate()) {
+        await this.$store.dispatch('student/modify', {
+          studentId: this.$props.datas.id,
+          payload: this.$props.datas,
+        })
+      }
     },
     create() {
-      this.$store.state.student.new.email =
-        this.$store.state.student.details.email
-      this.$store.state.student.new.isPrincipal = false
-      this.$store.state.student.new.idUserPrincipal =
-        this.$store.state.user.idStudent
-      this.$store.dispatch(
-        'student/createFromTeacher',
-        this.$store.state.student.new
-      )
-      this.fetchData()
-      this.$store.dispatch('student/setNew', this.$store.state.user.idStudent)
+      if (this.$refs.form.validate()) {
+        this.$store.state.student.new.email =
+          this.$store.state.student.details.email
+        this.$store.state.student.new.isPrincipal = false
+        this.$store.state.student.new.idUserPrincipal = this.$props.idStudent
+        this.$store.dispatch(
+          'student/createFromTeacher',
+          this.$store.state.student.new
+        )
+        this.fetchData()
+        this.$store.dispatch('student/setNew')
+        this.reset()
+      }
     },
 
     async fetchData() {
       this.participant = await this.$store.dispatch(
         'student/setParticipant',
-        this.$store.state.user.idStudent
+        this.$props.idStudent
       )
     },
   },

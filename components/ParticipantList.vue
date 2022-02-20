@@ -1,35 +1,73 @@
 <template>
-  <div>
-    <h3>Les participants additionel</h3>
+  <div class="ma-0 d-flex justify-center">
     <v-card>
-      <v-list-item
-        three-line
-        v-for=" (participant, index) in $store.state.student.participant"
-        :key="participant"
+      <h3 class="pt-3 ma-10" style="border-bottom: solid 1px">
+        Les participants additionel
+      </h3>
+      <div
+        v-for="(participant, index) in $store.state.student.participant"
+        :key="index"
       >
-            <ParticipantForm datas="participant" :index="index" />
-        {{ participant.firstName }}
-        {{ participant.lastName }}
-        <v-icon class="mr-1" @click="$store.dispatch('student/removeFromTeacher', {
-        student: participant,
-      }) , fetchData()"> mdi-delete </v-icon>
-      </v-list-item>
+        <div class="d-flex flex-column ma-10">
+          <p>Participant {{ index + 1 }}</p>
+          <div>
+            <ParticipantForm
+              :datas="$store.state.student.participant[index]"
+              :idStudent="$props.idStudent"
+              type="participant"
+            />
+          </div>
+        </div>
+      </div>
+      <div v-if="isActive" class="ma-10">
+        <ParticipantForm
+          :datas="$store.state.student.new"
+          type="new"
+          :idStudent="$props.idStudent"
+
+        />
+      </div>
+      <div class="d-flex pl-10 pb-5">
+        <v-icon v-if="!isActive"
+          class="mr-4"
+          color="black"
+          @click="isActive = !isActive"
+          v-bind:class="{ active: isActive }"
+          >> mdi-plus-circle-outline
+        </v-icon>
+        <v-icon v-else
+          class="mr-4"
+          color="black"
+          @click="isActive = !isActive"
+          v-bind:class="{ active: isActive }"
+          >     mdi-minus-circle-outline
+
+        </v-icon>
+        <p class="ma-0" color="black">Ajouter un participant</p>
+      </div>
     </v-card>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    idStudent: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       participant: [],
+      isActive: false,
     }
   },
   methods: {
     async fetchData() {
       this.participant = await this.$store.dispatch(
         'student/setParticipant',
-        this.$store.state.user.idStudent
+        this.$props.idStudent
       )
     },
   },
