@@ -42,7 +42,7 @@
       <Formlogin v-if="affichage===1"/>
      
       <FormInscripiton v-else  />
-</transition>
+
    
 
   </div>
