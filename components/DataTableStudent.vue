@@ -96,7 +96,7 @@
               "
               >mdi-message</v-icon
             >
-            <NuxtLink class="nuxtlink" :to="`/student/?id=${item.id}`">
+            <NuxtLink class="nuxtlink" :to="`/professor/student/?id=${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
             <v-icon class="mr-1" @click="deleteItem(item)"> mdi-delete </v-icon>
