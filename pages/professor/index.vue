@@ -43,15 +43,15 @@
       </v-sheet>
       <v-sheet elevation="7" height="600">
         <v-calendar
+          locale="fr"
           ref="calendar"
           v-model="focus"
-          color="primary"
-          :events="events"
+          color="blue-grey lighten-4"
+          :events="lessons"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="updateRange"
         ></v-calendar>
         <v-dialog
           v-model="selectedOpen"
@@ -63,12 +63,15 @@
           <v-card color="grey lighten-4" min-width="350px" flat>
             <v-row class="ma-0">
               <v-col cols="12" sm="6">
-                <v-toolbar-title v-html="selectedEvent.name"
+                <v-toolbar-title v-html="selectedEvent.title"
                   ><v-btn icon>
                     <v-icon>mdi-pencil</v-icon>
                     <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
                 ></v-toolbar-title>
-                <v-text>15/20 élèves</v-text>
+                <p>
+                  {{ selectedEvent.studentNbr }} /
+                  {{ selectedEvent.maximumStudents }} élèves
+                </p>
               </v-col>
               <v-row class="ma-0 pa-5 justify-end">
                 <v-btn text @click="selectedOpen = false">
@@ -79,26 +82,32 @@
             <v-spacer></v-spacer>
 
             <v-card flat>
-              <v-row class="ma-0 justify-space-around pt-5">
-                <div class="d-flex">
-                  <p class="ma-0 pr-3">Récurence :</p>
-                  <p>Unique</p>
-                </div>
-                <div class="d-flex">
-                  <p class="ma-0 pr-3">Age :</p>
-                  <p>Sénior</p>
-                </div>
-                <div class="d-flex">
-                  <p class="ma-0 pr-3">Prix :</p>
-                  <p>20</p>
-                  €
-                </div>
-              </v-row>
-              <v-col class="mt-5">
-                <DataTableStudent message lesson />
+              <v-col>
+                <v-card class="d-flex justify-space-around pt-5 ml-5 mr-5">
+                  <div class="d-flex">
+                    <p class="ma-0 pr-3">Récurrence :</p>
+                    <p>{{ selectedEvent.recurrence }}</p>
+                  </div>
+                  <div class="d-flex">
+                    <p class="ma-0 pr-3">Age :</p>
+                    <p>{{ selectedEvent.ageRange }}</p>
+                  </div>
+                  <div class="d-flex">
+                    <p class="ma-0 pr-3">Prix :</p>
+                    <p>{{ selectedEvent.price }}</p>
+                    €
+                  </div>
+                </v-card>
+              </v-col>
+
+              <v-col>
+                <DataTableStudent datas="fromLesson" message lesson />
               </v-col>
               <v-row class="ma-0 justify-space-around align-center">
-                <router-link class="text-decoration-none" to="/lesson">
+                <router-link
+                  class="text-decoration-none"
+                  :to="`/professor/lesson/?id=${selectedEvent.id}`"
+                >
                   <v-btn
                     class="my-5"
                     style="color: white"
@@ -107,7 +116,22 @@
                     Modifier le cours
                   </v-btn>
                 </router-link>
-                <v-btn class="my-5" color="error"> Supprimer le cours </v-btn>
+                <v-btn
+                  color="error"
+                  @click="
+                    $store.commit('overlay/open', {
+                      component: 'LessonModificationForm',
+                      props: {
+                        lesson: selectedEvent,
+                        archive: true,
+                        redirectPath: '',
+                      },
+                      title: 'Voulez-vous archiver ce cours',
+                    })
+                  "
+                >
+                  Supprimer le cours
+                </v-btn>
               </v-row>
             </v-card>
           </v-card>
@@ -118,6 +142,10 @@
 </template>
 
 <script>
+import { convertTimestampToPlanningDate } from '../../services/dateHelper'
+import { Recurrence } from '../../enums/Recurrence'
+import { Age } from '../../enums/Age'
+
 export default {
   data: () => ({
     colors: ['grey', 'green'],
@@ -133,39 +161,35 @@ export default {
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
-    events: [
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-3 09:00',
-        end: '2021-12-3 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-8 09:00',
-        end: '2021-12-8 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-17 09:00',
-        end: '2021-12-17 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-27 09:00',
-        end: '2021-12-27 10:00',
-        color: 'green',
-      },
-      {
-        name: 'Cours dessins fantastique',
-        start: '2021-12-13 09:00',
-        end: '2021-12-13 10:00',
-        color: 'green',
-      },
-    ],
   }),
+  computed: {
+    lessons() {
+      const lessonList = this.$store.state.lesson.teacherList
+      return lessonList.reduce((newLessonList, currentLesson) => {
+        if (currentLesson.studentIds.length < currentLesson.maximumStudents) {
+          currentLesson.color = 'teal lighten-2'
+        } else {
+          currentLesson.color = 'red lighten-1'
+        }
+
+        const lesson = {
+          ...currentLesson,
+          start: convertTimestampToPlanningDate(currentLesson.startDate),
+          end: convertTimestampToPlanningDate(currentLesson.endDate),
+          recurrence: Recurrence[currentLesson.recurrence],
+          ageRange: Age[currentLesson.ageRange],
+          studentNbr: currentLesson.studentIds.length,
+          color: currentLesson.color,
+          name: currentLesson.title,
+        }
+        newLessonList.push(lesson)
+        return newLessonList
+      }, [])
+    },
+  },
+  async created() {
+    await this.$store.dispatch('lesson/setTeacherList', {})
+  },
   mounted() {
     this.$refs.calendar.checkChange()
   },
@@ -184,9 +208,13 @@ export default {
     next() {
       this.$refs.calendar.next()
     },
+    async showStudent(event) {
+      await this.$store.dispatch('lesson/setDetails', { lessonId: event.id })
+    },
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event
+        this.showStudent(event)
         this.selectedElement = nativeEvent.target
         setTimeout(() => {
           this.selectedOpen = true
@@ -200,29 +228,6 @@ export default {
         open()
       }
       nativeEvent.stopPropagation()
-    },
-
-    updateRange({ start, end }) {
-      const events = []
-      const min = new Date(`${start.date}T00:00:00`)
-      const max = new Date(`${end.date}T23:59:59`)
-      const days = (max.getTime() - min.getTime()) / 86400000
-      const eventCount = this.rnd(days, days + 20)
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-        const second = new Date(first.getTime() + secondTimestamp)
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
-        })
-      }
-      this.events = events
     },
   },
 }

@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { createMessageDescription } from '../services/messageHelper'
 export default {
   props: {
     recipients: {
@@ -30,7 +31,6 @@ export default {
       required: true,
     },
     type: {
-      defaultValue: 'user',
       type: String,
       required: true,
     },
@@ -42,22 +42,16 @@ export default {
   },
   methods: {
     sendMessage() {
-      let description = ''
-      if (this.$props.type === 'student') {
-        description =
-          this.$props.recipients.length === 1
-            ? 'message envoyé à l\'élève'
-            : 'message envoyé à vos élèves'
-      } else {
-        description =
-          this.$props.recipients.length === 1
-            ? 'message envoyé aux élèves de votre cours'
-            : 'message envoyé aux élèves de vos cours'
-      }
-
+      const description = createMessageDescription(
+        this.$props.type,
+        this.$props.recipients
+      )
       this.$store.commit('overlay/close')
-      this.$store.commit('notification/open', {
+      this.$store.dispatch('message/send', {
+        type: this.$props.type,
+        recipients: this.$props.recipients,
         description,
+        contentMessage: this.message,
       })
       this.message = ''
     },
