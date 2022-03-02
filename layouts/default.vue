@@ -6,7 +6,11 @@
     <v-main>
       <v-container fluid>
         <Overlay />
-        <Notification />
+        <Notification
+          v-for="notification in $store.state.notification.list"
+          :id="notification.id"
+          :key="notification.id"
+        />
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -14,21 +18,7 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      right: true,
-      rightDrawer: false,
-    }
-  },
-  errorCaptured(err) {
-    this.$store.commit('notification/open', {
-      description: err,
-      type: 'error',
-    })
-    return false
-  },
-}
+export default {}
 </script>
 
 <style>

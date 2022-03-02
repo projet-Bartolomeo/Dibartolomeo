@@ -6,7 +6,7 @@
           class="ma-2 text-field pa-0"
           v-model="search"
           append-icon="mdi-magnify"
-          :label="`Rechercher un ${type}`"
+          label="Rechercher un élève"
           single-line
           hide-details
           clearable
@@ -16,15 +16,15 @@
           v-if="$props.message"
           :disabled="selected.length === 0"
           style="color: white"
-          color="blue darken-1"
+          color="teal lighten-2"
           @click="
             $store.commit('overlay/open', {
               component: 'MessageForm',
-              props: { recipients: selectedId, type: 'student' },
+              props: { recipients: selected, type: 'student' },
               title: 'Tapez votre message',
             })
           "
-          >send message</v-btn
+          >Envoyer message</v-btn
         >
         <slot></slot>
       </v-card-title>
@@ -32,11 +32,11 @@
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="$props.datas"
+        :items="student"
         sort-by="calories"
         class="elevation-1"
         :footer-props="{
-          'items-per-page-text': `${type} par page`,
+          'items-per-page-text': 'élève par page',
         }"
         :search="search"
         v-model="selected"
@@ -45,80 +45,33 @@
         :show-select="getShowSelect"
       >
         <template v-slot:top>
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col
-                      v-for="item in Object.entries(editedItemFiltered)"
-                      :key="item[1]"
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <div v-if="currentHeader[item[0]] !== undefined">
-                        <v-text-field
-                          v-if="currentHeader[item[0]].type === 'input'"
-                          v-model="editedItem[item[0]]"
-                          :label="currentHeader[item[0]].text"
-                        ></v-text-field>
-                        <v-switch
-                          v-if="currentHeader[item[0]].type === 'switch'"
-                          v-model="editedItem[item[0]]"
-                          inset
-                          :label="currentHeader[item[0]].text"
-                        ></v-switch>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Annuler
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
-                  Sauvegarder
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card v-if="$props.lesson">
               <v-card-title class="text-h5 overflow-wrap-normal"
-                >Etes-vous sur de vouloir supprimer cet élève de votre cours
+                >Êtes-vous sur de vouloir supprimer cet élève de votre cours
                 ?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="blue-grey darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click="deleteStudentFromLesson"
+                <v-btn color="blue-grey darken-1" text @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
             <v-card v-else>
-              <v-card-title class="text-h5 overflow-wrap-normal"
-                >Etes-vous sur de vouloir supprimer cet élève?</v-card-title
+              <v-card-title class="overflow-wrap-normal" 
+               >Êtes-vous sur de vouloir supprimer cet élève?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
+                <v-btn color="blue-grey darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn color="blue darken-1" text @click="deleteStudent"
+                <v-btn color="blue-grey darken-1" text @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -137,13 +90,13 @@
               @click="
                 $store.commit('overlay/open', {
                   component: 'MessageForm',
-                  props: { recipients: [item.id], type: 'student' },
+                  props: { recipients: [item], type: 'student' },
                   title: 'Tapez votre message',
                 })
               "
               >mdi-message</v-icon
             >
-            <NuxtLink class="nuxtlink" :to="`/student/${item.id}`">
+            <NuxtLink class="nuxtlink" :to="`/professor/student/?id=${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
             <v-icon class="mr-1" @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -160,6 +113,10 @@
 <script>
 export default {
   props: {
+    datas: {
+      type: String,
+      required: true,
+    },
     message: {
       type: Boolean,
       required: false,
@@ -172,8 +129,8 @@ export default {
       type: Boolean,
       required: false,
     },
-    datas: {
-      type: Array,
+    isNew: {
+      type: Boolean,
       required: false,
     },
   },
@@ -196,22 +153,50 @@ export default {
           initialValue: '',
           type: 'input',
         },
+        {
+          text: 'Compte enregistré',
+          value: 'isRegistered',
+          initialValue: '',
+          type: 'input',
+        },
         { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
       ],
       showSelect: false,
       search: '',
-      dialog: false,
       dialogDelete: false,
       editedIndex: -1,
       editedItem: {},
-      defaultItem: {},
       currentHeader: {},
       singleSelect: false,
       selected: [],
       messageText: 'draw you lines',
+      delete: [],
     }
   },
   computed: {
+    student() {
+      return this.$store.state.student[this.$props.datas].reduce(
+        (newstudentList, student) => {
+          if (student.isRegistered === true) {
+            const isRegistered = 'Oui'
+            newstudentList.push({
+              ...student,
+              isRegistered,
+            })
+          } else {
+            const isRegistered = 'Non'
+            newstudentList.push({
+              ...student,
+              isRegistered,
+            })
+          }
+
+          return newstudentList
+        },
+        []
+      )
+    },
+
     formTitle() {
       return this.editedIndex === -1
         ? `Créer un ${this.type}`
@@ -225,9 +210,6 @@ export default {
       if (this.$props.message) return true
       return false
     },
-    selectedId() {
-      return this.selected.map((select) => select.id)
-    },
   },
 
   watch: {
@@ -240,15 +222,6 @@ export default {
   },
 
   created() {
-    this.users = this.datas
-    this.defaultItem = this.editedItem = this.headers.reduce(
-      (defaultItem, currentHeader) => {
-        if (currentHeader.initialValue === undefined) return defaultItem
-        defaultItem[currentHeader.value] = currentHeader.initialValue
-        return defaultItem
-      },
-      {}
-    )
     this.currentHeader = this.headers.reduce((newHeader, currentHeader) => {
       newHeader[currentHeader.value] = currentHeader
       return newHeader
@@ -256,26 +229,21 @@ export default {
   },
 
   methods: {
-    deleteStudentFromLesson() {
-      this.deleteItemConfirm()
-    },
-    addToLesson(student) {},
-    editItem(item) {
-      this.editedIndex = this.user.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-
     deleteItem(item) {
-      this.editedIndex = this.user.indexOf(item)
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = item
       this.dialogDelete = true
     },
 
-    deleteItemConfirm() {
-      this.user.splice(this.editedIndex, 1)
-      this.closeDelete()
+    deleteStudentFromLesson() {
+      this.deleteItemConfirm()
     },
+
+    async remove() {
+      await this.$store.dispatch('student/removeFromTeacher', {
+        student: this.editedItem,
+      })
+    },
+
     deleteStudent() {
       this.deleteItemConfirm()
     },
@@ -290,18 +258,29 @@ export default {
     closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.user[this.editedIndex], this.editedItem)
+    deleteItemConfirm() {
+      if (this.$props.lesson === false) {
+        this.remove()
       } else {
-        this.user.push(this.editedItem)
+        this.$store.dispatch('lesson/removeStudentFromLesson', {
+          student: this.editedItem,
+          stateName: this.$props.isNew ? 'new' : 'details',
+          notUpdateInDatabase: this.$props.isNew,
+        })
       }
-      this.close()
+      this.closeDelete()
+    },
+
+    async addToLesson(student) {
+      await this.$store.dispatch('lesson/addStudentInLesson', {
+        student,
+        stateName: this.$props.isNew ? 'new' : 'details',
+        notUpdateInDatabase: this.$props.isNew,
+      })
     },
   },
 }

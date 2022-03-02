@@ -2,6 +2,11 @@
   <div>
     <v-card class="ma-4 mb-6">
       <v-card-title>
+        <IntervalDateFilter
+          getEnd="lesson.filter.endDate"
+          getStart="lesson.filter.startDate"
+        />
+
         <v-text-field
           class="ma-2 text-field pa-0"
           v-model="search"
@@ -16,23 +21,24 @@
           v-if="$props.message"
           :disabled="selected.length === 0"
           style="color: white"
-          color="blue darken-1"
+          color="teal lighten-2"
           @click="
             $store.commit('overlay/open', {
               component: 'MessageForm',
-              props: { recipients: selectedId, type: 'lesson' },
+              props: { recipients: selected, type: 'lesson' },
               title: 'Tapez votre message',
             })
           "
-          >send message</v-btn
+          >Envoyer message</v-btn
         >
       </v-card-title>
     </v-card>
     <v-card class="ma-4">
       <v-data-table
         :headers="headers"
-        :items="$props.datas"
-        sort-by="calories"
+        :items="lessons"
+        sort-by="startDate"
+        :sort-desc="true"
         class="elevation-1"
         :footer-props="{
           'items-per-page-text': `${type} par page`,
@@ -42,78 +48,8 @@
         :single-select="singleSelect"
         item-key="id"
         :show-select="getShowSelect"
+        :customSort="customSort"
       >
-        <template v-slot:top>
-          <v-dialog v-model="dialog" max-width="500px">
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col
-                      v-for="item in Object.entries(editedItemFiltered)"
-                      :key="item[1]"
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <div v-if="currentHeader[item[0]] !== undefined">
-                        <v-text-field
-                          v-if="currentHeader[item[0]].type === 'input'"
-                          v-model="editedItem[item[0]]"
-                          :label="currentHeader[item[0]].text"
-                        ></v-text-field>
-                        <v-text-field
-                          v-if="currentHeader[item[0]].type === 'input'"
-                          v-model="editedItem[item[0]]"
-                          :label="currentHeader[item[0]].text"
-                        ></v-text-field>
-                        <v-switch
-                          v-if="currentHeader[item[0]].type === 'switch'"
-                          v-model="editedItem[item[0]]"
-                          inset
-                          :label="currentHeader[item[0]].text"
-                        ></v-switch>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Annuler
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
-                  Sauvegarder
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5 overflow-wrap-normal"
-                >Etes-vous sur de vouloir supprimer ce cours ?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Annuler</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >Supprimer</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >Supprimer tous</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <div class="d-flex">
             <v-icon
@@ -122,16 +58,36 @@
               @click="
                 $store.commit('overlay/open', {
                   component: 'MessageForm',
-                  props: { recipients: [item.id], type: 'lesson' },
+                  props: { recipients: [item], type: 'lesson' },
                   title: 'Tapez votre message',
                 })
               "
               >mdi-message</v-icon
             >
-            <NuxtLink class="nuxtlink" :to="`/lesson/?id=${item.id}`">
+            <NuxtLink class="nuxtlink" :to="`/professor/lesson/?id=${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
-            <v-icon v-if="$props.delete" class="mr-1" @click="deleteItem(item)">
+            <v-icon
+              v-if="$props.delete"
+              class="mr-1"
+              @click="
+                $store.commit('overlay/open', {
+                  component: 'LessonModificationForm',
+                  props: {
+                    lesson: {
+                      ...item,
+                      recurrence:
+                        item.recurrence === 'Chaque semaine'
+                          ? 'everyWeek'
+                          : 'unique',
+                    },
+                    archive: true,
+                    redirectPath: '/professor/lesson/list',
+                  },
+                  title: item.recurrenceId ? 'Voulez-vous archiver :' : '',
+                })
+              "
+            >
               mdi-delete
             </v-icon>
           </div>
@@ -145,6 +101,14 @@
 </template>
 
 <script>
+import {
+  convertTimestampToReadableDate,
+  convertTimestampToDate,
+  convertReadableToDate,
+} from '../services/dateHelper'
+import { Recurrence } from '../enums/Recurrence'
+import { Age } from '../enums/Age'
+
 export default {
   props: {
     message: {
@@ -155,12 +119,8 @@ export default {
       type: Boolean,
       required: false,
     },
-    getById: {
-      type: Boolean,
-      required: false,
-    },
     datas: {
-      type: Array,
+      type: String,
       require: true,
     },
   },
@@ -171,44 +131,31 @@ export default {
       headers: [
         {
           text: 'Titre',
-          value: 'name',
-          initialValue: '',
-          type: 'input',
+          value: 'title',
           align: 'start',
         },
         {
-          text: 'étudiants maximum',
+          text: 'Étudiants maximum',
           value: 'maximumStudents',
-          initialValue: [],
-          type: 'input',
         },
-
         {
-          text: 'récurrence',
+          text: 'Récurrence',
           value: 'recurrence',
-          initialValue: [],
-          type: 'input',
         },
         {
-          text: "plage d'ages",
+          text: "Plage d'âges",
           value: 'ageRange',
-          initialValue: [],
-          type: 'input',
         },
-        { text: 'prix', value: 'price', initialValue: [], type: 'input' },
+        { text: 'Prix', value: 'price' },
         {
-          text: 'début',
+          text: 'Début',
           value: 'startDate',
-          initialValue: new Date(),
-          type: 'input',
         },
         {
-          text: 'fin',
-          value: 'EndDate',
-          initialValue: new Date(),
-          type: 'input',
+          text: 'Fin',
+          value: 'endDate',
         },
-        { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
       showSelect: false,
       search: '',
@@ -222,9 +169,51 @@ export default {
       singleSelect: false,
       selected: [],
       messageText: 'draw your lines',
+      startDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      startDateMenu: false,
+      endDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      endDateMenu: false,
     }
   },
   computed: {
+    lessons() {
+      return this.$store.state.lesson[this.$props.datas].reduce(
+        (newlessonList, lesson) => {
+          const date = convertTimestampToDate(lesson.startDate)
+          const startDateTime = date.getTime()
+
+          const startDateFilter = new Date(
+            this.$store.state.lesson.filter.startDate
+          ).getTime()
+          const endDateFilter = new Date(
+            this.$store.state.lesson.filter.endDate
+          ).getTime()
+          if (
+            startDateTime >= startDateFilter &&
+            startDateTime <= endDateFilter
+          ) {
+            const startDate = convertTimestampToReadableDate(lesson.startDate)
+            const endDate = convertTimestampToReadableDate(lesson.endDate)
+            const recurrence = Recurrence[lesson.recurrence]
+            const ageRange = Age[lesson.ageRange]
+            newlessonList.push({
+              ...lesson,
+              endDate,
+              recurrence,
+              ageRange,
+              startDate,
+            })
+          }
+          return newlessonList
+        },
+        []
+      )
+    },
+
     formTitle() {
       return this.editedIndex === -1
         ? `Créer un ${this.type}`
@@ -238,9 +227,6 @@ export default {
       if (this.$props.message) return true
       return false
     },
-    selectedId() {
-      return this.selected.map((select) => select.id)
-    },
   },
 
   watch: {
@@ -253,14 +239,11 @@ export default {
   },
 
   created() {
-    this.defaultItem = this.editedItem = this.headers.reduce(
-      (defaultItem, currentHeader) => {
-        if (currentHeader.initialValue === undefined) return defaultItem
-        defaultItem[currentHeader.value] = currentHeader.initialValue
-        return defaultItem
-      },
-      {}
-    )
+    this.defaultItem = this.headers.reduce((defaultItem, currentHeader) => {
+      if (currentHeader.initialValue === undefined) return defaultItem
+      defaultItem[currentHeader.value] = currentHeader.initialValue
+      return defaultItem
+    }, {})
     this.currentHeader = this.headers.reduce((newHeader, currentHeader) => {
       newHeader[currentHeader.value] = currentHeader
       return newHeader
@@ -268,26 +251,17 @@ export default {
   },
 
   methods: {
-    deleteLesson(lesson) {
-      this.deleteItemConfirm()
-    },
-    deleteAllLesson(lesson) {
-      this.deleteItemConfirm()
-    },
-    editItem(item) {
-      this.editedIndex = this.ressource.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
     deleteItem(item) {
-      this.editedIndex = this.ressource.indexOf(item)
-      this.editedItem = Object.assign({}, item)
+      this.editedItem = item
       this.dialogDelete = true
     },
+
     deleteItemConfirm() {
-      this.ressource.splice(this.editedIndex, 1)
+      const all = this.editedItem.recurrenceId !== undefined
+      this.$store.dispatch('lesson/archive', { lesson: this.editedItem, all })
       this.closeDelete()
     },
+
     close() {
       this.dialog = false
       this.$nextTick(() => {
@@ -304,13 +278,27 @@ export default {
       })
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.ressource[this.editedIndex], this.editedItem)
-      } else {
-        this.ressource.push(this.editedItem)
-      }
-      this.close()
+    orderbyDate(first, second) {
+      const firstDate = convertReadableToDate(first)
+      const secondDate = convertReadableToDate(second)
+      return firstDate.getTime() - secondDate.getTime()
+    },
+
+    customSort(items, index, isDesc) {
+      items.sort((a, b) => {
+        const [first, second] = !isDesc[0]
+          ? [a[index], b[index]]
+          : [b[index], a[index]]
+        if (index[0] === 'startDate' || index[0] === 'endDate') {
+          return this.orderbyDate(first, second)
+        } else if (typeof a[index] === 'number') {
+          return first - second
+        } else if (typeof a[index] !== 'undefined') {
+          return first.toLowerCase().localeCompare(second.toLowerCase())
+        }
+        return true
+      })
+      return items
     },
   },
 }

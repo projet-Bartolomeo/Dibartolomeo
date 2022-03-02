@@ -1,6 +1,6 @@
 <template>
-  <div class="auto-width">
-    <v-dialog v-model="overlay" max-width="55vw">
+  <div>
+    <v-dialog class="auto-width" v-model="overlay" max-width="55vw">
       <v-card>
         <v-card-actions class="pa-4">
           <div
@@ -16,6 +16,7 @@
             min-width="auto"
             height="40px"
             width="40px"
+            color="grey darken-2"
             text
           >
             <v-icon>mdi-close</v-icon>
@@ -47,8 +48,8 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-.auto-width {
-  width: auto;
+<style>
+.v-dialog {
+  width: auto !important;
 }
 </style>
