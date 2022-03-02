@@ -41,7 +41,7 @@ export const actions = {
                 {
                     recipients: user.email,
                     subject: 'finalisation inscription',
-                    content: `<a href=http://localhost:3000/${user.email}>Website</a></li>`,
+                    content: `<a href=http://localhost:3000/authentification/motpass/${user.email}>Website</a></li>`,
                 })
 
     },

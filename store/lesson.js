@@ -158,6 +158,7 @@ export const actions = {
                     .doc(state.details.id)
                     .update({ studentIds: state.details.studentIds })
             }
+            commit('message/sendpassword'+{student})
             commit('notification/create', { description: 'élève ajouté au cours' }, { root: true })
         } catch (error) {
             commit('notification/create', { description: 'problème lors de l\'ajout d\'un élève', type: 'error' }, { root: true })

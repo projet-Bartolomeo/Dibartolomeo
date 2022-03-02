@@ -14,7 +14,7 @@ export const actions = {
     },
     async adduser({user}){
         try{
-            const newUser = await this.$fire.firestore.collection('user').add(user)
+            const newUser = await this.$fire.firestore.collection('user').doc(user.uid).add(user)
             commit('notification/create', { description: 'élève créé' }, { root: true })
             commit('message/sendpassword')
         }catch(error){
@@ -29,7 +29,7 @@ export const actions = {
             try{
                 const newUser = await this.$fire.firestore.collection('user').add(user)
                 commit('notification/create', { description: 'élève créé' }, { root: true })
-                commit('message/sendpassword'+{user})
+               
             }catch(error){
                 commit('notification/create', { description: 'élève na pas été crée' }, { root: true })
             }

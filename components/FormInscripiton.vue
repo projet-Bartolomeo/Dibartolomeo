@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4" align="center">
-      <v-card width="500" class="elevation-4 text-left" shaped>
+     
         <v-img
           lazy-src="https://trello.com/1/cards/6160076387267344d2d71b77/attachments/61806466e5b595625772b640/previews/61806466e5b595625772b665/download/Capture_d%E2%80%99%C3%A9cran_2021-11-01_%C3%A0_23.03.58.png"
           max-height="100"
@@ -68,7 +68,7 @@
             >S'inscrire</v-btn
           >
         </v-row>
-      </v-card>
+   
       <v-snackbar :timeout="4000" v-model="snackbar" absolute bottom center>
         {{ snackbarText }}
       </v-snackbar>
@@ -87,6 +87,7 @@ export default {
       NewUser: {
         nom: '',
         prenom: '',
+        uid:'',
       },
       authenti: {
         login: '',
@@ -100,7 +101,11 @@ export default {
       this.$fire.auth.createUserWithEmailAndPassword(
         this.auth.email,
         this.auth.password
-      )
+      ).then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    // ...
+  })
        this.$store.dispatch('user/adduser'+this.NewUser)
     },
   },
