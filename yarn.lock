@@ -3345,10 +3345,10 @@
     consola "^2.15.0"
     eslint-webpack-plugin "^2.4.1"
 
-"@nuxtjs/firebase@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/firebase/-/firebase-8.0.0.tgz#aeac482a0f91af12da54feda11a32ec5494645e2"
-  integrity sha512-T0O1Tb1KpOe361HSU2JpYex4YJF9WeG4lOJf3KwdfalPRT9PC8k2H7cupAy0C/M/Hxz4AGddaC68BsK1DThEXg==
+"@nuxtjs/firebase@^8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/firebase/-/firebase-8.2.2.tgz#a449a1b0d289d8907145f62a8a2503bc2ae31b20"
+  integrity sha512-j+kW0utwq23w71D0I4RyOc9/eYGe8WpsoI2GD9PT744rMWmj4MFHASjmgyDPk2KdZGxsknxUW6yq29aLd0E2ow==
   dependencies:
     consola "^2.15.3"
   optionalDependencies:
@@ -11768,6 +11768,11 @@ lru-memoizer@^2.1.4:
   dependencies:
     lodash.clonedeep "^4.5.0"
     lru-cache "~4.0.0"
+
+luxon@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-2.2.0.tgz#f5c4a234ba4016f792488b11aaed2d5bc14c888e"
+  integrity sha512-LwmknessH4jVIseCsizUgveIHwlLv/RQZWC2uDSMfGJs7w8faPUi2JFxfyfMcTPrpNbChTem3Uz6IKRtn+LcIA==
 
 magic-string@^0.25.7:
   version "0.25.7"
