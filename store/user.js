@@ -12,16 +12,33 @@ export const actions = {
             commit('notification/create', { description: 'problème lors de la mise à jour de l\'utilisateur', type: 'error' }, { root: true })
         }
     },
-    async add({user}){
-        try {
+    async adduser({user}){
+        try{
             const newUser = await this.$fire.firestore.collection('user').add(user)
+            commit('notification/create', { description: 'élève créé' }, { root: true })
+            commit('message/sendpassword')
+        }catch(error){
+            commit('notification/create', { description: 'élève na pas été crée' }, { root: true })
+        }
             
-            return newUser
-        } catch (error) {
+      
             
         
-        }
+        },
+        async adduser({user}){
+            try{
+                const newUser = await this.$fire.firestore.collection('user').add(user)
+                commit('notification/create', { description: 'élève créé' }, { root: true })
+                commit('message/sendpassword'+{user})
+            }catch(error){
+                commit('notification/create', { description: 'élève na pas été crée' }, { root: true })
+            }
+                
+          
+                
+            
+            },
     
 
-    }
+    
 }

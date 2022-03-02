@@ -26,6 +26,13 @@
       },
       showScore (score) {
         console.log('💯', score)
+      },
+      initlogin(){
+         this.$fire.auth.createUserWithEmailAndPassword(
+        this.auth.email,
+        this.auth.password
+      )
+
       }
     }
   }

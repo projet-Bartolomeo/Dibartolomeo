@@ -110,13 +110,13 @@ export default {
         'user/getUserByemail',
         this.auth.email
       )
-      this.$nuxt.$router.push('/')
+      this.$nuxt.$router.push('/professor')
       this.$store.commit('user/set', this.login)
     },
     googleSignIn() {
       const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
       this.$fire.auth.signInWithPopup(provider).then((user) => {
-        this.$nuxt.$router.push('/Calendar')
+        this.$nuxt.$router.push('/professor')
       })
     },
     forgotPassword() {

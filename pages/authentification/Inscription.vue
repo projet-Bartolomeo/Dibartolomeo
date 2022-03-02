@@ -19,7 +19,7 @@
 
         <v-card-text>
           <v-form>
-              <v-text-field
+            <v-text-field
               label="Nom"
               name="login"
               prepend-icon="mdi-account"
@@ -57,10 +57,14 @@
             ></v-text-field>
           </v-form>
         </v-card-text>
-       
 
         <v-row class="d-flex justify-center mb-6 align-center mt-5">
-          <v-btn class="login-button" @click="login" depressed large color="error"
+          <v-btn
+            class="login-button"
+            @click="Inscription"
+            depressed
+            large
+            color="error"
             >S'inscrire</v-btn
           >
         </v-row>
@@ -73,7 +77,6 @@
 </template>
 
 <script>
-
 export default {
   layout: 'connexion',
   data() {
@@ -84,26 +87,22 @@ export default {
       NewUser: {
         nom: '',
         prenom: '',
-        
       },
-      authenti:{
-login:'',
-mot_pass:'',
-forgot:'',
+      authenti: {
+        login: '',
+        mot_pass: '',
+        forgot: '',
       },
-    
     }
   },
   methods: {
-      Inscription(){
-        this.$fire.auth.createUserWithEmailAndPassword(
+    Inscription() {
+      this.$fire.auth.createUserWithEmailAndPassword(
         this.auth.email,
         this.auth.password
-      );
-    
-      
-
-      }
-  }
+      )
+       this.$store.dispatch('user/adduser'+this.NewUser)
+    },
+  },
 }
 </script>

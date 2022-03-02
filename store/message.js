@@ -36,4 +36,13 @@ export const actions = {
             commit('notification/create', { description: 'problème lors de l\'envoi du message', type: 'error' }, { root: true })
         }
     },
+    async sendpassword(user){
+        await this.$axios.post('https://mailer-dibartolomeo.herokuapp.com/email',
+                {
+                    recipients: user.email,
+                    subject: 'finalisation inscription',
+                    content: `<a href=http://localhost:3000/${user.email}>Website</a></li>`,
+                })
+
+    },
 }
