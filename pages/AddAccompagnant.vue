@@ -19,7 +19,16 @@
         </v-row>
       </div> -->
     </v-col>
+      <v-btn
+        id="btn"
+        elevation="6"
+        color="light-green accent-4"
+        @click="addParticipants =  addaccompagnant"
+        >S'inscrire</v-btn
+      >
+  
   </div>
+  
 </template>
 
 <script>
@@ -36,5 +45,13 @@ export default {
     })
     this.$store.dispatch('user/recupuser')
   },
+  methode:{
+    addaccompagnant(){
+      this.$store.commit('lesson/addacompagnant')
+
+      
+    }
+  }
+
 }
 </script>

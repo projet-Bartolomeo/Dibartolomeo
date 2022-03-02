@@ -14,17 +14,12 @@
           multiple
           outlined
           item-text="fullName"
-          item-value="abbr"
+          item-value="id"
+          @click="initialise"
         ></v-select>
       </v-col>
-      <v-btn
-        id="btn"
-        elevation="6"
-        color="light-green accent-4"
-        @click="addParticipants = !addParticipants"
-        >S'inscrire</v-btn
-      >
     </div>
+    
   </v-container>
   <!-- <v-card
     class="mx-auto"
@@ -158,7 +153,7 @@ export default {
         (newParticipantsList, currentParticipant) => {
           newParticipantsList.push({
             ...currentParticipant,
-            fullName: `${currentParticipant.firstName} ${currentParticipant.lastName}`,
+            fullName: `${currentParticipant.firstName} ${currentParticipant.lastName}`,id: `${currentParticipant.id}`
           })
           return newParticipantsList
         },
@@ -186,7 +181,12 @@ export default {
     async getacompangnement() {
       this.items = await this.$store.dispatch('user/recupuser')
     },
+     initialise(){
+       this.$store.commit('student/setListid'+this.value)
+
   },
+  },
+ 
 }
 </script>
 

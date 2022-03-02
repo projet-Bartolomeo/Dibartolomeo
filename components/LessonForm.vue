@@ -1,21 +1,26 @@
 <template>
   <div>
     <v-form v-model="valid">
-      <v-row class="justify-space-between ma-5">
-        <v-col class="pa-0">
-          <v-row class="ma-0 align-center d-flex">
+       <v-row class="justify-center">
+          <v-card width="1000" class="ma-6">
+  
+          <v-row class="ma-0  d-flex">
+
             <TextField
               :get="`lesson.${$props.datas}.title`"
               :rules="[(v) => !!v || 'Le titre est obligatoire']"
-              title
+             
+                filled
               :open="open"
               placeholder="Entrez le titre"
             />
           </v-row>
           <v-row class="ma-0">
-            <p class="ma-0 align-center d-flex">
+            
+            <p >
               {{ lesson.studentIds ? lesson.studentIds.length : 0 }}/
             </p>
+            
             <TextField
               :suffix="$props.datas === 'new' ? '' : 'élèves'"
               :get="`lesson.${$props.datas}.maximumStudents`"
@@ -29,8 +34,11 @@
               :open="open"
               placeholder="Entrez le nb max d'élèves"
             />
+        
           </v-row>
-        </v-col>
+               </v-card>
+            
+  
         <div class="d-flex">
           <v-btn
             v-if="$props.datas !== 'new'"
@@ -43,7 +51,7 @@
                 props: {
                   lesson,
                   archive: true,
-                  redirectPath: '/lesson/list',
+                  redirectPath: '/professor/lesson/list',
                 },
                 title: lesson.recurrenceId ? 'Voulez-vous archiver :' : '',
               })
@@ -270,7 +278,7 @@ export default {
   methods: {
     create() {
       this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
-      this.$router.push('/lesson/list')
+      this.$router.push('/professor/lesson/list')
     },
   },
 }

@@ -83,22 +83,7 @@
       </v-menu>
     </div>
 
-    <div class="mt-4 mb-4">
-      <v-btn
-        class="white--text ml-3 mr-3"
-        text
-        color="blue-grey darken-1"
-        @click="$store.commit('overlay/close')"
-        >annuler</v-btn
-      >
-      <v-btn
-        class="white--text ml-3 mr-3"
-        text
-        color="blue-grey darken-1"
-        @click="$props.modify ? modifyLesson() : archiveLesson()"
-        >confirmer</v-btn
-      >
-    </div>
+   
   </div>
 </template>
 

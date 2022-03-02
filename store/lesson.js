@@ -11,12 +11,16 @@ export const state = () => ({
         startDate: convertDateToIso(new Date()),
         endDate: convertDateToIso(new Date((new Date()).getTime() + 30 * 24 * 60 * 60 * 1000))
     },
-    
+    List: []
+
 })
 
 export const mutations = {
     set(state, { lesson, stateName }) {
         state[stateName] = lesson
+    },
+    setListid(Listid) {
+        List = Listid
     },
 
     removeFromList(state, { lessonIdsToDelete, stateName }) {
@@ -266,5 +270,21 @@ export const actions = {
                 studentIds: []
             },
         })
+    },
+    async addacompagnant(lessonid) {
+
+        const lesson = await this.$fire.firestore.collection('lesson')
+            .doc(lessonId)
+            .get()
+        Liststudent = lesson.studentIds
+        for (lessinid in List) {
+            Liststudent.push(lessonid)
+
+        }
+        await this.$fire.firestore.collection('lesson')
+            .doc(lessonid)
+            .update({ studentIds: Liststudent })
+
+
     }
 }
