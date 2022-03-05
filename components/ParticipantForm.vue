@@ -38,8 +38,8 @@
           <v-icon
             :disabled="!valid"
             class="mr-4"
-            @click="create"
             color="#7dd5a5"
+            @click="create"
           >
             mdi-content-save
           </v-icon>
@@ -48,8 +48,8 @@
           <v-icon
             :disabled="!valid"
             class="mr-4"
-            @click="modify"
             color="#7dd5a5"
+            @click="modify"
           >
             mdi-content-save
           </v-icon>
@@ -72,10 +72,6 @@
 
 <script>
 export default {
-  data: () => ({
-    valid: true,
-    student: {},
-  }),
   props: {
     datas: {
       type: Object,
@@ -90,10 +86,10 @@ export default {
       required: true,
     },
   },
-
-  created() {
-    this.student = { ...this.$props.datas }
-  },
+  data: () => ({
+    valid: true,
+    student: {},
+  }),
 
   watch: {
     async student() {
@@ -111,6 +107,9 @@ export default {
         })
       }
     },
+  },
+  created() {
+    this.student = { ...this.$props.datas }
   },
 
   methods: {

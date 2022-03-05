@@ -49,9 +49,9 @@
           ></v-text-field>
         </template>
         <v-date-picker
+          v-model="startDate"
           locale="fr"
           color="teal lighten-2"
-          v-model="startDate"
           @input="startDateMenu = false"
         ></v-date-picker>
       </v-menu>
@@ -75,9 +75,9 @@
           ></v-text-field>
         </template>
         <v-date-picker
+          v-model="endDate"
           locale="fr"
           color="teal lighten-2"
-          v-model="endDate"
           @input="endDateMenu = false"
         ></v-date-picker>
       </v-menu>
@@ -112,6 +112,7 @@ export default {
     payload: {
       type: Object,
       required: false,
+      default: () => {},
     },
     modify: {
       type: Boolean,
@@ -124,6 +125,7 @@ export default {
     redirectPath: {
       type: String,
       required: false,
+      default: '',
     },
   },
   data() {
