@@ -36,29 +36,6 @@
             />
           </v-row>
         </v-col>
-        <v-col v-if="$props.datas == 'details'" class="ma-auto" md="6">
-          <v-row class="align-center justify-start">
-            <p class="ma-0 mr-2">Compte enregistré :</p>
-            <p
-              v-if="$store.state.student.details.isRegistered == true"
-              class="ma-0"
-            >
-              Oui
-            </p>
-            <p
-              v-if="$store.state.student.details.isRegistered == false"
-              class="ma-0"
-            >
-              Non
-            </p>
-          </v-row>
-        </v-col>
-        <v-col md="6">
-          <v-row class="align-center justify-start">
-            <p class="ma-0 mr-2">Téléphone :</p>
-            <TextField :open="open" :get="`student.${$props.datas}.phone`" />
-          </v-row>
-        </v-col>
         <v-col md="6">
           <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Niveau :</p>
@@ -71,6 +48,12 @@
               ]"
               :open="open"
             />
+          </v-row>
+        </v-col>
+        <v-col md="6">
+          <v-row class="align-center justify-start">
+            <p class="ma-0 mr-2">Téléphone :</p>
+            <TextField :open="open" :get="`student.${$props.datas}.phone`" />
           </v-row>
         </v-col>
       </v-row>
@@ -211,6 +194,7 @@ export default {
   },
   methods: {
     create() {
+      this.$store.state.student.new.isPrincipal = true
       if (this.valid) {
         this.$store.dispatch(
           'student/createFromTeacher',

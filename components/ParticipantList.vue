@@ -24,7 +24,6 @@
           :datas="$store.state.student.new"
           type="new"
           :idStudent="$props.idStudent"
-
         />
       </div>
       <div class="d-flex pl-10 pb-5">

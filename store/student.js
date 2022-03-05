@@ -60,7 +60,6 @@ export const actions = {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
                 .where('teacherIds', 'array-contains', rootState.user.id)
-                .where("isPrincipal", "==", true)
                 .get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
@@ -73,10 +72,12 @@ export const actions = {
         try {
             const participantSnapshot = await this.$fire.firestore.collection('user')
 
-            .where("isPrincipal", "==", false).where("idUserPrincipal", "==", idUserPrincipal).where("isDeleted", "==", false).get()
+                .where("isPrincipal", "==", false).where("idUserPrincipal", "==", idUserPrincipal).where("isDeleted", "==", false).get()
 
             const participant = readQuerySnapshot(participantSnapshot)
+
             commit('set', { stateName: 'participant', student: participant })
+            return participant
         } catch (error) {
             commit('notification/create', { description: 'Problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
@@ -113,31 +114,17 @@ export const actions = {
 
 
 
-    async removeFromTeacher({ commit, rootState }, { student }) {
+    async removeFromTeacher({ commit, rootState, dispatch }, { student }) {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
-
-
             if (student.isPrincipal === true) {
 
-                const participantSnapshot = await this.$fire.firestore.collection('user')
-
-                    .where("isPrincipal", "==", false).where("idUserPrincipal", "==", student.id).where("isDeleted", "==", false).get()
-
-                const participants = readQuerySnapshot(participantSnapshot);
+                const participants = await dispatch('setParticipant', student.id)
 
                 await participants.forEach(participant => {
-                    console.log(participant)
-
-                    const lastTeacherList = participant.teacherIds
-
-                    const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
-
-                    const isDeleted = true
-
-                    this.$fire.firestore.collection('user')
-                        .doc(participant.id)
-                        .update({ teacherIds, isDeleted })
+                    dispatch('removeFromTeacher', {
+                        student: participant,
+                    })
                 });
             }
 
@@ -170,8 +157,49 @@ export const actions = {
         }
     },
 
-    async modify({ commit }, { studentId, payload }) {
+
+    async modify({ commit, dispatch }, { studentId, payload }) {
         try {
+            let idPrinc;
+            const phone = payload.phone ? payload.phone : ''
+            idPrinc = studentId
+
+            if (payload.isPrincipal === true) {
+
+                const participants = await dispatch('setParticipant', idPrinc)
+
+                await participants.forEach(participant => {
+
+                    this.$fire.firestore.collection('user')
+                        .doc(participant.id)
+                        .update({ email : payload.email, phone })
+                });
+
+            } else {
+                idPrinc = payload.idUserPrincipal
+                const participants = await dispatch('setParticipant', idPrinc)
+
+                await participants.forEach(participant => {
+
+                    this.$fire.firestore.collection('user')
+                        .doc(participant.id)
+                        .update({ email : payload.email , phone })
+                });
+
+                const EtudiantPrincSnapshot = await this.$fire.firestore.collection('user')
+
+                    .where("id", "==", idPrinc).where("isDeleted", "==", false).get()
+
+                const etudiantsPrinc = readQuerySnapshot(EtudiantPrincSnapshot);
+
+                await etudiantsPrinc.forEach(etudiantPrinc => {
+
+                    this.$fire.firestore.collection('user')
+                        .doc(etudiantPrinc.id)
+                        .update({ email : payload.email, phone })
+                });
+            }
+
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)

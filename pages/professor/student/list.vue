@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Title value="Liste des cours">
+    <Title value="Liste des élèves">
       <router-link class="text-decoration-none" to="/professor/student/new">
         <v-btn style="color: white" color="teal lighten-2"
           >Ajouter un élève</v-btn

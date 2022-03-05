@@ -1,6 +1,6 @@
 export const state = () => ({
     id: '0kK1fyyWN8N2bkHNYLoo',
-    idStudent : "pmKopAfv3e7lYAPj4F63",
+    idStudent : "m4LAKiljhevFTHr1wk69",
     type: "professor"
 })
 

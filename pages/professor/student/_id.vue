@@ -8,7 +8,6 @@
         redirect="/professor/student/list"
         class="ma-5"
       />
-      <ParticipantList :idStudent="$route.query.id" />
       <DataTableLesson datas="studentList" />
     </v-col>
   </div>

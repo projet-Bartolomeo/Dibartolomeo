@@ -4,7 +4,6 @@
       <v-col class="d-flex align-center" cols="12" sm="6" md="3">
         <v-text-field
           v-model="student.firstName"
-          @input="updateMessage"
           :rules="[(v) => !!v || 'Le nom est obligatoire']"
           label="Prénom"
           required
@@ -75,6 +74,7 @@
 export default {
   data: () => ({
     valid: true,
+    student: {},
   }),
   props: {
     datas: {
@@ -90,11 +90,29 @@ export default {
       required: true,
     },
   },
-  computed: {
-    student() {
-      return this.$props.datas
+
+  created() {
+    this.student = { ...this.$props.datas }
+  },
+
+  watch: {
+    async student() {
+      if (this.$props.type === 'participant') {
+        await this.$store.commit(`student/modifyList`, {
+          stateName: this.$props.type,
+          studentId: this.student.id,
+          payload: this.student,
+        })
+      }
+      if (this.$props.type === 'new') {
+        await this.$store.commit(`student/modify`, {
+          stateName: this.$props.type,
+          payload: this.student,
+        })
+      }
     },
   },
+
   methods: {
     reset() {
       this.$refs.form.reset()
@@ -103,12 +121,16 @@ export default {
       if (this.$refs.form.validate()) {
         await this.$store.dispatch('student/modify', {
           studentId: this.$props.datas.id,
-          payload: this.$props.datas,
+          payload: this.student,
         })
       }
     },
     create() {
       if (this.$refs.form.validate()) {
+        if (this.$store.state.student.details.phone) {
+          this.$store.state.student.new.phone =
+            this.$store.state.student.details.phone
+        }
         this.$store.state.student.new.email =
           this.$store.state.student.details.email
         this.$store.state.student.new.isPrincipal = false
