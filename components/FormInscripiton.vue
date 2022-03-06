@@ -17,28 +17,28 @@
           <v-icon @click="googleSignIn"> mdi-google </v-icon>
         </v-row>
 
-        <v-card-text>
+      <v-card-text>
           <v-form>
             <v-text-field
-              label="Nom"
-              name="login"
+              label="Name"
+              name="name"
               prepend-icon="mdi-account"
               type="text"
-              v-model="NewUser.nom"
+              v-model="NewUser.name"
             ></v-text-field>
             <v-text-field
               label="Prenom"
-              name="login"
+              name="firstname"
               prepend-icon="mdi-account"
               type="text"
-              v-model="NewUser.Prenom"
+              v-model="NewUser.firstname"
             ></v-text-field>
             <v-text-field
               label="Login"
               name="login"
               prepend-icon="mdi-email"
               type="text"
-              v-model="authenti.email"
+              v-model="authenti.login"
             ></v-text-field>
 
             <v-text-field
@@ -46,7 +46,7 @@
               name="password"
               prepend-icon="mdi-lock"
               type="password"
-              v-model="NewUser.password"
+              v-model="authenti.password"
             ></v-text-field>
             <v-text-field
               label="Confirm Password"
@@ -56,7 +56,7 @@
               v-model="authenti.forgot"
             ></v-text-field>
           </v-form>
-        </v-card-text>
+     </v-card-text>
 
         <v-row class="d-flex justify-center mb-6 align-center mt-5">
           <v-btn
@@ -85,28 +85,33 @@ export default {
       snackbarText: 'No error message',
       id: '',
       NewUser: {
-        nom: '',
-        prenom: '',
-        uid:'',
+        name: '',
+        firstname: '',
+        isRegistered: 'false', 
+        isDeleted: 'false'
       },
       authenti: {
         login: '',
         mot_pass: '',
         forgot: '',
       },
+      uid:'',
     }
   },
   methods: {
     Inscription() {
       this.$fire.auth.createUserWithEmailAndPassword(
-        this.auth.email,
-        this.auth.password
+        this.authenti.login,
+        this.authenti.password
       ).then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
+      // this.$store.dispatch('user/adduser',this.NewUser)
     // ...
+      this.uid=userCredential.uid
+      this.$fire.firestore.collection('user').doc(this.uid).set(this.NewUser)
   })
-       this.$store.dispatch('user/adduser'+this.NewUser)
+
+ 
+     
     },
   },
 }

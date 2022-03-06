@@ -19,6 +19,7 @@
           />
           </v-col>
         <v-spacer></v-spacer>
+       <v-spacer></v-spacer>
         <v-col>
           <h1 v-if="affichage===1">Inscris toi </h1>
            </v-col> 
