@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 
-const path = process.env.environnement == 'production' ? '.env.production' : '.env.development'
+const path = process.env.environnement === 'production' ? '.env.production' : '.env.development'
 
 dotenv.config({ path })
 

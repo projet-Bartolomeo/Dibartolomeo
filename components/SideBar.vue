@@ -10,21 +10,47 @@
       </v-list-item>
     </template>
     <v-spacer></v-spacer>
-    <v-list dense nav>
-      <v-list-item
-        v-for="item in routeList"
+    <v-list v-if="$store.state.user.type === 'professor'" dense nav>
+      <div
+        v-for="item in itemsProfessor"
         :key="item.title"
-        :to="item.route"
-        class="my-5"
+        class="my-10 d-flex justify-center"
       >
-        <v-list-item-icon>
-          <v-icon style="color: white">{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content style="color: white">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        <router-link class="text-decoration-none" :to="item.route">
+          <v-btn width="13vw" color="white" elevation="7" outlined rounded>{{
+            item.title
+          }}</v-btn>
+        </router-link>
+      </div>
     </v-list>
+    <div v-else dense nav>
+      <div
+        v-for="item in itemsStudent"
+        :key="item.title"
+        class="my-10 d-flex justify-center"
+      >
+        <router-link class="text-decoration-none" :to="item.route">
+          <v-btn width="13vw" color="white" elevation="7" outlined rounded>{{
+            item.title
+          }}</v-btn>
+        </router-link>
+      </div>
+    </div>
+
+    <template #append>
+      <div class="d-flex justify-center flex-wrap" style="color: white" >
+        <router-link class="text-decoration-none" color="white" to="/"
+          ><p style="font-size:11px; color: white" class="px-3 ma-0">A propos</p> </router-link
+        >
+        <router-link class="text-decoration-none" color="white" to="/"
+          ><p style="font-size:11px; color: white" class="px-3">CGU</p> </router-link
+        ><router-link class="text-decoration-none" color="white" to="/"
+          ><p style="font-size:11px; color: white" class="px-3">Politique de confidentialité</p> </router-link
+        ><router-link class="text-decoration-none" color="white" to="/"
+          ><p style="font-size:11px; color: white" class="px-3">Mention légale</p>
+        </router-link>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
@@ -33,32 +59,31 @@ import { UserType } from '../enums/UserType'
 export default {
   data() {
     return {
-      items: [
-        {
-          title: 'Planning',
-          icon: 'mdi-bulletin-board',
-          route: '/professor',
-          type: UserType.professor,
-        },
+        { title: 'Planning', route: '/professor' },
         {
           title: 'Liste des cours',
-          icon: 'mdi-image',
           route: '/professor/lesson/list',
-          type: UserType.professor,
         },
         {
           title: 'Liste des éleves',
-          icon: 'mdi-account',
           route: '/professor/student/list',
           type: UserType.professor,
         },
+      ],
+
+      itemsStudent: [
+        { title: 'Planning', route: '/professor' },
         {
+          title: 'Mon compte',
+          route: '/student/account',
+        },
+         {
           title: 'Liste de mes cours',
-          icon: 'mdi-image',
           route: '/student/lesson/list',
           type: UserType.student,
         },
       ],
+
       permanent: true,
     }
   },

@@ -12,7 +12,11 @@
         @click="$store.commit('overlay/close')"
         >Annuler</v-btn
       >
-      <v-btn text class="white--text ma-4" color="blue-grey darken-1" @click="remove"
+      <v-btn
+        text
+        class="white--text ma-4"
+        color="blue-grey darken-1"
+        @click="remove"
         >Confirmer</v-btn
       >
       <v-spacer></v-spacer>
@@ -30,17 +34,6 @@ export default {
     dataToDelete: {
       type: Object,
       required: true,
-    },
-  },
-  methods: {
-    remove() {
-      this.$store.dispatch(this.datas.dispatch.key, this.datas.dispatch.value)
-      this.$store.commit('overlay/close')
-      if (this.$props.type === 'lesson') {
-        this.$router.push('/professor/lesson/list')
-      } else {
-        this.$router.push('/professor/student/list')
-      }
     },
   },
   computed: {
@@ -63,6 +56,17 @@ export default {
               value: { student: this.$props.dataToDelete },
             },
           }
+    },
+  },
+  methods: {
+    remove() {
+      this.$store.dispatch(this.datas.dispatch.key, this.datas.dispatch.value)
+      this.$store.commit('overlay/close')
+      if (this.$props.type === 'lesson') {
+        this.$router.push('/professor/lesson/list')
+      } else {
+        this.$router.push('/professor/student/list')
+      }
     },
   },
 }
