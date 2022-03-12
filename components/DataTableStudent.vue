@@ -3,8 +3,8 @@
     <v-card class="ma-4 mb-6">
       <v-card-title>
         <v-text-field
-          class="ma-2 text-field pa-0"
           v-model="search"
+          class="ma-2 text-field pa-0"
           append-icon="mdi-magnify"
           label="Rechercher un élève"
           single-line
@@ -31,6 +31,7 @@
     </v-card>
     <v-card class="ma-4">
       <v-data-table
+        v-model="selected"
         :headers="headers"
         :items="student"
         sort-by="calories"
@@ -39,12 +40,11 @@
           'items-per-page-text': 'élève par page',
         }"
         :search="search"
-        v-model="selected"
         :single-select="singleSelect"
         item-key="id"
         :show-select="getShowSelect"
       >
-        <template v-slot:top>
+        <template #top>
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card v-if="$props.lesson">
               <v-card-title class="text-h5 overflow-wrap-normal"
@@ -85,10 +85,10 @@
             </v-card>
           </v-dialog>
         </template>
-        <template v-if="$props.add" v-slot:[`item.actions`]="{ item }">
+        <template v-if="$props.add" #[`item.actions`]="{ item }">
           <v-icon class="mr-1" @click="addToLesson(item)"> mdi-plus </v-icon>
         </template>
-        <template v-else v-slot:[`item.actions`]="{ item }">
+        <template v-else #[`item.actions`]="{ item }">
           <div class="d-flex">
             <v-icon
               v-if="$props.message"
@@ -111,7 +111,7 @@
             <v-icon class="mr-1" @click="deleteItem(item)"> mdi-delete </v-icon>
           </div>
         </template>
-        <template v-slot:no-data>
+        <template #no-data>
           <div>Vous n'avez actuellement pas d'élèves</div>
         </template>
       </v-data-table>

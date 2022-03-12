@@ -13,8 +13,8 @@
           <div>
             <ParticipantForm
               :datas="$store.state.student.participant[index]"
-              :idStudent="$props.idStudent"
               type="participant"
+              :idStudent="$props.idStudent"
             />
           </div>
         </div>
@@ -27,20 +27,22 @@
         />
       </div>
       <div class="d-flex pl-10 pb-5">
-        <v-icon v-if="!isActive"
+        <v-icon
+          v-if="!isActive"
           class="mr-4"
           color="black"
+          :class="{ active: isActive }"
           @click="isActive = !isActive"
-          v-bind:class="{ active: isActive }"
           >> mdi-plus-circle-outline
         </v-icon>
-        <v-icon v-else
+        <v-icon
+          v-else
           class="mr-4"
           color="black"
+          :class="{ active: isActive }"
           @click="isActive = !isActive"
-          v-bind:class="{ active: isActive }"
-          >     mdi-minus-circle-outline
-
+        >
+          mdi-minus-circle-outline
         </v-icon>
         <p class="ma-0" color="black">Ajouter un participant</p>
       </div>
@@ -58,9 +60,11 @@ export default {
   },
   data() {
     return {
-      participant: [],
       isActive: false,
     }
+  },
+    created() {
+    this.fetchData()
   },
   methods: {
     async fetchData() {
@@ -69,9 +73,6 @@ export default {
         this.$props.idStudent
       )
     },
-  },
-  created() {
-    this.fetchData()
   },
 }
 </script>

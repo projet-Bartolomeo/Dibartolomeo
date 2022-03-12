@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <template v-slot:append>
+    <template #append>
       <div class="d-flex justify-center flex-wrap" style="color: white" >
         <router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size:11px; color: white" class="px-3 ma-0">A propos</p> </router-link

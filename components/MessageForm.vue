@@ -1,8 +1,8 @@
 <template>
   <v-col class="d-flex flex-column align-center">
     <v-textarea
-      clearable
       v-model="message"
+      clearable
       class="text-area"
       filled
       auto-grow
@@ -14,9 +14,9 @@
       :disabled="
         message == undefined || (message != undefined && message.trim() === '')
       "
-      @click="sendMessage"
       style="color: white"
       color="teal lighten-2"
+      @click="sendMessage"
       >Envoyer</v-btn
     >
   </v-col>

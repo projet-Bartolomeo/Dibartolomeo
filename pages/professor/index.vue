@@ -43,9 +43,9 @@
       </v-sheet>
       <v-sheet elevation="7" height="600">
         <v-calendar
-          locale="fr"
           ref="calendar"
           v-model="focus"
+          locale="fr"
           color="blue-grey lighten-4"
           :events="lessons"
           :type="type"
