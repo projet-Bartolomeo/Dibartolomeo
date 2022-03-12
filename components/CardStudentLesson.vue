@@ -5,7 +5,7 @@
 
       <div class="text">
         <h1 class="titre">{{ title }}</h1>
-        <h3 class="date">{{ date }}</h3>
+        <h3 >{{ newDate }}</h3>
         <h5 class="description">
           {{ description }}
         </h5>
@@ -17,11 +17,14 @@
 </template>
 
 <script lang="ts">
+import { convertTimestampToReadableDate } from '~/services/dateHelper'
+
 export default {
   props: {
     image: {
       type: String,
       required: false,
+      default: '/image/cours.jpg',
     },
     title: {
       type: String,
@@ -35,6 +38,12 @@ export default {
       type: String,
       required: false,
       default: 'pas de description',
+    },
+  },
+
+  computed: {
+    newDate() {
+      return convertTimestampToReadableDate(this.$props.date)
     },
   },
 }

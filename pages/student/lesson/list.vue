@@ -1,16 +1,15 @@
 <template>
   <div>
-    <div class="header">
-      <Title value="Mes Cours enregistrés" />
-      <v-btn color="#41c6a9" class="white--text" elevation="2" x-large
+      <Title value="Mes cours enregistrés">
+      <v-btn color="#41c6a9" class="white--text" elevation="2" 
         >Filtrer<v-icon right> mdi-filter-variant </v-icon></v-btn
       >
-    </div>
+      </Title>
     <div class="listCard">
       <div v-for="card in $store.state.lesson.studentList" :key="card.title">
         <CardStudentLesson
           :title="card.title"
-          :date="card.date"
+          :date="card.startDate"
           :description="card.description"
         />
         <div>
@@ -30,15 +29,6 @@ export default {
 </script>
 
 <style>
-.header {
-  margin-left: 0;
-  margin-top: 0;
-  width: 1200px;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  margin-bottom: 60px;
-}
 .filtre {
   background-color: #03f1a2; /* Green */
   border: none;
@@ -55,7 +45,6 @@ export default {
   height: 80vh;
   overflow-y: scroll;
   padding-left: 50px;
-  padding-right: 500px;
 }
 .separator {
   margin-top: 30px;

@@ -17,7 +17,7 @@
         class="my-10 d-flex justify-center"
       >
         <router-link class="text-decoration-none" :to="item.route">
-          <v-btn width="13vw" color="white" elevation="7" outlined rounded>{{
+          <v-btn width="14vw" color="white" elevation="7" outlined rounded>{{
             item.title
           }}</v-btn>
         </router-link>
@@ -59,6 +59,7 @@ import { UserType } from '../enums/UserType'
 export default {
   data() {
     return {
+        itemsProfessor: [
         { title: 'Planning', route: '/professor' },
         {
           title: 'Liste des cours',
