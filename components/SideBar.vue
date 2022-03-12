@@ -56,7 +56,7 @@ export default {
       items: [
         {
           title: 'Planning',
-          route: '/professor',
+          route: '/professor/lesson/planning',
           type: UserType.professor,
         },
         {
@@ -70,7 +70,7 @@ export default {
           type: UserType.professor,
         },
         {
-          title: 'planning',
+          title: 'Planning',
           route: '/student/lesson/planning',
           type: UserType.student,
         },

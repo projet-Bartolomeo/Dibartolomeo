@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <v-btn color="#fa3257" class="white--text" large>Se désinscrire</v-btn>
+    <v-btn color="#fa3257" class="white--text" large >Se désinscrire</v-btn>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
       required: true,
     },
     date: {
-      type: String,
+      type: Object,
       required: true,
     },
     description: {

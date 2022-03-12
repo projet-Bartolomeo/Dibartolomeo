@@ -23,7 +23,7 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch('lesson/setStudentList', this.$store.state.user.id)
+    this.$store.dispatch('lesson/setStudentList', {studentId : this.$store.state.user.id})
   },
 }
 </script>
