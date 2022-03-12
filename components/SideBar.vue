@@ -1,9 +1,5 @@
 <template>
-  <v-navigation-drawer
-    app
-    left
-    style="background: linear-gradient(90deg,rgba(108, 20, 36, 1) 18%,rgba(91, 16, 29, 1) 91%);"
-  >
+  <v-navigation-drawer app left class="navigation-drawer-color">
     <template #prepend>
       <v-list-item>
         <v-list-item-content>
@@ -59,10 +55,10 @@
 </template>
 
 <script>
+import { UserType } from '../enums/UserType'
 export default {
   data() {
     return {
-      itemsProfessor: [
         { title: 'Planning', route: '/professor' },
         {
           title: 'Liste des cours',
@@ -71,21 +67,42 @@ export default {
         {
           title: 'Liste des éleves',
           route: '/professor/student/list',
+          type: UserType.professor,
         },
       ],
+
       itemsStudent: [
         { title: 'Planning', route: '/professor' },
         {
           title: 'Mon compte',
           route: '/student/account',
         },
-        {
-          title: 'Mes cours',
-          route: '/professor/student/list',
+         {
+          title: 'Liste de mes cours',
+          route: '/student/lesson/list',
+          type: UserType.student,
         },
       ],
+
       permanent: true,
     }
   },
+  computed: {
+    routeList() {
+      return this.items.filter(
+        (item) => this.$store.state.user.type === item.type
+      )
+    },
+  },
 }
 </script>
+
+<style>
+.navigation-drawer-color {
+  background: linear-gradient(
+    90deg,
+    rgba(108, 20, 36, 1) 18%,
+    rgba(91, 16, 29, 1) 91%
+  );
+}
+</style>
