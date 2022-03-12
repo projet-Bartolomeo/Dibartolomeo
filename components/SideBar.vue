@@ -10,9 +10,9 @@
       </v-list-item>
     </template>
     <v-spacer></v-spacer>
-    <v-list v-if="$store.state.user.type === 'professor'" dense nav>
+    <v-list dense nav>
       <div
-        v-for="item in itemsProfessor"
+        v-for="item in routeList"
         :key="item.title"
         class="my-10 d-flex justify-center"
       >
@@ -23,31 +23,25 @@
         </router-link>
       </div>
     </v-list>
-    <div v-else dense nav>
-      <div
-        v-for="item in itemsStudent"
-        :key="item.title"
-        class="my-10 d-flex justify-center"
-      >
-        <router-link class="text-decoration-none" :to="item.route">
-          <v-btn width="13vw" color="white" elevation="7" outlined rounded>{{
-            item.title
-          }}</v-btn>
-        </router-link>
-      </div>
-    </div>
-
     <template #append>
-      <div class="d-flex justify-center flex-wrap" style="color: white" >
+      <div class="d-flex justify-center flex-wrap" style="color: white">
         <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size:11px; color: white" class="px-3 ma-0">A propos</p> </router-link
-        >
+          ><p style="font-size: 11px; color: white" class="px-3 ma-0">
+            A propos
+          </p>
+        </router-link>
         <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size:11px; color: white" class="px-3">CGU</p> </router-link
+          ><p style="font-size: 11px; color: white" class="px-3">
+            CGU
+          </p> </router-link
         ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size:11px; color: white" class="px-3">Politique de confidentialité</p> </router-link
+          ><p style="font-size: 11px; color: white" class="px-3">
+            Politique de confidentialité
+          </p> </router-link
         ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size:11px; color: white" class="px-3">Mention légale</p>
+          ><p style="font-size: 11px; color: white" class="px-3">
+            Mention légale
+          </p>
         </router-link>
       </div>
     </template>
@@ -59,26 +53,33 @@ import { UserType } from '../enums/UserType'
 export default {
   data() {
     return {
-        itemsProfessor: [
-        { title: 'Planning', route: '/professor' },
+      items: [
+        {
+          title: 'Planning',
+          route: '/professor',
+          type: UserType.professor,
+        },
         {
           title: 'Liste des cours',
           route: '/professor/lesson/list',
+          type: UserType.professor,
         },
         {
           title: 'Liste des éleves',
           route: '/professor/student/list',
           type: UserType.professor,
         },
-      ],
-
-      itemsStudent: [
-        { title: 'Planning', route: '/professor' },
+        {
+          title: 'planning',
+          route: '/student/lesson/planning',
+          type: UserType.student,
+        },
         {
           title: 'Mon compte',
           route: '/student/account',
+          type: UserType.student,
         },
-         {
+        {
           title: 'Liste de mes cours',
           route: '/student/lesson/list',
           type: UserType.student,
