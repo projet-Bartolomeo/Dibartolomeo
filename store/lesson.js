@@ -248,7 +248,6 @@ export const actions = {
             commit('modifyInList', { stateName: 'teacherList', lessonToModify: lessons })
             commit('set', { stateName: 'form', lesson: { valid: true } })
         } catch (error) {
-            console.log(error)
             notification = { type: 'error', description: 'problème lors de la mise à jour' }
         }
         commit('notification/create', notification, { root: true })

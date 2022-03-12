@@ -56,22 +56,28 @@
                 <v-btn color="blue-grey darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn color="blue-grey darken-1" text @click="deleteItemConfirm"
+                <v-btn
+                  color="blue-grey darken-1"
+                  text
+                  @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
             <v-card v-else>
-              <v-card-title class="overflow-wrap-normal" 
-               >Êtes-vous sur de vouloir supprimer cet élève?</v-card-title
+              <v-card-title class="overflow-wrap-normal"
+                >Êtes-vous sur de vouloir supprimer cet élève?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue-grey darken-1" text @click="closeDelete"
                   >Annuler</v-btn
                 >
-                <v-btn color="blue-grey darken-1" text @click="deleteItemConfirm"
+                <v-btn
+                  color="blue-grey darken-1"
+                  text
+                  @click="deleteItemConfirm"
                   >Supprimer</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -96,7 +102,10 @@
               "
               >mdi-message</v-icon
             >
-            <NuxtLink class="nuxtlink" :to="`/professor/student/?id=${item.id}`">
+            <NuxtLink
+              class="nuxtlink"
+              :to="`/professor/student/?id=${item.id}`"
+            >
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
             <v-icon class="mr-1" @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -150,12 +159,6 @@ export default {
         {
           text: 'Prenom',
           value: 'firstName',
-          initialValue: '',
-          type: 'input',
-        },
-        {
-          text: 'Compte enregistré',
-          value: 'isRegistered',
           initialValue: '',
           type: 'input',
         },
