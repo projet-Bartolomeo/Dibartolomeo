@@ -18,10 +18,10 @@
     </div>
     <v-text-field
       v-else
-      :class="`flex-none text-field-padding ${titleStyle}`"
       v-model="input"
+      :class="`flex-none text-field-padding ${titleStyle}`"
       :rules="$props.rules"
-      :autofocus="!this.$props.open"
+      :autofocus="!$props.open"
       :suffix="$props.suffix"
       :placeholder="$props.placeholder"
       filled
@@ -35,11 +35,6 @@
 <script>
 import { tryConvertStringToNumber } from '../services/numberHelper'
 export default {
-  data() {
-    return {
-      readonly: !this.$props.open,
-    }
-  },
   props: {
     get: {
       type: String,
@@ -48,10 +43,12 @@ export default {
     rules: {
       type: Array,
       required: false,
+      default: () => [],
     },
     suffix: {
       type: String,
       required: false,
+      default: '',
     },
     title: {
       type: Boolean,
@@ -64,12 +61,19 @@ export default {
     placeholder: {
       type: String,
       required: false,
+      default: '',
     },
     open: {
       type: Boolean,
       required: false,
     },
   },
+  data() {
+    return {
+      readonly: !this.$props.open,
+    }
+  },
+
   computed: {
     state() {
       return this.$store.getters.getStateFromString(this.$props.get)
