@@ -104,11 +104,12 @@ export default {
         this.authenti.login,
         this.authenti.password
       ).then((userCredential) => {
-      // this.$store.dispatch('user/adduser',this.NewUser)
-    // ...
-      this.uid=userCredential.uid
-      this.$fire.firestore.collection('user').doc(this.uid).set(this.NewUser)
+     
+    this.uid=userCredential.uid
+    this.$store.dispatch('user/addUser',this.NewUser)
+   
   })
+  
 
  
      

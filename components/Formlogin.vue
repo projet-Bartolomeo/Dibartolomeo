@@ -91,27 +91,31 @@ export default {
         password: '',
         email_forgot: '',
       },
+      uid:'',
     }
   },
   methods: {
-    async login() {
+    login() {
       this.$fire.auth.signInWithEmailAndPassword(
         this.auth.email,
         this.auth.password
-      )
+      ).then((userCredential) => {
+     
+    this.uid=userCredential.uid
 
-      this.id = this.$fire.getUid(this.auth.email, this.auth.password)
-      this.user = await this.$store.dispatch(
-        'user/getUserByemail',
-        this.auth.email
+     
+       this.$store.dispatch(
+        'user/getuserbyid',
+        this.uid
       )
+        })
+  
       this.$nuxt.$router.push('/professor/student/new')
-      this.$store.commit('user/set', this.login)
     },
     googleSignIn() {
       const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
       this.$fire.auth.signInWithPopup(provider).then((user) => {
-        this.$nuxt.$router.push('/professor')
+        this.$nuxt.$router.push('/student/new')
       })
     },
     forgotPassword() {

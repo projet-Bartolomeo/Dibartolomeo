@@ -1,94 +1,85 @@
 <template>
-<div v-if="affichage===1">
-  <v-navigation-drawer
-
-    width="500"
-    app
-  left
-    style="background: linear-gradient(90deg, rgba(108,20,36,1) 18%, rgba(91,16,29,1) 91%);"
-
-  >
-    <template #prepend>
-     
-        <v-row class="mt-5 justify-center align-center" >
-            <v-col>
-            <v-img
-            src="/image/logo.png"
-            max-height="170"
-            max-width="220"
-          />
+  <div v-if="affichage === 1">
+    <v-navigation-drawer
+      width="500"
+      app
+      right
+      style="
+        background: linear-gradient(
+          90deg,
+          rgba(108, 20, 36, 1) 18%,
+          rgba(91, 16, 29, 1) 91%
+        );
+      "
+    >
+      <template #prepend>
+        <v-row class="mt-5 justify-center align-center">
+          <v-col>
+            <v-img src="/image/logo.png" max-height="170" max-width="220" />
           </v-col>
-        <v-spacer></v-spacer>
-       <v-spacer></v-spacer>
-        <v-col>
-          <h1 v-if="affichage===1">Inscris toi </h1>
-           </v-col> 
-           <v-col>
-          <v-btn v-if="affichage===1" @click="init2">S'inscrire</v-btn>
-           </v-col>
-          
-         
-          
-          
-         
-          </v-row>
-     
-    </template>
-    <v-spacer></v-spacer>
-   
-  </v-navigation-drawer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-col>
+            <h1 v-if="affichage === 1">Inscris toi</h1>
+           <h2 v-if="affichage === 1">Pour vous inscrit veuiller entrer vos informations personnels</h2>
+          </v-col>
+          <v-col>
+            <v-btn v-if="affichage === 1" @click="init2">S'inscrire</v-btn>
+          </v-col>
+        </v-row>
+      </template>
+      <v-spacer></v-spacer>
+    </v-navigation-drawer>
 
+    <Formlogin v-if="affichage === 1" />
 
-    
-      <Formlogin v-if="affichage===1"/>
-     
-      <FormInscripiton v-else  />
-
-   
-
+    <FormInscripiton v-else />
   </div>
   <div v-else>
-  <v-navigation-drawer
-    app
-  right
-    style="background: linear-gradient(90deg, rgba(108,20,36,1) 18%, rgba(91,16,29,1) 91%);"
-     
-    width="500"
+    <v-navigation-drawer
+      app
 
-  >
-    <template #prepend>
-      <v-list-item>
-        <v-list-item-content>
-        <v-row class="mt-5 justify-center align-center" >
-            <v-img
-            src="/image/logo.png"
-            max-height="170"
-            max-width="220"
-          />
-        <v-spacer></v-spacer>
-          <h1 v-if="affichage===1">Inscris toi </h1>
-          <v-btn v-if="affichage===1" @click="init2"></v-btn>
-          
-              
-          <v-btn  @click="init" v-else>Se connecter</v-btn>
-          
-         
-          </v-row>
-        </v-list-item-content>
-      </v-list-item>
-    </template>
-    <v-spacer></v-spacer>
-   
-  </v-navigation-drawer>
+      left
+      style="
+        background: linear-gradient(
+          90deg,
+          rgba(108, 20, 36, 1) 18%,
+          rgba(91, 16, 29, 1) 91%
+        );
+      "
+      width="500"
+    >
+      <template #prepend>
+        <v-list-item>
+          <v-list-item-content>
+            <v-row class="mt-5 justify-center align-center">
+              <v-col cols="12" sm="8" md="4" align="center">
+                <v-img src="/image/logo.png" max-height="170" max-width="220" />
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col cols="12" sm="8" md="4" align="center">
+                <h1 v-if="affichage === 1">Inscris toi</h1>
+                 <h2 v-if="affichage === 1">Pour vous inscrit veuiller entrer vos informations personnels</h2>
+                <h1></h1>
+              </v-col>
+              <v-col cols="12" sm="8" md="4" align="center">
+                <v-btn v-if="affichage === 1" @click="init2"></v-btn>
 
-<transition name="fade" mode="out-in">
-    
-      <Formlogin v-if="affichage===1" mode="out"/>
-     
+                <v-btn @click="init" v-else>Se connecter</v-btn>
+              </v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+      <v-spacer></v-spacer>
+    </v-navigation-drawer>
+
+    <transition name="fade" mode="out-in">
+      <Formlogin v-if="affichage === 1" mode="out" />
+
       <FormInscripiton v-else mode="in" />
-</transition>
-   
-
+    </transition>
   </div>
 </template>
 
@@ -97,10 +88,10 @@ import FormInscripiton from './FormInscripiton.vue'
 import Formlogin from './Formlogin.vue'
 export default {
   components: { Formlogin, FormInscripiton },
-  layout:'connexion_inscription',
+  layout: 'connexion_inscription',
   data() {
     return {
-        affichage:'1',
+      affichage: '1',
       items: [
         { title: 'Planning', icon: 'mdi-bulletin-board', route: '/' },
         { title: 'Liste des cours', icon: 'mdi-image', route: '/lesson/list' },
@@ -109,19 +100,18 @@ export default {
           icon: 'mdi-account',
           route: '/student/list',
         },
-       /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
+        /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
-      permanent: true
+      permanent: true,
     }
   },
-  methods:{
-      init(){
-          this.affichage=1;
-      },
-       init2(){
-          this.affichage=2;
-      }
-
+  methods: {
+    init() {
+      this.affichage = 1
+    },
+    init2() {
+      this.affichage = 2
+    },
   },
 }
 </script>
