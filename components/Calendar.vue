@@ -131,15 +131,7 @@
                 >
                   S'INSCRIRE
                 </v-btn>
-                <v-btn
-                  v-if="isRegister"
-                  class="ma-2"
-                  style="color: white"
-                  color="teal lighten-2"
-                  @click="$store.dispatch('lesson/unsubscribe')"
-                >
-                  SE DESINSCRIRE
-                </v-btn>
+                <UnsubscribeButton :isregister='isRegister'/>
               </div>
               <v-row
                 v-if="userType === 'professor'"
