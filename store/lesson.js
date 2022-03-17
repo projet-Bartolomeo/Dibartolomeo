@@ -63,15 +63,18 @@ export const actions = {
         }
     },
 
-    async unsubscribe({ commit, rootState, state }) {
+    async unsubscribe({ commit, rootState, state }, { lessonToUnsubscribe }) {
+        const lesson = lessonToUnsubscribe ?? state.details
+        commit('set', { stateName: 'details', lesson })
         try {
             commit('removeInListField', { stateName: 'details', fieldName: 'studentIds', toRemove: rootState.user.id })
             await this.$fire.firestore.collection('lesson')
-                .doc(state.details.id)
-                .update({ studentIds: state.details.studentIds })
-                commit('notification/create', { description: `désinscris du cours ${state.details.title}`, type: 'success' }, { root: true })
+                .doc(lesson.id)
+                .update({ studentIds: lesson.studentIds })
+            commit('notification/create', { description: `désinscris du cours ${lesson.title}`, type: 'success' }, { root: true })
+            commit('removeFromList', { lessonIdsToDelete: [lesson.id], stateName: 'studentList' })
         } catch (error) {
-            commit('notification/create', { description: `problème lors de la désinscription au cours ${state.details.title}`, type: 'error' }, { root: true })
+            commit('notification/create', { description: `problème lors de la désinscription au cours ${lesson.title}`, type: 'error' }, { root: true })
         }
     },
 
