@@ -51,7 +51,7 @@
         <v-date-picker
           v-model="startDate"
           locale="fr"
-          color="teal lighten-2"
+          color="#76d9a3"
           @input="startDateMenu = false"
         ></v-date-picker>
       </v-menu>
@@ -77,7 +77,7 @@
         <v-date-picker
           v-model="endDate"
           locale="fr"
-          color="teal lighten-2"
+          color="#76d9a3"
           @input="endDateMenu = false"
         ></v-date-picker>
       </v-menu>

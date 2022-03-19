@@ -126,7 +126,7 @@
                   v-if="!isRegister"
                   class="ma-2"
                   style="color: white"
-                  color="teal lighten-2"
+                  color="#76d9a3"
                   @click="$store.dispatch('lesson/subscribe')"
                 >
                   S'INSCRIRE
@@ -135,7 +135,7 @@
                   v-if="isRegister"
                   class="ma-2"
                   style="color: white"
-                  color="teal lighten-2"
+                  color="#76d9a3"
                   @click="$store.dispatch('lesson/unsubscribe')"
                 >
                   SE DESINSCRIRE
@@ -152,7 +152,7 @@
                   <v-btn
                     class="my-5"
                     style="color: white"
-                    color="teal lighten-2"
+                    color="#76d9a3"
                   >
                     Modifier le cours
                   </v-btn>
@@ -217,10 +217,28 @@ export default {
           : this.$store.state.lesson.teacherList
 
       return lessonList.reduce((newLessonList, currentLesson) => {
-        if (currentLesson.studentIds.length < currentLesson.maximumStudents) {
-          currentLesson.color = 'teal lighten-2'
-        } else {
-          currentLesson.color = 'red lighten-1'
+
+
+
+
+        if(this.$props.userType === 'professor'){
+          if (currentLesson.studentIds.length >= currentLesson.maximumStudents) {
+            currentLesson.color = '#d9d9d9'
+          }else{
+            currentLesson.color = '#76d9a3'
+
+          } 
+        }
+        else if(this.$props.userType === 'student'){
+          if(currentLesson.studentIds.includes(this.$store.state.user.id)){
+            currentLesson.color = '#53b3e6'
+          }else if(!currentLesson.studentIds.includes(this.$store.state.user.id)){                    
+            if (currentLesson.studentIds.length >= currentLesson.maximumStudents) {
+                currentLesson.color = '#d9d9d9'
+            }else{
+              currentLesson.color = '#76d9a3'
+            }
+          }
         }
 
         const lesson = {

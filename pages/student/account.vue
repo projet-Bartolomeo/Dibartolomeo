@@ -5,11 +5,10 @@
       <StudentForm
         datas="details"
         :idStudent="$store.state.user.id"
-        redirect="/"
+        redirect="/student/lesson/planning"
         class="ma-5"
       />
     </v-col>
-    <ParticipantList :idStudent="$store.state.user.id" />
   </div>
 </template>
 

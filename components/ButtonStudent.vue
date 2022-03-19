@@ -3,7 +3,7 @@
     <v-btn
       class="ma-4"
       style="color: white"
-      color="teal lighten-2"
+      color="#76d9a3"
       @click="
         $store.commit('overlay/open', {
           component: 'MessageForm',

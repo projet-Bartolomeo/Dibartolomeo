@@ -21,7 +21,7 @@
       <v-date-picker
         v-model="date"
         locale="fr"
-        color="teal lighten-2"
+        color="#76d9a3"
         :min="new Date().toISOString()"
         @input="menu = false"
       ></v-date-picker>

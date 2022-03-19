@@ -15,7 +15,7 @@
         message == undefined || (message != undefined && message.trim() === '')
       "
       style="color: white"
-      color="teal lighten-2"
+      color="#76d9a3"
       @click="sendMessage"
       >Envoyer</v-btn
     >
