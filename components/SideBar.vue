@@ -1,110 +1,57 @@
 <template>
-  <v-navigation-drawer app left class="navigation-drawer-color">
+  <v-navigation-drawer
+    app
+    left
+    style="background: linear-gradient(90deg, rgba(108,20,36,1) 18%, rgba(91,16,29,1) 91%);"
+  >
     <template #prepend>
       <v-list-item>
         <v-list-item-content>
-          <v-row class="mt-5 justify-center align-center">
-            <v-img src="/image/logo.png" max-height="170" max-width="220" />
+        <v-row class="mt-5 justify-center align-center" >
+            <v-img
+            src="/image/logo.png"
+            max-height="170"
+            max-width="220"
+          />
           </v-row>
         </v-list-item-content>
       </v-list-item>
     </template>
     <v-spacer></v-spacer>
     <v-list dense nav>
-      <div
-        v-for="item in routeList"
+      <v-list-item
+        v-for="item in items"
         :key="item.title"
-        class="my-10 d-flex justify-center"
+        :to="item.route"
+        class="my-5"
       >
-        <router-link class="text-decoration-none" :to="item.route">
-          <v-btn width="14vw" color="white" elevation="7" outlined rounded>{{
-            item.title
-          }}</v-btn>
-        </router-link>
-      </div>
+        <v-list-item-icon>
+          <v-icon style="color: white">{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content style="color: white">
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
-    <template #append>
-      <div class="d-flex justify-center flex-wrap" style="color: white">
-        <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3 ma-0">
-            A propos
-          </p>
-        </router-link>
-        <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            CGU
-          </p> </router-link
-        ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            Politique de confidentialité
-          </p> </router-link
-        ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            Mention légale
-          </p>
-        </router-link>
-      </div>
-    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
-import { UserType } from '../enums/UserType'
 export default {
   data() {
     return {
       items: [
-        {
-          title: 'Planning',
-          route: '/professor/lesson/planning',
-          type: UserType.professor,
-        },
-        {
-          title: 'Liste des cours',
-          route: '/professor/lesson/list',
-          type: UserType.professor,
-        },
+        { title: 'Planning', icon: 'mdi-bulletin-board', route: '/professor' },
+        { title: 'Liste des cours', icon: 'mdi-image', route: '/professor/lesson/list' },
         {
           title: 'Liste des éleves',
+          icon: 'mdi-account',
           route: '/professor/student/list',
-          type: UserType.professor,
         },
-        {
-          title: 'Planning',
-          route: '/student/lesson/planning',
-          type: UserType.student,
-        },
-        {
-          title: 'Mon compte',
-          route: '/student/account',
-          type: UserType.student,
-        },
-        {
-          title: 'Liste de mes cours',
-          route: '/student/lesson/list',
-          type: UserType.student,
-        },
+       /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
       ],
-
-      permanent: true,
+      permanent: true
     }
-  },
-  computed: {
-    routeList() {
-      return this.items.filter(
-        (item) => this.$store.state.user.type === item.type
-      )
-    },
   },
 }
 </script>
-
-<style>
-.navigation-drawer-color {
-  background: linear-gradient(
-    90deg,
-    rgba(108, 20, 36, 1) 18%,
-    rgba(91, 16, 29, 1) 91%
-  );
-}
-</style>

@@ -67,6 +67,12 @@ export default {
       'Dimanche',
     ],
   }),
+  methods: {
+    create() {
+      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      this.$router.push('/professor/lesson/list')
+    },
+  },
   computed: {
     hasModifications() {
       if (this.$store.state.lesson.form.payload === undefined) return false
@@ -86,12 +92,6 @@ export default {
   },
   created() {
     this.$store.dispatch('lesson/setNew')
-  },
-  methods: {
-    create() {
-      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
-      this.$router.push('/professor/lesson/list')
-    },
   },
 }
 </script>

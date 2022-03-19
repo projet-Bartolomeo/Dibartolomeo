@@ -1,7 +1,7 @@
 <template>
   <div>
     <LessonForm datas="details" />
-    <DataTableStudent datas="fromLesson" lesson>
+   <DataTableStudent datas="fromLesson" lesson>
       <v-btn
         style="color: white"
         color="teal lighten-2"
@@ -85,15 +85,6 @@ export default {
       'Dimanche',
     ],
   }),
-  computed: {
-    valid() {
-      return this.$store.state.lesson.form.valid
-    },
-    hasModifications() {
-      if (this.$store.state.lesson.form.payload === undefined) return false
-      return Object.keys(this.$store.state.lesson.form.payload).length > 0
-    },
-  },
   async created() {
     this.$store.dispatch('resetEditionForm', {
       storeName: 'lesson',
@@ -119,6 +110,16 @@ export default {
 
     addToPayload(field, value) {
       this.payload = { ...this.payload, [field]: value }
+    },
+  },
+
+  computed: {
+    valid() {
+      return this.$store.state.lesson.form.valid
+    },
+    hasModifications() {
+      if (this.$store.state.lesson.form.payload === undefined) return false
+      return Object.keys(this.$store.state.lesson.form.payload).length > 0
     },
   },
 }

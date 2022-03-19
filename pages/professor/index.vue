@@ -43,9 +43,9 @@
       </v-sheet>
       <v-sheet elevation="7" height="600">
         <v-calendar
+          locale="fr"
           ref="calendar"
           v-model="focus"
-          locale="fr"
           color="blue-grey lighten-4"
           :events="lessons"
           :type="type"
@@ -101,50 +101,9 @@
               </v-col>
 
               <v-col>
-                <DataTableStudent
-                  v-if="userType === 'professor'"
-                  datas="fromLesson"
-                  message
-                  lesson
-                />
-
-                <v-card
-                  v-else
-                  class="
-                    d-flex
-                    justify-space-around justify-center
-                    pt-5
-                    ml-5
-                    mr-5
-                  "
-                >
-                  {{ selectedEvent.description }}
-                </v-card>
+                <DataTableStudent datas="fromLesson" message lesson />
               </v-col>
-              <div class="w-100 d-flex justify-center">
-                <v-btn
-                  v-if="!isRegister"
-                  class="ma-2"
-                  style="color: white"
-                  color="teal lighten-2"
-                  @click="$store.dispatch('lesson/subscribe')"
-                >
-                  S'INSCRIRE
-                </v-btn>
-                <v-btn
-                  v-if="isRegister"
-                  class="ma-2"
-                  style="color: white"
-                  color="teal lighten-2"
-                  @click="$store.dispatch('lesson/unsubscribe')"
-                >
-                  SE DESINSCRIRE
-                </v-btn>
-              </div>
-              <v-row
-                v-if="userType === 'professor'"
-                class="ma-0 d-flex justify-center align-center pb-4"
-              >
+              <v-row class="ma-0 justify-space-around align-center">
                 <router-link
                   class="text-decoration-none"
                   :to="`/professor/lesson/?id=${selectedEvent.id}`"
@@ -183,17 +142,11 @@
 </template>
 
 <script>
-import { convertTimestampToPlanningDate } from '../services/dateHelper'
-import { Recurrence } from '../enums/Recurrence'
-import { Age } from '../enums/Age'
+import { convertTimestampToPlanningDate } from '../../services/dateHelper'
+import { Recurrence } from '../../enums/Recurrence'
+import { Age } from '../../enums/Age'
 
 export default {
-  props: {
-    userType: {
-      type: String,
-      required: true
-    }
-  },
   data: () => ({
     colors: ['grey', 'green'],
     open: false,
@@ -203,19 +156,15 @@ export default {
       month: 'Mois',
       week: 'Semaine',
       day: 'Jour',
-      '4day': '4 jours'
+      '4day': '4 jours',
     },
     selectedEvent: {},
     selectedElement: null,
-    selectedOpen: false
+    selectedOpen: false,
   }),
   computed: {
     lessons() {
-      const lessonList =
-        this.$props.userType === 'student'
-          ? this.$store.state.lesson.studentList
-          : this.$store.state.lesson.teacherList
-
+      const lessonList = this.$store.state.lesson.teacherList
       return lessonList.reduce((newLessonList, currentLesson) => {
         if (currentLesson.studentIds.length < currentLesson.maximumStudents) {
           currentLesson.color = 'teal lighten-2'
@@ -231,16 +180,15 @@ export default {
           ageRange: Age[currentLesson.ageRange],
           studentNbr: currentLesson.studentIds.length,
           color: currentLesson.color,
-          name: currentLesson.title
+          name: currentLesson.title,
         }
         newLessonList.push(lesson)
         return newLessonList
       }, [])
     },
-    isRegister() {
-      const studentIds = this.$store.state.lesson.details.studentIds
-      return studentIds && studentIds.includes(this.$store.state.user.id)
-    }
+  },
+  async created() {
+    await this.$store.dispatch('lesson/setTeacherList', {})
   },
   mounted() {
     this.$refs.calendar.checkChange()
@@ -280,7 +228,7 @@ export default {
         open()
       }
       nativeEvent.stopPropagation()
-    }
-  }
+    },
+  },
 }
 </script>

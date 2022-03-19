@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="overlay" class="auto-width" max-width="55vw">
+    <v-dialog class="auto-width" v-model="overlay" max-width="55vw">
       <v-card>
         <v-card-actions class="pa-4">
           <div
@@ -11,22 +11,22 @@
           </div>
           <v-spacer></v-spacer>
           <v-btn
+            @click="$store.commit('overlay/close')"
             min-height="auto"
             min-width="auto"
             height="40px"
             width="40px"
             color="grey darken-2"
             text
-            @click="$store.commit('overlay/close')"
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-actions>
         <v-container class="pt-0">
           <component
-            :is="$store.state.overlay.component"
             v-if="$store.state.overlay.component !== ''"
             v-bind="$store.state.overlay.props"
+            v-bind:is="$store.state.overlay.component"
           ></component>
         </v-container>
       </v-card>

@@ -1,13 +1,18 @@
 <template>
   <v-select
-    v-model="input"
     class="pa-0 ma-0 pt-2"
+    v-model="input"
     :items="$props.items"
   ></v-select>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      readonly: true,
+    }
+  },
   props: {
     get: {
       type: String,
@@ -17,11 +22,6 @@ export default {
       type: Array,
       required: true,
     },
-  },
-  data() {
-    return {
-      readonly: true,
-    }
   },
   computed: {
     state() {
@@ -39,13 +39,13 @@ export default {
       },
     },
   },
-  created() {
-    this.select = this.$props.items[0]
-  },
   methods: {
     onClickOutside() {
       this.readonly = true
     },
+  },
+  created() {
+    this.select = this.$props.items[0]
   },
 }
 </script>

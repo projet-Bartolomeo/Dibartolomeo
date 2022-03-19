@@ -36,24 +36,21 @@
             />
           </v-row>
         </v-col>
-        <v-col md="6">
+        <v-col v-if="$props.datas == 'details'" class="ma-auto" md="6">
           <v-row class="align-center justify-start">
-            <p class="ma-0 mr-2">Niveau :</p>
-            <SelectField
-              :get="`student.${$props.datas}.level`"
-              :items="[
-                { text: 'Débutant', value: 'beginner' },
-                { text: 'Intermédiaire', value: 'intermediate' },
-                { text: 'Élevé ', value: 'high' },
-              ]"
-              :open="open"
-            />
-          </v-row>
-        </v-col>
-        <v-col md="6">
-          <v-row class="align-center justify-start">
-            <p class="ma-0 mr-2">Téléphone :</p>
-            <TextField :open="open" :get="`student.${$props.datas}.phone`" />
+            <p class="ma-0 mr-2">Compte enregistré :</p>
+            <p
+              v-if="$store.state.student.details.isRegistered == true"
+              class="ma-0"
+            >
+              Oui
+            </p>
+            <p
+              v-if="$store.state.student.details.isRegistered == false"
+              class="ma-0"
+            >
+              Non
+            </p>
           </v-row>
         </v-col>
       </v-row>
@@ -69,10 +66,7 @@
         @click="
           $store.commit('overlay/open', {
             component: 'MessageForm',
-            props: {
-              recipients: [$store.state.student.details],
-              type: 'student',
-            },
+            props: { recipients: [$store.state.student.details], type: 'student' },
             title: 'Tapez votre message',
           })
         "
@@ -160,14 +154,6 @@ export default {
       type: String,
       required: true,
     },
-    idStudent: {
-      type: String,
-      required: true,
-    },
-    redirect: {
-      type: String,
-      required: true,
-    },
   },
   computed: {
     student() {
@@ -194,7 +180,6 @@ export default {
   },
   methods: {
     create() {
-      this.$store.state.student.new.isPrincipal = true
       if (this.valid) {
         this.$store.dispatch(
           'student/createFromTeacher',
@@ -206,11 +191,11 @@ export default {
     async validate() {
       if (this.valid) {
         await this.$store.dispatch('student/modify', {
-          studentId: this.$props.idStudent,
+          studentId: this.$route.query.id,
           payload: this.$store.state.student.details,
         })
 
-        this.$router.push(this.$props.redirect)
+        this.$router.push('/professor/student/list')
       }
     },
   },

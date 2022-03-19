@@ -31,7 +31,7 @@
       min-height="100%"
       class="textarea-size"
       :rules="$props.rules"
-      :autofocus="!$props.open"
+      :autofocus="!this.$props.open"
       :placeholder="$props.placeholder"
       auto-grow
       filled
@@ -46,6 +46,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      readonly: !this.$props.open,
+    }
+  },
   props: {
     get: {
       type: String,
@@ -54,7 +59,6 @@ export default {
     rules: {
       type: Array,
       required: false,
-      default: () => [],
     },
     open: {
       type: Boolean,
@@ -63,13 +67,7 @@ export default {
     placeholder: {
       type: String,
       required: false,
-      default: '',
     },
-  },
-  data() {
-    return {
-      readonly: !this.$props.open,
-    }
   },
   computed: {
     state() {

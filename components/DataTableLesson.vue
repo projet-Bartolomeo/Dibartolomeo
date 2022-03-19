@@ -8,8 +8,8 @@
         />
 
         <v-text-field
-          v-model="search"
           class="ma-2 text-field pa-0"
+          v-model="search"
           append-icon="mdi-magnify"
           :label="`Rechercher un ${type}`"
           single-line
@@ -35,7 +35,6 @@
     </v-card>
     <v-card class="ma-4">
       <v-data-table
-        v-model="selected"
         :headers="headers"
         :items="lessons"
         sort-by="startDate"
@@ -45,16 +44,17 @@
           'items-per-page-text': `${type} par page`,
         }"
         :search="search"
+        v-model="selected"
         :single-select="singleSelect"
         item-key="id"
         :show-select="getShowSelect"
         :customSort="customSort"
       >
-        <template #[`item.actions`]="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
           <div class="d-flex">
             <v-icon
-              v-if="$props.message"
               class="mr-1"
+              v-if="$props.message"
               @click="
                 $store.commit('overlay/open', {
                   component: 'MessageForm',
@@ -92,7 +92,9 @@
             </v-icon>
           </div>
         </template>
-        <template #no-data> Il n'y a actuellement pas de cours prévu </template>
+        <template v-slot:no-data>
+          Il n'y a actuellement pas de cours prévu
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -120,7 +122,6 @@ export default {
     datas: {
       type: String,
       require: true,
-      default: '',
     },
   },
   data() {

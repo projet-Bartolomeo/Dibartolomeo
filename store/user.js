@@ -1,8 +1,7 @@
 import { readQuerySnapshot } from '../services/firestoreHelper'
 export const state = () => ({
-    id: 'm4LAKiljhevFTHr1wk69',
+    id: '0kK1fyyWN8N2bkHNYLoo',
     participants:[],
-    type:'student'
 })
 export const mutations = {
     set(state, { list, stateName }) {

@@ -8,7 +8,7 @@
       offset-y
       min-width="auto"
     >
-      <template #activator="{ on, attrs }">
+      <template v-slot:activator="{ on, attrs }">
         <v-text-field
           v-model="dateFormatted"
           :label="$props.label"
@@ -19,11 +19,11 @@
         ></v-text-field>
       </template>
       <v-date-picker
-        v-model="date"
         locale="fr"
+        v-model="date"
         color="teal lighten-2"
-        :min="new Date().toISOString()"
         @input="menu = false"
+        :min="new Date().toISOString()"
       ></v-date-picker>
     </v-menu>
     <HourIntervalPicker :getStart="$props.getStart" :getEnd="$props.getEnd" />
@@ -49,13 +49,31 @@ export default {
     label: {
       type: String,
       required: false,
-      default: '',
     },
   },
   data() {
     return {
       menu: false,
     }
+  },
+  methods: {
+    dispatch(state, date) {
+      const newValue = convertStringToDate(
+        date,
+        getHoursAndMinutes(state.value)
+      )
+      this.$store.dispatch('setFormField', {
+        stateInformations: state,
+        newValue,
+      })
+    },
+
+    formatDate(date) {
+      if (!date) return null
+
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
+    },
   },
   computed: {
     dateFormatted() {
@@ -81,25 +99,6 @@ export default {
         this.dispatch(this.startState, newValue)
         this.dispatch(this.endState, newValue)
       },
-    },
-  },
-  methods: {
-    dispatch(state, date) {
-      const newValue = convertStringToDate(
-        date,
-        getHoursAndMinutes(state.value)
-      )
-      this.$store.dispatch('setFormField', {
-        stateInformations: state,
-        newValue,
-      })
-    },
-
-    formatDate(date) {
-      if (!date) return null
-
-      const [year, month, day] = date.split('-')
-      return `${day}/${month}/${year}`
     },
   },
 }

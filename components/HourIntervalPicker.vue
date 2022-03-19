@@ -2,11 +2,11 @@
   <div>
     <div class="d-flex">
       <div class="ml-4">de</div>
-      <input v-model="startHour" class="ml-6" type="time" />
+      <input class="ml-6" v-model="startHour" type="time" />
     </div>
     <div class="d-flex">
       <div class="ml-6">à</div>
-      <input v-model="endHour" class="ml-6" type="time" />
+      <input class="ml-6" v-model="endHour" type="time" />
     </div>
   </div>
 </template>
@@ -26,6 +26,15 @@ export default {
     getEnd: {
       type: String,
       required: true,
+    },
+  },
+  methods: {
+    dispatch(state, date, hourly) {
+      const newValue = convertStringToDate(date, hourly)
+      this.$store.dispatch('setFormField', {
+        stateInformations: state,
+        newValue,
+      })
     },
   },
   computed: {
@@ -56,15 +65,6 @@ export default {
       set(newValue) {
         this.dispatch(this.endState, this.date, newValue)
       },
-    },
-  },
-  methods: {
-    dispatch(state, date, hourly) {
-      const newValue = convertStringToDate(date, hourly)
-      this.$store.dispatch('setFormField', {
-        stateInformations: state,
-        newValue,
-      })
     },
   },
 }

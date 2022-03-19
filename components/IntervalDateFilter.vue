@@ -63,12 +63,10 @@ export default {
     getStart: {
       type: String,
       reuqired: true,
-      default: '',
     },
     getEnd: {
       type: String,
       reuqired: true,
-      default: '',
     },
   },
   data() {
