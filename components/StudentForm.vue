@@ -63,9 +63,10 @@
       class="d-flex flex-column justify-center align-center"
     >
       <v-btn
-        color="grey darken-2"
-        fab
-        text
+        v-if="$props.redirect == '/professor/student/list'"
+        color="#53b3e6"
+        style="color: white;
+        width: 12vw"
         @click="
           $store.commit('overlay/open', {
             component: 'MessageForm',
@@ -76,24 +77,24 @@
             title: 'Tapez votre message',
           })
         "
-      >
-        <v-icon> mdi-message </v-icon>
+      >Message
+        <v-icon class="ml-2"> mdi-message </v-icon>
       </v-btn>
       <v-btn
         v-if="valid && hasModifications"
-        fab
-        text
-        color="grey darken-2"
+        color="#76d9a3"
         class="ma-2"
+        style="color: white;
+        width: 12vw"
         @click="validate()"
       >
-        <v-icon> mdi-content-save </v-icon>
+      Enregistrer
+        <v-icon class="ml-2"> mdi-content-save </v-icon>
       </v-btn>
       <v-btn
         v-if="hasModifications"
-        color="grey darken-2"
-        fab
-        text
+        color="#f4f4f4;"
+        style="width: 12vw"
         class="ma-2"
         @click="
           $store.dispatch('studentResetEditionForm', {
@@ -102,13 +103,15 @@
           })
         "
       >
-        <v-icon> mdi-arrow-u-down-left </v-icon>
+      Rétablir
+        <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
       <v-btn
-        fab
-        text
-        color="grey darken-2"
+        v-if="$props.redirect == '/professor/student/list'"
+        color="#fa3257"
         class="ma-2"
+        style="color: white;
+        width: 12vw"
         @click="
           $store.commit('overlay/open', {
             component: 'DeleteForm',
@@ -119,8 +122,8 @@
             title: '',
           })
         "
-      >
-        <v-icon> mdi-delete </v-icon>
+      >Suprrimer
+        <v-icon class="ml-2"> mdi-delete </v-icon>
       </v-btn>
     </div>
     <div v-if="$props.datas == 'new'" class="d-flex flex-column justify-center">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <title value="Création d'un élève" />
+    <Title value="Profil élève" />
     <v-col>
       <StudentForm
         datas="details"

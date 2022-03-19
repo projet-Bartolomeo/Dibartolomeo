@@ -34,7 +34,7 @@ export default {
     },
     type() {
       return this.notification.type === 'success'
-        ? { color: 'teal lighten-2', icon: 'check' }
+        ? { color: '#76d9a3', icon: 'check' }
         : { color: 'red', icon: 'alert' }
     },
     notification() {
