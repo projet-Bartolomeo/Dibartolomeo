@@ -64,7 +64,7 @@
               "
               >mdi-message</v-icon
             >
-            <NuxtLink class="nuxtlink" :to="`/professor/lesson/?id=${item.id}`">
+            <NuxtLink class="nuxtlink" :to="`/professor/lesson/${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
             <v-icon
