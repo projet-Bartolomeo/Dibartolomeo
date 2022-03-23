@@ -17,7 +17,7 @@
         class="my-10 d-flex justify-center"
       >
         <router-link class="text-decoration-none" :to="item.route">
-          <v-btn width="14vw" color="white" elevation="7" outlined rounded>{{
+          <v-btn class="buttonSideBar" color="white" elevation="7" outlined rounded>{{
             item.title
           }}</v-btn>
         </router-link>
@@ -107,4 +107,25 @@ export default {
     rgba(91, 16, 29, 1) 91%
   );
 }
+
+.buttonSideBar{
+  width: 14vw;
+}
+
+@media (min-width: 1600px) {
+
+.buttonSideBar{
+  width: 11vw;
+}
+
+}
+
+@media (max-width: 1300px) {
+
+.buttonSideBar{
+  width: 16vw;
+}
+
+}
+
 </style>
