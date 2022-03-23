@@ -163,7 +163,6 @@ export const actions = {
     },
 
     addStudentInLesson({ commit }, { student }) {
-        console.log(student)
         commit('student/addToList', { stateName: 'fromLesson', student }, { root: true })
         commit('student/removeFromList', { stateName: 'notInLesson', studentId: student.id }, { root: true })
     },
