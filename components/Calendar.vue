@@ -121,7 +121,7 @@
                   {{ selectedEvent.description || 'Pas de description'}}
                 </v-card>
               </v-col>
-              <div class="w-100 d-flex justify-center">
+              <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
                 <v-btn
                   v-if="!isRegister"
                   class="ma-2"
@@ -131,15 +131,7 @@
                 >
                   S'INSCRIRE
                 </v-btn>
-                <v-btn
-                  v-if="isRegister"
-                  class="ma-2"
-                  style="color: white"
-                  color="#76d9a3"
-                  @click="$store.dispatch('lesson/unsubscribe')"
-                >
-                  SE DESINSCRIRE
-                </v-btn>
+                <UnsubscribeButton :isregister='isRegister'/>
               </div>
               <v-row
                 v-if="userType === 'professor'"

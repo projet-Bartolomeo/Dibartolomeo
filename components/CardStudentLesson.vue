@@ -1,51 +1,36 @@
 <template>
   <div class="card">
     <div class="img__text">
-      <img :src="image" alt="Image" />
+      <img :src="lesson.image || '/image/cours.jpg'" alt="Image" />
 
       <div class="text">
-        <h1 class="titre">{{ title }}</h1>
-        <h3 >{{ newDate }}</h3>
+        <h1 class="titre">{{ lesson.title }}</h1>
+        <h3>{{ lesson.newDate }}</h3>
         <h5 class="description">
-          {{ description }}
+          {{ lesson.description || 'pas de description' }}
         </h5>
       </div>
     </div>
 
-    <v-btn color="#fa3257" class="white--text" large >Se désinscrire</v-btn>
+    <UnsubscribeButton :isregister="true" :lesson="$props.lesson" />
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { convertTimestampToReadableDate } from '~/services/dateHelper'
 
 export default {
   props: {
-    image: {
-      type: String,
-      required: false,
-      default: '/image/cours.jpg',
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    date: {
+    lesson: {
       type: Object,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: false,
-      default: 'pas de description',
-    },
+      required: true
+    }
   },
-
   computed: {
     newDate() {
       return convertTimestampToReadableDate(this.$props.date)
-    },
-  },
+    }
+  }
 }
 </script>
 

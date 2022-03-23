@@ -1,19 +1,19 @@
 <template>
   <div>
-      <Title value="Mes cours enregistrés">
-      <v-btn color="#41c6a9" class="white--text" elevation="2" 
+    <Title value="Mes cours enregistrés">
+      <v-btn color="#41c6a9" class="white--text" elevation="2"
         >Filtrer<v-icon right> mdi-filter-variant </v-icon></v-btn
       >
-      </Title>
+    </Title>
     <div class="listCard">
-      <div v-for="card in $store.state.lesson.studentList" :key="card.title">
+      <div v-for="lesson in $store.state.lesson.studentList" :key="lesson.title">
+        <div v-if="lesson.studentIds.includes($store.state.user.id)">
         <CardStudentLesson
-          :title="card.title"
-          :date="card.startDate"
-          :description="card.description"
+          :lesson="lesson"
         />
         <div>
           <v-divider class="separator"></v-divider>
+        </div>
         </div>
       </div>
     </div>
@@ -23,8 +23,10 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch('lesson/setStudentList', {studentId : this.$store.state.user.id})
-  },
+    this.$store.dispatch('lesson/setStudentList', {
+      studentId: this.$store.state.user.id
+    })
+  }
 }
 </script>
 
