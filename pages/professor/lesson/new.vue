@@ -55,17 +55,6 @@ export default {
     time: null,
     menu2: false,
     modal2: false,
-    recurence: ['Unique', 'Chaque semaine'],
-    Age: ['Enfant', 'Adolescent', 'Adulte', 'Senior'],
-    jour: [
-      'Lundi',
-      'Mardi',
-      'Mercredi',
-      'Jeudi',
-      'Vendredi',
-      'Samedi',
-      'Dimanche',
-    ],
   }),
   computed: {
     hasModifications() {
