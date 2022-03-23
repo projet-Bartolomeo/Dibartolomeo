@@ -83,7 +83,7 @@
 
             <v-card flat>
               <v-col>
-                <v-card class="d-flex justify-space-around pt-5 ml-5 mr-5">
+                <v-card class="d-flex justify-space-around pt-5 px-5 ml-5 mr-5">
                   <div class="d-flex">
                     <p class="ma-0 pr-3">Récurrence :</p>
                     <p>{{ selectedEvent.recurrence }}</p>
@@ -113,15 +113,15 @@
                   class="
                     d-flex
                     justify-space-around justify-center
-                    pt-5
+                    py-5
                     ml-5
                     mr-5
                   "
                 >
-                  {{ selectedEvent.description }}
+                  {{ selectedEvent.description || 'Pas de description'}}
                 </v-card>
               </v-col>
-              <div class="w-100 d-flex justify-center">
+              <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
                 <v-btn
                   v-if="!isRegister"
                   class="ma-2"
@@ -131,15 +131,7 @@
                 >
                   S'INSCRIRE
                 </v-btn>
-                <v-btn
-                  v-if="isRegister"
-                  class="ma-2"
-                  style="color: white"
-                  color="#76d9a3"
-                  @click="$store.dispatch('lesson/unsubscribe')"
-                >
-                  SE DESINSCRIRE
-                </v-btn>
+                <UnsubscribeButton :isregister='isRegister'/>
               </div>
               <v-row
                 v-if="userType === 'professor'"
