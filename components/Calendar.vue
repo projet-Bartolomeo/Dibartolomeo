@@ -121,7 +121,7 @@
                   {{ selectedEvent.description }}
                 </v-card>
               </v-col>
-              <div class="w-100 d-flex justify-center">
+              <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
                 <v-btn
                   v-if="!isRegister"
                   class="ma-2"
