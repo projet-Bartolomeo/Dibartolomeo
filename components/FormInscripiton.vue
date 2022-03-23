@@ -2,12 +2,11 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4" align="center">
      
-        <v-img
-          lazy-src="https://trello.com/1/cards/6160076387267344d2d71b77/attachments/61806466e5b595625772b640/previews/61806466e5b595625772b665/download/Capture_d%E2%80%99%C3%A9cran_2021-11-01_%C3%A0_23.03.58.png"
-          max-height="100"
-          max-width="150"
-          src="https://trello.com/1/cards/6160076387267344d2d71b77/attachments/61806466e5b595625772b640/previews/61806466e5b595625772b665/download/Capture_d%E2%80%99%C3%A9cran_2021-11-01_%C3%A0_23.03.58.png"
-        ></v-img>
+         <v-img
+            src="/image/logo.png"
+            max-height="170"
+            max-width="220"
+          />
         <v-row class="d-flex justify-center mb-6 align-center mt-5">
           <v-card-title class="red--text text--lighten-1"
             >Créer un Compte</v-card-title
@@ -25,6 +24,7 @@
               prepend-icon="mdi-account"
               type="text"
               v-model="NewUser.name"
+               filled
             ></v-text-field>
             <v-text-field
               label="Prenom"
@@ -32,13 +32,15 @@
               prepend-icon="mdi-account"
               type="text"
               v-model="NewUser.firstname"
+               filled
             ></v-text-field>
             <v-text-field
               label="Login"
               name="login"
               prepend-icon="mdi-email"
               type="text"
-              v-model="authenti.login"
+              v-model="NewUser.email"
+               filled
             ></v-text-field>
 
             <v-text-field
@@ -47,6 +49,7 @@
               prepend-icon="mdi-lock"
               type="password"
               v-model="authenti.password"
+               filled
             ></v-text-field>
             <v-text-field
               label="Confirm Password"
@@ -54,6 +57,7 @@
               prepend-icon="mdi-lock"
               type="password"
               v-model="authenti.forgot"
+               filled
             ></v-text-field>
           </v-form>
      </v-card-text>
@@ -87,11 +91,13 @@ export default {
       NewUser: {
         name: '',
         firstname: '',
+        emaail: '',
         isRegistered: 'false', 
         isDeleted: 'false'
+
+      
       },
       authenti: {
-        login: '',
         mot_pass: '',
         forgot: '',
       },
@@ -101,16 +107,15 @@ export default {
   methods: {
     Inscription() {
       this.$fire.auth.createUserWithEmailAndPassword(
-        this.authenti.login,
+        this.NewUser.email,
         this.authenti.password
       ).then((userCredential) => {
      
     this.uid=userCredential.uid
     this.$store.dispatch('user/addUser',this.NewUser)
+     this.$nuxt.$router.push('/professor/professor')
    
   })
-  
-
  
      
     },
