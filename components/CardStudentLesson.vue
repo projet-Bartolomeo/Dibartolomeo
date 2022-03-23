@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <UnsubscribeButton :isregister="true" :lesson="$props.lesson" />
+    <UnsubscribeButton :lesson="$props.lesson" />
   </div>
 </template>
 
