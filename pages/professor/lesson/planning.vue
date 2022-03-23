@@ -1,5 +1,5 @@
 <template>
-  <Planning userType="professor" />
+  <Calendar userType="professor" />
 </template>
 
 <script>
