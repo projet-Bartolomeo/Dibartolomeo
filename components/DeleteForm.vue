@@ -40,7 +40,7 @@ export default {
     datas() {
       return this.$props.type === 'lesson'
         ? {
-            text: 'Etes-vous sur de vouloir archiver votre cours',
+            text: 'Etes-vous sur de vouloir archiver votre cours ?',
             dispatch: {
               key: 'lesson/archive',
               value: {
@@ -50,7 +50,7 @@ export default {
             },
           }
         : {
-            text: 'Etes-vous sur de vouloir supprimer cet élève',
+            text: 'Etes-vous sur de vouloir supprimer cet élève ?',
             dispatch: {
               key: 'student/removeFromTeacher',
               value: { student: this.$props.dataToDelete },
