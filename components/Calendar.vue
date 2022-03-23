@@ -83,7 +83,7 @@
 
             <v-card flat>
               <v-col>
-                <v-card class="d-flex justify-space-around pt-5 ml-5 mr-5">
+                <v-card class="d-flex justify-space-around pt-5 px-5 ml-5 mr-5">
                   <div class="d-flex">
                     <p class="ma-0 pr-3">Récurrence :</p>
                     <p>{{ selectedEvent.recurrence }}</p>
@@ -113,12 +113,12 @@
                   class="
                     d-flex
                     justify-space-around justify-center
-                    pt-5
+                    py-5
                     ml-5
                     mr-5
                   "
                 >
-                  {{ selectedEvent.description }}
+                  {{ selectedEvent.description || 'Pas de description'}}
                 </v-card>
               </v-col>
               <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
@@ -126,7 +126,7 @@
                   v-if="!isRegister"
                   class="ma-2"
                   style="color: white"
-                  color="teal lighten-2"
+                  color="#76d9a3"
                   @click="$store.dispatch('lesson/subscribe')"
                 >
                   S'INSCRIRE
@@ -144,7 +144,7 @@
                   <v-btn
                     class="my-5"
                     style="color: white"
-                    color="teal lighten-2"
+                    color="#76d9a3"
                   >
                     Modifier le cours
                   </v-btn>
@@ -209,10 +209,28 @@ export default {
           : this.$store.state.lesson.teacherList
 
       return lessonList.reduce((newLessonList, currentLesson) => {
-        if (currentLesson.studentIds.length < currentLesson.maximumStudents) {
-          currentLesson.color = 'teal lighten-2'
-        } else {
-          currentLesson.color = 'red lighten-1'
+
+
+
+
+        if(this.$props.userType === 'professor'){
+          if (currentLesson.studentIds.length >= currentLesson.maximumStudents) {
+            currentLesson.color = '#d9d9d9'
+          }else{
+            currentLesson.color = '#76d9a3'
+
+          } 
+        }
+        else if(this.$props.userType === 'student'){
+          if(currentLesson.studentIds.includes(this.$store.state.user.id)){
+            currentLesson.color = '#53b3e6'
+          }else if(!currentLesson.studentIds.includes(this.$store.state.user.id)){                    
+            if (currentLesson.studentIds.length >= currentLesson.maximumStudents) {
+                currentLesson.color = '#d9d9d9'
+            }else{
+              currentLesson.color = '#76d9a3'
+            }
+          }
         }
 
         const lesson = {
