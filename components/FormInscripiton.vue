@@ -16,15 +16,15 @@
               name="name"
               prepend-icon="mdi-account"
               type="text"
-              v-model="NewUser.name"
+              v-model="NewUser.lastName"
                filled
             ></v-text-field>
             <v-text-field
               label="Prenom"
-              name="firstname"
+              name="firstName"
               prepend-icon="mdi-account"
               type="text"
-              v-model="NewUser.firstname"
+              v-model="NewUser.firstName"
                filled
             ></v-text-field>
             <v-text-field
@@ -52,6 +52,7 @@
               v-model="authenti.forgot"
                filled
             ></v-text-field>
+           
           </v-form>
      </v-card-text>
 
@@ -82,8 +83,8 @@ export default {
       snackbarText: 'No error message',
       id: '',
       NewUser: {
-        name: '',
-        firstname: '',
+        lastName: '',
+        firstName: '',
         emaail: '',
         isRegistered: 'false', 
         isDeleted: 'false'
@@ -99,7 +100,7 @@ export default {
   },
   methods: {
     Inscription() {
-      if(this.NewUser.name===""){
+      if(this.NewUser.lastName!="" && this.NewUser.firstName!="" && this.NewUser.email!=""  && this.authenti.password!=this.authenti.forgot && this.authenti.password!=""){
       this.$fire.auth.createUserWithEmailAndPassword(
         this.NewUser.email,
         this.authenti.password
@@ -110,19 +111,6 @@ export default {
      this.$nuxt.$router.push('http://localhost:3000/student/lesson/planning')
    
   })
-  }else{
-    this.$fire.auth.createUserWithEmailAndPassword(
-        this.NewUser.email,
-        this.authenti.password
-      ).then((userCredential) => {
-     
-    this.uid=userCredential.uid
-    this.$store.dispatch('user/addUser',this.NewUser)
-     this.$nuxt.$router.push('http://localhost:3000/student/lesson/planning')
-   
-  })
-
-
   }
  
      

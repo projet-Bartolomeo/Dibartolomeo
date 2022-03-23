@@ -31,15 +31,15 @@
         </v-form>
       </v-card-text>
       <div class="text-center">
-        <v-dialog v-model="dialog" width="500">
+        <v-dialog v-model="dialog" max-width="600px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" rounded> forgot Password </v-btn>
+            <v-btn v-bind="attrs" v-on="on" rounded> Mot passe oublier </v-btn>
           </template>
 
           <v-card>
             <v-row class="d-flex justify-center mb-6 align-center mt-5">
               <v-card-title class="red--text text--lighten-1"
-                >forgot Password</v-card-title
+                >Mot passe oublier</v-card-title
               >
             </v-row>
             <v-text-field
