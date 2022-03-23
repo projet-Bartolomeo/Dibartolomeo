@@ -140,6 +140,9 @@ export default {
   computed: {
     stateName() {
       return this.$props.isnew ? 'new' : 'details'
+    },
+    student() {
+      return [ ...this.$store.state.student[this.$props.datas] ]
     }
   },
 
