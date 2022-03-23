@@ -72,7 +72,6 @@ export const actions = {
                 .doc(lesson.id)
                 .update({ studentIds: lesson.studentIds })
             commit('notification/create', { description: `désinscris du cours ${lesson.title}`, type: 'success' }, { root: true })
-            commit('removeFromList', { lessonIdsToDelete: [lesson.id], stateName: 'studentList' })
         } catch (error) {
             commit('notification/create', { description: `problème lors de la désinscription au cours ${lesson.title}`, type: 'error' }, { root: true })
         }

@@ -6,12 +6,14 @@
       >
     </Title>
     <div class="listCard">
-      <div v-for="card in $store.state.lesson.studentList" :key="card.title">
+      <div v-for="lesson in $store.state.lesson.studentList" :key="lesson.title">
+        <div v-if="lesson.studentIds.includes($store.state.user.id)">
         <CardStudentLesson
-          :lesson="card"
+          :lesson="lesson"
         />
         <div>
           <v-divider class="separator"></v-divider>
+        </div>
         </div>
       </div>
     </div>
