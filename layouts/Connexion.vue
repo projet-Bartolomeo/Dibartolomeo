@@ -1,6 +1,7 @@
 <template>
- <v-app style="background: #f5f5f5">
-   
+  <v-app style="background: #fafafa">
+
+ 
     <v-main>
       <v-container fluid>
         <Overlay />
@@ -13,7 +14,6 @@
       </v-container>
     </v-main>
   </v-app>
-  
 </template>
 
 <script>

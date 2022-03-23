@@ -1,6 +1,7 @@
 export const state = () => ({
     id: 'm4LAKiljhevFTHr1wk69',
-    type:'student'
+    type:'student',
+    userlogin:{}
 })
 
 export const actions = {

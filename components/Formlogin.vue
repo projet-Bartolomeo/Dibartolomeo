@@ -1,24 +1,18 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4" align="center">
-     <v-img
-            src="/image/logo.png"
-            max-height="170"
-            max-width="220"
-          />
+    
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
         <v-card-title class="red--text text--lighten-1"
           >Se connecter</v-card-title
         >
       </v-row>
-      <v-row class="d-flex justify-center mb-6 align-center mt-5">
-        <v-icon @click="googleSignIn()"> mdi-google </v-icon>
-      </v-row>
+      
 
       <v-card-text>
         <v-form>
           <v-text-field
-            label="Login"
+            label="Email"
             name="login"
             prepend-icon="mdi-email"
             type="text"
@@ -27,7 +21,7 @@
           ></v-text-field>
 
           <v-text-field
-            label="Password"
+            label="Mot de passe"
             name="password"
             prepend-icon="mdi-lock"
             type="password"
@@ -69,7 +63,7 @@
       </div>
 
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
-        <v-btn  rounded class="login-button" @click="login" depressed large>Login</v-btn>
+        <v-btn  rounded class="login-button" @click="login" depressed large>Connexion</v-btn>
       </v-row>
 
       <v-snackbar :timeout="4000" v-model="snackbar" absolute bottom center>
@@ -113,12 +107,6 @@ export default {
       this.$nuxt.$router.push('/student/lesson/planning')
         })
   
-    },
-    googleSignIn() {
-      const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
-      this.$fire.auth.signInWithPopup(provider).then((user) => {
-        this.$nuxt.$router.push('/student/new')
-      })
     },
     forgotPassword() {
       this.$fire.auth
