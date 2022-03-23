@@ -21,7 +21,7 @@
           </template>
           <v-date-picker
             v-model="startDate"
-            color="teal lighten-2"
+            color="#76d9a3"
             locale="fr"
             :max="endDate"
             @input="startDateMenu = false"
@@ -47,7 +47,7 @@
           <v-date-picker
             v-model="endDate"
             locale="fr"
-            color="teal lighten-2"
+            color="#76d9a3"
             :min="startDate"
             @input="endDateMenu = false"
           ></v-date-picker>
@@ -63,10 +63,12 @@ export default {
     getStart: {
       type: String,
       reuqired: true,
+      default: '',
     },
     getEnd: {
       type: String,
       reuqired: true,
+      default: '',
     },
   },
   data() {

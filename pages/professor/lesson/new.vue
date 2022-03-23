@@ -4,7 +4,7 @@
     <DataTableStudent datas="fromLesson" lesson isNew>
       <v-btn
         style="color: white"
-        color="teal lighten-2"
+        color="#76d9a3"
         @click="
           $store.commit('overlay/open', {
             component: 'DataTableStudent',
@@ -67,12 +67,6 @@ export default {
       'Dimanche',
     ],
   }),
-  methods: {
-    create() {
-      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
-      this.$router.push('/professor/lesson/list')
-    },
-  },
   computed: {
     hasModifications() {
       if (this.$store.state.lesson.form.payload === undefined) return false
@@ -92,6 +86,12 @@ export default {
   },
   created() {
     this.$store.dispatch('lesson/setNew')
+  },
+  methods: {
+    create() {
+      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      this.$router.push('/professor/lesson/list')
+    },
   },
 }
 </script>

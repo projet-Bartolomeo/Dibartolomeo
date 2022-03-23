@@ -36,21 +36,24 @@
             />
           </v-row>
         </v-col>
-        <v-col v-if="$props.datas == 'details'" class="ma-auto" md="6">
+        <v-col md="6">
           <v-row class="align-center justify-start">
-            <p class="ma-0 mr-2">Compte enregistré :</p>
-            <p
-              v-if="$store.state.student.details.isRegistered == true"
-              class="ma-0"
-            >
-              Oui
-            </p>
-            <p
-              v-if="$store.state.student.details.isRegistered == false"
-              class="ma-0"
-            >
-              Non
-            </p>
+            <p class="ma-0 mr-2">Niveau :</p>
+            <SelectField
+              :get="`student.${$props.datas}.level`"
+              :items="[
+                { text: 'Débutant', value: 'beginner' },
+                { text: 'Intermédiaire', value: 'intermediate' },
+                { text: 'Élevé ', value: 'high' },
+              ]"
+              :open="open"
+            />
+          </v-row>
+        </v-col>
+        <v-col md="6">
+          <v-row class="align-center justify-start">
+            <p class="ma-0 mr-2">Téléphone :</p>
+            <TextField :open="open" :get="`student.${$props.datas}.phone`" />
           </v-row>
         </v-col>
       </v-row>
@@ -60,34 +63,38 @@
       class="d-flex flex-column justify-center align-center"
     >
       <v-btn
-        color="grey darken-2"
-        fab
-        text
+        v-if="$props.redirect == '/professor/student/list'"
+        color="#53b3e6"
+        style="color: white;
+        width: 12vw"
         @click="
           $store.commit('overlay/open', {
             component: 'MessageForm',
-            props: { recipients: [$store.state.student.details], type: 'student' },
+            props: {
+              recipients: [$store.state.student.details],
+              type: 'student',
+            },
             title: 'Tapez votre message',
           })
         "
-      >
-        <v-icon> mdi-message </v-icon>
+      >Message
+        <v-icon class="ml-2"> mdi-message </v-icon>
       </v-btn>
       <v-btn
         v-if="valid && hasModifications"
-        fab
-        text
-        color="grey darken-2"
+        color="#76d9a3"
         class="ma-2"
+        style="color: white;
+        width: 12vw"
         @click="validate()"
       >
-        <v-icon> mdi-content-save </v-icon>
+      Enregistrer
+        <v-icon class="ml-2"> mdi-content-save </v-icon>
       </v-btn>
       <v-btn
         v-if="hasModifications"
-        color="grey darken-2"
-        fab
-        text
+        color="#f4f4f4;"
+        style="width: 12vw"
         class="ma-2"
         @click="
           $store.dispatch('studentResetEditionForm', {
@@ -96,13 +103,15 @@
           })
         "
       >
-        <v-icon> mdi-arrow-u-down-left </v-icon>
+      Rétablir
+        <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
       <v-btn
-        fab
-        text
-        color="grey darken-2"
+        v-if="$props.redirect == '/professor/student/list'"
+        color="#fa3257"
         class="ma-2"
+        style="color: white;
+        width: 12vw"
         @click="
           $store.commit('overlay/open', {
             component: 'DeleteForm',
@@ -113,8 +122,8 @@
             title: '',
           })
         "
-      >
-        <v-icon> mdi-delete </v-icon>
+      >Suprrimer
+        <v-icon class="ml-2"> mdi-delete </v-icon>
       </v-btn>
     </div>
     <div v-if="$props.datas == 'new'" class="d-flex flex-column justify-center">
@@ -154,6 +163,14 @@ export default {
       type: String,
       required: true,
     },
+    idStudent: {
+      type: String,
+      required: true,
+    },
+    redirect: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
     student() {
@@ -180,6 +197,7 @@ export default {
   },
   methods: {
     create() {
+      this.$store.state.student.new.isPrincipal = true
       if (this.valid) {
         this.$store.dispatch(
           'student/createFromTeacher',
@@ -191,11 +209,11 @@ export default {
     async validate() {
       if (this.valid) {
         await this.$store.dispatch('student/modify', {
-          studentId: this.$route.query.id,
+          studentId: this.$props.idStudent,
           payload: this.$store.state.student.details,
         })
 
-        this.$router.push('/professor/student/list')
+        this.$router.push(this.$props.redirect)
       }
     },
   },

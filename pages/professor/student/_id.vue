@@ -1,8 +1,13 @@
 <template>
   <div>
-    <title value="Création d'un élève" />
+    <Title value="Profil élève" />
     <v-col>
-      <StudentForm datas="details" class="ma-5" />
+      <StudentForm
+        datas="details"
+        :idStudent="$route.query.id"
+        redirect="/professor/student/list"
+        class="ma-5"
+      />
       <DataTableLesson datas="studentList" />
     </v-col>
   </div>
