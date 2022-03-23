@@ -28,7 +28,7 @@
 export default {
   props: {
     type: {
-      type: Object,
+      type: String,
       required: true,
     },
     dataToDelete: {
