@@ -103,8 +103,8 @@
               >mdi-message</v-icon
             >
             <NuxtLink
-              class="nuxtlink"
-              :to="`/professor/student/?id=${item.id}`"
+              class="nuxtlink d-flex justify-center align-center"
+              :to="`/professor/student/${item.id}`"
             >
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
