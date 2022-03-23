@@ -81,7 +81,7 @@ export default {
       type: String,
       required: true,
     },
-    idStudent: {
+    idstudent: {
       type: String,
       required: true,
     },
@@ -133,7 +133,7 @@ export default {
         this.$store.state.student.new.email =
           this.$store.state.student.details.email
         this.$store.state.student.new.isPrincipal = false
-        this.$store.state.student.new.idUserPrincipal = this.$props.idStudent
+        this.$store.state.student.new.idUserPrincipal = this.$props.idstudent
         this.$store.dispatch(
           'student/createFromTeacher',
           this.$store.state.student.new
@@ -147,7 +147,7 @@ export default {
     async fetchData() {
       this.participant = await this.$store.dispatch(
         'student/setParticipant',
-        this.$props.idStudent
+        this.$props.idstudent
       )
     },
   },

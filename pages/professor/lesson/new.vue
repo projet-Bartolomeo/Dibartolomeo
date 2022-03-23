@@ -1,7 +1,7 @@
 <template>
   <div>
     <LessonForm datas="new" />
-    <DataTableStudent datas="fromLesson" lesson isNew>
+    <DataTableStudent datas="fromLesson" lesson isnew>
       <v-btn
         style="color: white"
         color="#76d9a3"
@@ -11,7 +11,7 @@
             props: {
               datas: 'notInLesson',
               add: true,
-              isNew: true,
+              isnew: true,
             },
             title: 'Choisissez les élèves à ajouter à votre cours',
           })

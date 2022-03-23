@@ -19,21 +19,21 @@ import {
 } from '../services/dateHelper'
 export default {
   props: {
-    getStart: {
+    getstart: {
       type: String,
       required: true,
     },
-    getEnd: {
+    getend: {
       type: String,
       required: true,
     },
   },
   computed: {
     startState() {
-      return this.$store.getters.getStateFromString(this.$props.getStart)
+      return this.$store.getters.getStateFromString(this.$props.getstart)
     },
     endState() {
-      return this.$store.getters.getStateFromString(this.$props.getEnd)
+      return this.$store.getters.getStateFromString(this.$props.getend)
     },
     date() {
       if (this.startState.value === undefined) return ''

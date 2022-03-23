@@ -163,7 +163,7 @@ export default {
       type: String,
       required: true,
     },
-    idStudent: {
+    idstudent: {
       type: String,
       required: true,
     },
@@ -209,7 +209,7 @@ export default {
     async validate() {
       if (this.valid) {
         await this.$store.dispatch('student/modify', {
-          studentId: this.$props.idStudent,
+          studentId: this.$props.idstudent,
           payload: this.$store.state.student.details,
         })
 

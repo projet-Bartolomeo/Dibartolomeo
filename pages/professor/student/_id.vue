@@ -4,7 +4,7 @@
     <v-col>
       <StudentForm
         datas="details"
-        :idStudent="$route.params.id"
+        :idstudent="$route.params.id"
         redirect="/professor/student/list"
         class="ma-5"
       />

@@ -104,7 +104,7 @@ export default {
       type: Boolean,
       required: false
     },
-    isNew: {
+    isnew: {
       type: Boolean,
       required: false
     }
@@ -139,7 +139,7 @@ export default {
   },
   computed: {
     stateName() {
-      return this.$props.isNew ? 'new' : 'details'
+      return this.$props.isnew ? 'new' : 'details'
     }
   },
 

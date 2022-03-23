@@ -60,12 +60,12 @@
 <script>
 export default {
   props: {
-    getStart: {
+    getstart: {
       type: String,
       reuqired: true,
       default: '',
     },
-    getEnd: {
+    getend: {
       type: String,
       reuqired: true,
       default: '',
@@ -85,10 +85,10 @@ export default {
       return this.formatDate(this.startState.value)
     },
     startState() {
-      return this.$store.getters.getStateFromString(this.$props.getStart)
+      return this.$store.getters.getStateFromString(this.$props.getstart)
     },
     endState() {
-      return this.$store.getters.getStateFromString(this.$props.getEnd)
+      return this.$store.getters.getStateFromString(this.$props.getend)
     },
     startDate: {
       get() {

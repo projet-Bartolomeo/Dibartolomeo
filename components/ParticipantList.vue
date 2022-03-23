@@ -14,7 +14,7 @@
             <ParticipantForm
               :datas="$store.state.student.participant[index]"
               type="participant"
-              :idStudent="$props.idStudent"
+              :idstudent="$props.idstudent"
             />
           </div>
         </div>
@@ -23,7 +23,7 @@
         <ParticipantForm
           :datas="$store.state.student.new"
           type="new"
-          :idStudent="$props.idStudent"
+          :idstudent="$props.idstudent"
         />
       </div>
       <div class="d-flex pl-10 pb-5">
@@ -53,7 +53,7 @@
 <script>
 export default {
   props: {
-    idStudent: {
+    idstudent: {
       type: String,
       required: true,
     },
@@ -70,7 +70,7 @@ export default {
     async fetchData() {
       this.participant = await this.$store.dispatch(
         'student/setParticipant',
-        this.$props.idStudent
+        this.$props.idstudent
       )
     },
   },

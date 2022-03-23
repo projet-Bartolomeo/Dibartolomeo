@@ -3,8 +3,8 @@
     <v-card class="ma-4 mb-6">
       <v-card-title>
         <IntervalDateFilter
-          getEnd="lesson.filter.endDate"
-          getStart="lesson.filter.startDate"
+          getend="lesson.filter.endDate"
+          getstart="lesson.filter.startDate"
         />
 
         <v-text-field
@@ -48,7 +48,7 @@
         :single-select="singleSelect"
         item-key="id"
         :show-select="getShowSelect"
-        :customSort="customSort"
+        :customsort="customsort"
       >
         <template #[`item.actions`]="{ item }">
           <div class="d-flex">
@@ -283,7 +283,7 @@ export default {
       return firstDate.getTime() - secondDate.getTime()
     },
 
-    customSort(items, index, isDesc) {
+    customsort(items, index, isDesc) {
       items.sort((a, b) => {
         const [first, second] = !isDesc[0]
           ? [a[index], b[index]]
