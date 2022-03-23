@@ -108,7 +108,14 @@
             >
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
-            <v-icon class="mr-1" @click="deleteItem(item)"> mdi-delete </v-icon>
+
+            <v-icon v-if="$props.lesson" @click="deleteStudentFromLesson(item)">
+              mdi-delete
+            </v-icon>
+
+            <v-icon v-else @click="deleteFromTeacher(item)">
+              mdi-delete
+            </v-icon>
           </div>
         </template>
         <template #no-data>
