@@ -7,7 +7,7 @@
         </v-btn>
       </router-link>
     </Title>
-    <DataTableLesson message delete datas="teacherList" />
+    <DataTableLesson message delete datas="teacherList" class="DataTable" />
   </div>
 </template>
 
@@ -18,3 +18,12 @@ export default {
   },
 }
 </script>
+<style>
+  .DataTable {
+    margin: 0 auto;
+    min-height: 85vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>

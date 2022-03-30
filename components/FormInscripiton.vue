@@ -85,13 +85,14 @@ export default {
       NewUser: {
         lastName: '',
         firstName: '',
-        emaail: '',
+        
         isRegistered: 'false', 
         isDeleted: 'false'
 
       
       },
       authenti: {
+        email: '',
         mot_pass: '',
         forgot: '',
       },

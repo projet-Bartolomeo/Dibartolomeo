@@ -1,8 +1,8 @@
 <template>
   <v-form v-model="valid" class="d-flex justify-space-around">
     <v-card elevation="6" width="60vw" class="ma-auto pa-1">
-      <v-row class="ma-5">
-        <v-col md="6">
+      <v-row class="ma-5 d-flex flex-wrap ">
+        <v-col md="8">
           <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Nom de famille :</p>
             <TextField
@@ -12,7 +12,7 @@
             />
           </v-row>
         </v-col>
-        <v-col md="6">
+        <v-col md="8">
           <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Prénom :</p>
             <TextField
