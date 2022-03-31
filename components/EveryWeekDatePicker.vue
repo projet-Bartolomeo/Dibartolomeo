@@ -5,7 +5,7 @@
       :items="weekDays"
       @change="getNextDayOfWeek(new Date(), day)"
     ></v-select>
-    <HourIntervalPicker :getStart="$props.getStart" :getEnd="$props.getEnd" />
+    <HourIntervalPicker :getstart="$props.getstart" :getend="$props.getend" />
   </div>
 </template>
 
@@ -13,11 +13,11 @@
 import { getHoursAndMinutes, convertStringToDate } from '../services/dateHelper'
 export default {
   props: {
-    getStart: {
+    getstart: {
       type: String,
       required: true,
     },
-    getEnd: {
+    getend: {
       type: String,
       required: true,
     },
@@ -37,10 +37,10 @@ export default {
   },
   computed: {
     startState() {
-      return this.$store.getters.getStateFromString(this.$props.getStart)
+      return this.$store.getters.getStateFromString(this.$props.getstart)
     },
     endState() {
-      return this.$store.getters.getStateFromString(this.$props.getEnd)
+      return this.$store.getters.getStateFromString(this.$props.getend)
     },
     day: {
       get() {

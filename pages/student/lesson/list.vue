@@ -6,14 +6,12 @@
       >
     </Title>
     <div class="listCard">
-      <div v-for="lesson in $store.state.lesson.studentList" :key="lesson.title">
+      <div v-for="lesson in $store.state.lesson.studentList" :key="lesson.id">
         <div v-if="lesson.studentIds.includes($store.state.user.id)">
-        <CardStudentLesson
-          :lesson="lesson"
-        />
-        <div>
-          <v-divider class="separator"></v-divider>
-        </div>
+          <CardStudentLesson :lesson="lesson" />
+          <div>
+            <v-divider class="separator"></v-divider>
+          </div>
         </div>
       </div>
     </div>
@@ -24,9 +22,9 @@
 export default {
   created() {
     this.$store.dispatch('lesson/setStudentList', {
-      studentId: this.$store.state.user.id
+      studentId: this.$store.state.user.id,
     })
-  }
+  },
 }
 </script>
 

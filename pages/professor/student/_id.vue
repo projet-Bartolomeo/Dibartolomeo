@@ -4,7 +4,7 @@
     <v-col>
       <StudentForm
         datas="details"
-        :idStudent="$route.query.id"
+        :idstudent="$route.params.id"
         redirect="/professor/student/list"
         class="ma-5"
       />
@@ -17,8 +17,8 @@
 export default {
   async created() {
     this.$store.dispatch('student/setNew')
-    await this.$store.dispatch('student/setDetails', this.$route.query.id)
-    await this.$store.dispatch('lesson/setStudentList', this.$route.query.id)
+    await this.$store.dispatch('student/setDetails', this.$route.params.id)
+    await this.$store.dispatch('lesson/setStudentList', this.$route.params.id)
   },
 }
 </script>

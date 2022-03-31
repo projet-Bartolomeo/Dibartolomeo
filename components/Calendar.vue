@@ -131,7 +131,7 @@
                 >
                   S'INSCRIRE
                 </v-btn>
-                <UnsubscribeButton :isregister='isRegister'/>
+                <UnsubscribeButton v-else />
               </div>
               <v-row
                 v-if="userType === 'professor'"

@@ -4,7 +4,7 @@
     <v-col>
       <StudentForm
         datas="details"
-        :idStudent="$store.state.user.id"
+        :idstudent="$store.state.user.id"
         redirect="/student/lesson/planning"
         class="ma-5"
       />

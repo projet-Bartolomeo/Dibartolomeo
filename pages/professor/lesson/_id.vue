@@ -100,7 +100,7 @@ export default {
       stateName: 'details',
     })
     await this.$store.dispatch('lesson/setDetails', {
-      lessonId: this.$route.query.id,
+      lessonId: this.$route.params.id,
     })
   },
 

@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-btn
-      v-if="$props.isregister"
       class="ma-2"
       style="color: white"
       color="red"
@@ -15,10 +14,6 @@
 <script>
 export default {
   props: {
-    isregister: {
-      required: true,
-      type: Boolean
-    },
     lesson: {
       required: false,
       type: Object,
