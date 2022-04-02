@@ -83,19 +83,39 @@
 
             <v-card flat>
               <v-col>
-                <v-card class="d-flex justify-space-around pt-5 px-5 ml-5 mr-5">
+                <v-card class="d-flex justify-space-around pa-5">
                   <div class="d-flex">
-                    <p class="ma-0 pr-3">Récurrence :</p>
-                    <p>{{ selectedEvent.recurrence }}</p>
+                    <div class="pa-2">
+                      <p class="ma-0 pr-3">Récurrence</p>
+                    </div>
+                    <div
+                      class="mr-3 pa-2 ma-0"
+                      style="background: #f7f7f7; height: fit-content"
+                    >
+                      <p class="ma-0">{{ selectedEvent.recurrence }}</p>
+                    </div>
                   </div>
                   <div class="d-flex">
-                    <p class="ma-0 pr-3">Age :</p>
-                    <p>{{ selectedEvent.ageRange }}</p>
+                    <div class="pa-2">
+                      <p class="ma-0 pr-3">Age</p>
+                    </div>
+                    <div
+                      class="mr-3 pa-2 ma-0"
+                      style="background: #f7f7f7; height: fit-content"
+                    >
+                      <p class="ma-0">{{ selectedEvent.ageRange }}</p>
+                    </div>
                   </div>
                   <div class="d-flex">
-                    <p class="ma-0 pr-3">Prix :</p>
-                    <p>{{ selectedEvent.price }}</p>
-                    €
+                    <div class="pa-2">
+                      <p class="ma-0 pr-3">Prix</p>
+                    </div>
+                    <div
+                      class="mr-3 pa-2 ma-0"
+                      style="background: #f7f7f7; height: fit-content"
+                    >
+                      <p class="ma-0">{{ selectedEvent.price }} €</p>
+                    </div>
                   </div>
                 </v-card>
               </v-col>
@@ -118,10 +138,13 @@
                     mr-5
                   "
                 >
-                  {{ selectedEvent.description || 'Pas de description'}}
+                  {{ selectedEvent.description || 'Pas de description' }}
                 </v-card>
               </v-col>
-              <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
+              <div
+                v-if="userType === 'student'"
+                class="w-100 d-flex justify-center"
+              >
                 <v-btn
                   v-if="!isRegister"
                   class="ma-2"
@@ -135,17 +158,13 @@
               </div>
               <v-row
                 v-if="userType === 'professor'"
-                class="ma-0 d-flex justify-center align-center pb-4"
+                class="ma-0 d-flex justify-space-around align-center pb-4"
               >
                 <router-link
                   class="text-decoration-none"
-                  :to="`/professor/lesson/?id=${selectedEvent.id}`"
+                  :to="`/professor/lesson/${selectedEvent.id}`"
                 >
-                  <v-btn
-                    class="my-5"
-                    style="color: white"
-                    color="#76d9a3"
-                  >
+                  <v-btn class="my-5" style="color: white" color="#76d9a3">
                     Modifier le cours
                   </v-btn>
                 </router-link>
@@ -183,8 +202,8 @@ export default {
   props: {
     userType: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data: () => ({
     colors: ['grey', 'green'],
@@ -195,11 +214,11 @@ export default {
       month: 'Mois',
       week: 'Semaine',
       day: 'Jour',
-      '4day': '4 jours'
+      '4day': '4 jours',
     },
     selectedEvent: {},
     selectedElement: null,
-    selectedOpen: false
+    selectedOpen: false,
   }),
   computed: {
     lessons() {
@@ -209,25 +228,25 @@ export default {
           : this.$store.state.lesson.teacherList
 
       return lessonList.reduce((newLessonList, currentLesson) => {
-
-
-
-
-        if(this.$props.userType === 'professor'){
-          if (currentLesson.studentIds.length >= currentLesson.maximumStudents) {
+        if (this.$props.userType === 'professor') {
+          if (
+            currentLesson.studentIds.length >= currentLesson.maximumStudents
+          ) {
             currentLesson.color = '#d9d9d9'
-          }else{
+          } else {
             currentLesson.color = '#76d9a3'
-
-          } 
-        }
-        else if(this.$props.userType === 'student'){
-          if(currentLesson.studentIds.includes(this.$store.state.user.id)){
+          }
+        } else if (this.$props.userType === 'student') {
+          if (currentLesson.studentIds.includes(this.$store.state.user.id)) {
             currentLesson.color = '#53b3e6'
-          }else if(!currentLesson.studentIds.includes(this.$store.state.user.id)){                    
-            if (currentLesson.studentIds.length >= currentLesson.maximumStudents) {
-                currentLesson.color = '#d9d9d9'
-            }else{
+          } else if (
+            !currentLesson.studentIds.includes(this.$store.state.user.id)
+          ) {
+            if (
+              currentLesson.studentIds.length >= currentLesson.maximumStudents
+            ) {
+              currentLesson.color = '#d9d9d9'
+            } else {
               currentLesson.color = '#76d9a3'
             }
           }
@@ -241,7 +260,7 @@ export default {
           ageRange: Age[currentLesson.ageRange],
           studentNbr: currentLesson.studentIds.length,
           color: currentLesson.color,
-          name: currentLesson.title
+          name: currentLesson.title,
         }
         newLessonList.push(lesson)
         return newLessonList
@@ -250,7 +269,7 @@ export default {
     isRegister() {
       const studentIds = this.$store.state.lesson.details.studentIds
       return studentIds && studentIds.includes(this.$store.state.user.id)
-    }
+    },
   },
   mounted() {
     this.$refs.calendar.checkChange()
@@ -290,7 +309,7 @@ export default {
         open()
       }
       nativeEvent.stopPropagation()
-    }
-  }
+    },
+  },
 }
 </script>
