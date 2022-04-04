@@ -32,7 +32,6 @@ export const actions = {
 
             commit('notification/create', { description }, { root: true })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'problème lors de l\'envoi du message', type: 'error' }, { root: true })
         }
     },

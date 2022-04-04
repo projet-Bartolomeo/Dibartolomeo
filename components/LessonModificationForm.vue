@@ -49,9 +49,9 @@
           ></v-text-field>
         </template>
         <v-date-picker
-          locale="fr"
-          color="teal lighten-2"
           v-model="startDate"
+          locale="fr"
+          color="#76d9a3"
           @input="startDateMenu = false"
         ></v-date-picker>
       </v-menu>
@@ -75,9 +75,9 @@
           ></v-text-field>
         </template>
         <v-date-picker
-          locale="fr"
-          color="teal lighten-2"
           v-model="endDate"
+          locale="fr"
+          color="#76d9a3"
           @input="endDateMenu = false"
         ></v-date-picker>
       </v-menu>
@@ -107,24 +107,31 @@ export default {
   props: {
     lesson: {
       type: Object,
-      required: true,
+      required: true
     },
     payload: {
       type: Object,
       required: false,
+      default: () => {}
     },
     modify: {
       type: Boolean,
-      required: false,
+      required: false
     },
     archive: {
       type: Boolean,
-      required: false,
+      required: false
     },
     redirectPath: {
       type: String,
       required: false,
+      default: ''
     },
+    student: {
+      type: Object,
+      required: false,
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -137,7 +144,7 @@ export default {
         .toISOString()
         .substr(0, 10),
       endDateMenu: false,
-      optionSelected: 0,
+      optionSelected: 0
     }
   },
   computed: {
@@ -149,7 +156,7 @@ export default {
     },
     startDateFormatted() {
       return this.formatDate(this.startDate)
-    },
+    }
   },
   methods: {
     formatDate(date) {
@@ -167,13 +174,30 @@ export default {
     async changeLessonInDatabase(action) {
       const lessonParameters = this.getLessonParameters()
       this.$store.commit('overlay/close')
+
+      if (this.$props.student) {
+        const hasToBeDeleted = this.lesson.studentIds.find(
+          (id) => id === this.student.id
+        )
+
+        if (hasToBeDeleted) {
+          this.$store.dispatch('lesson/removeStudentInLesson', {
+            student: this.student
+          })
+        } else {
+          this.$store.dispatch('lesson/addStudentInLesson', {
+            student: this.student
+          })
+        }
+      }
+
       await this.$store.dispatch(`lesson/${action}`, lessonParameters)
       if (this.$props.redirectPath) this.$router.push(this.$props.redirectPath)
     },
     getLessonParameters() {
       const parameters = {
         lesson: this.$props.lesson,
-        payload: this.$props.payload,
+        newData: this.$props.payload,
         all: this.optionSelected === 2 && this.isRecurrent,
         startDate:
           this.optionSelected === 1 && this.isRecurrent
@@ -182,11 +206,11 @@ export default {
         endDate:
           this.optionSelected === 1 && this.isRecurrent
             ? new Date(this.endDate)
-            : null,
+            : null
       }
       return parameters
-    },
-  },
+    }
+  }
 }
 </script>
 

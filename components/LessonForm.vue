@@ -136,7 +136,7 @@
                       { text: 'Unique', value: 'unique' },
                     ]"
                     :open="open"
-                    :defaultValue="$props.datas === 'new' ? 'everyWeek' : ''"
+                    :defaultvalue="$props.datas === 'new' ? 'everyWeek' : ''"
                   />
                 </div>
               </div>
@@ -158,7 +158,7 @@
                       { text: 'Mixte', value: 'mixed' },
                     ]"
                     :open="open"
-                    :defaultValue="$props.datas === 'new' ? 'mixed' : ''"
+                    :defaultvalue="$props.datas === 'new' ? 'mixed' : ''"
                   />
                 </div>
               </div>
@@ -187,13 +187,13 @@
             <div>Jour du cours:</div>
             <UniqueDatePicker
               v-if="lesson.recurrence === 'unique'"
-              :getStart="`lesson.${$props.datas}.startDate`"
-              :getEnd="`lesson.${$props.datas}.endDate`"
+              :getstart="`lesson.${$props.datas}.startDate`"
+              :getend="`lesson.${$props.datas}.endDate`"
             />
             <EveryWeekDatePicker
               v-else
-              :getStart="`lesson.${$props.datas}.startDate`"
-              :getEnd="`lesson.${$props.datas}.endDate`"
+              :getstart="`lesson.${$props.datas}.startDate`"
+              :getend="`lesson.${$props.datas}.endDate`"
             />
           </v-card>
         </v-row>

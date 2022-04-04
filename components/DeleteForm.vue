@@ -12,7 +12,11 @@
         @click="$store.commit('overlay/close')"
         >Annuler</v-btn
       >
-      <v-btn text class="white--text ma-4" color="blue-grey darken-1" @click="remove"
+      <v-btn
+        text
+        class="white--text ma-4"
+        color="blue-grey darken-1"
+        @click="remove"
         >Confirmer</v-btn
       >
       <v-spacer></v-spacer>
@@ -24,12 +28,34 @@
 export default {
   props: {
     type: {
-      type: Object,
+      type: String,
       required: true,
     },
     dataToDelete: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    datas() {
+      return this.$props.type === 'lesson'
+        ? {
+            text: 'Etes-vous sur de vouloir archiver votre cours ?',
+            dispatch: {
+              key: 'lesson/archive',
+              value: {
+                lesson: this.$props.dataToDelete,
+                all: this.$props.dataToDelete.recurrenceId !== undefined,
+              },
+            },
+          }
+        : {
+            text: 'Etes-vous sur de vouloir supprimer cet élève ?',
+            dispatch: {
+              key: 'student/removeFromTeacher',
+              value: { student: this.$props.dataToDelete },
+            },
+          }
     },
   },
   methods: {
@@ -41,28 +67,6 @@ export default {
       } else {
         this.$router.push('/professor/student/list')
       }
-    },
-  },
-  computed: {
-    datas() {
-      return this.$props.type === 'lesson'
-        ? {
-            text: 'Etes-vous sur de vouloir archiver votre cours',
-            dispatch: {
-              key: 'lesson/archive',
-              value: {
-                lesson: this.$props.dataToDelete,
-                all: this.$props.dataToDelete.recurrenceId !== undefined,
-              },
-            },
-          }
-        : {
-            text: 'Etes-vous sur de vouloir supprimer cet élève',
-            dispatch: {
-              key: 'student/removeFromTeacher',
-              value: { student: this.$props.dataToDelete },
-            },
-          }
     },
   },
 }

@@ -8,7 +8,7 @@
       offset-y
       min-width="auto"
     >
-      <template v-slot:activator="{ on, attrs }">
+      <template #activator="{ on, attrs }">
         <v-text-field
           v-model="dateFormatted"
           :label="$props.label"
@@ -19,14 +19,14 @@
         ></v-text-field>
       </template>
       <v-date-picker
-        locale="fr"
         v-model="date"
-        color="teal lighten-2"
-        @input="menu = false"
+        locale="fr"
+        color="#76d9a3"
         :min="new Date().toISOString()"
+        @input="menu = false"
       ></v-date-picker>
     </v-menu>
-    <HourIntervalPicker :getStart="$props.getStart" :getEnd="$props.getEnd" />
+    <HourIntervalPicker :getstart="$props.getstart" :getend="$props.getend" />
   </div>
 </template>
 
@@ -38,23 +38,50 @@ import {
 } from '../services/dateHelper'
 export default {
   props: {
-    getStart: {
+    getstart: {
       type: String,
       required: true,
     },
-    getEnd: {
+    getend: {
       type: String,
       required: true,
     },
     label: {
       type: String,
       required: false,
+      default: '',
     },
   },
   data() {
     return {
       menu: false,
     }
+  },
+  computed: {
+    dateFormatted() {
+      return this.formatDate(this.date)
+    },
+
+    startState() {
+      return this.$store.getters.getStateFromString(this.$props.getstart)
+    },
+    endState() {
+      return this.$store.getters.getStateFromString(this.$props.getend)
+    },
+    date: {
+      get() {
+        const date =
+          this.$store.state[this.startState.storeName][
+            this.startState.stateName
+          ][this.startState.fieldName]
+        if (date === undefined) return ''
+        return convertDateToIso(date)
+      },
+      set(newValue) {
+        this.dispatch(this.startState, newValue)
+        this.dispatch(this.endState, newValue)
+      },
+    },
   },
   methods: {
     dispatch(state, date) {
@@ -73,32 +100,6 @@ export default {
 
       const [year, month, day] = date.split('-')
       return `${day}/${month}/${year}`
-    },
-  },
-  computed: {
-    dateFormatted() {
-      return this.formatDate(this.date)
-    },
-
-    startState() {
-      return this.$store.getters.getStateFromString(this.$props.getStart)
-    },
-    endState() {
-      return this.$store.getters.getStateFromString(this.$props.getEnd)
-    },
-    date: {
-      get() {
-        const date =
-          this.$store.state[this.startState.storeName][
-            this.startState.stateName
-          ][this.startState.fieldName]
-        if (date === undefined) return ''
-        return convertDateToIso(date)
-      },
-      set(newValue) {
-        this.dispatch(this.startState, newValue)
-        this.dispatch(this.endState, newValue)
-      },
     },
   },
 }

@@ -3,13 +3,13 @@
     <v-card class="ma-4 mb-6">
       <v-card-title>
         <IntervalDateFilter
-          getEnd="lesson.filter.endDate"
-          getStart="lesson.filter.startDate"
+          getend="lesson.filter.endDate"
+          getstart="lesson.filter.startDate"
         />
 
         <v-text-field
-          class="ma-2 text-field pa-0"
           v-model="search"
+          class="ma-2 text-field pa-0"
           append-icon="mdi-magnify"
           :label="`Rechercher un ${type}`"
           single-line
@@ -21,7 +21,7 @@
           v-if="$props.message"
           :disabled="selected.length === 0"
           style="color: white"
-          color="teal lighten-2"
+          color="#76d9a3"
           @click="
             $store.commit('overlay/open', {
               component: 'MessageForm',
@@ -35,6 +35,7 @@
     </v-card>
     <v-card class="ma-4">
       <v-data-table
+        v-model="selected"
         :headers="headers"
         :items="lessons"
         sort-by="startDate"
@@ -44,17 +45,16 @@
           'items-per-page-text': `${type} par page`,
         }"
         :search="search"
-        v-model="selected"
         :single-select="singleSelect"
         item-key="id"
         :show-select="getShowSelect"
-        :customSort="customSort"
+        :customsort="customsort"
       >
-        <template v-slot:[`item.actions`]="{ item }">
+        <template #[`item.actions`]="{ item }">
           <div class="d-flex">
             <v-icon
-              class="mr-1"
               v-if="$props.message"
+              class="mr-1"
               @click="
                 $store.commit('overlay/open', {
                   component: 'MessageForm',
@@ -64,7 +64,7 @@
               "
               >mdi-message</v-icon
             >
-            <NuxtLink class="nuxtlink" :to="`/professor/lesson/?id=${item.id}`">
+            <NuxtLink class="nuxtlink" :to="`/professor/lesson/${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
             <v-icon
@@ -92,9 +92,7 @@
             </v-icon>
           </div>
         </template>
-        <template v-slot:no-data>
-          Il n'y a actuellement pas de cours prévu
-        </template>
+        <template #no-data> Il n'y a actuellement pas de cours prévu </template>
       </v-data-table>
     </v-card>
   </div>
@@ -122,6 +120,7 @@ export default {
     datas: {
       type: String,
       require: true,
+      default: '',
     },
   },
   data() {
@@ -284,7 +283,7 @@ export default {
       return firstDate.getTime() - secondDate.getTime()
     },
 
-    customSort(items, index, isDesc) {
+    customsort(items, index, isDesc) {
       items.sort((a, b) => {
         const [first, second] = !isDesc[0]
           ? [a[index], b[index]]
