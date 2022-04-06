@@ -43,7 +43,6 @@ export default {
 }
 .listCard {
   height: 80vh;
-  overflow-y: scroll;
   padding-left: 50px;
 }
 .separator {

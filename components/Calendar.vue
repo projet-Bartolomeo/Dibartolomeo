@@ -65,8 +65,8 @@ export default {
   props: {
     userType: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data: () => ({
     colors: ['grey', 'green'],
@@ -77,11 +77,11 @@ export default {
       month: 'Mois',
       week: 'Semaine',
       day: 'Jour',
-      '4day': '4 jours'
+      '4day': '4 jours',
     },
     selectedEvent: {},
     selectedElement: null,
-    selectedOpen: false
+    selectedOpen: false,
   }),
   computed: {
     lessons() {
@@ -121,7 +121,7 @@ export default {
           end: convertDateToPlanningDate(currentLesson.endDate),
           studentNbr: currentLesson.studentIds.length,
           color: currentLesson.color,
-          name: currentLesson.title
+          name: currentLesson.title,
         }
         newLessonList.push(lesson)
         return newLessonList
@@ -130,7 +130,7 @@ export default {
     isRegister() {
       const studentIds = this.$store.state.lesson.details.studentIds
       return studentIds && studentIds.includes(this.$store.state.user.id)
-    }
+    },
   },
   mounted() {
     this.$refs.calendar.checkChange()
@@ -173,7 +173,7 @@ export default {
         open()
       }
       nativeEvent.stopPropagation()
-    }
-  }
+    },
+  },
 }
 </script>
