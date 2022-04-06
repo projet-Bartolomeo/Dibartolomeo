@@ -144,7 +144,8 @@ export default {
         .toISOString()
         .substr(0, 10),
       endDateMenu: false,
-      optionSelected: 0
+      optionSelected: 0,
+      description: undefined,
     }
   },
   computed: {
@@ -219,7 +220,8 @@ export default {
         endDate:
           this.optionSelected === 1 && this.isRecurrent
             ? new Date(this.endDate)
-            : null
+            : null,
+        description: this.description
       }
       return parameters
     }
