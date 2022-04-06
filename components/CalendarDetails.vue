@@ -47,8 +47,8 @@
         </v-card>
       </v-col>
       <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
-        <SubscribeButton :lesson="lesson" v-if="!isRegister" />
-        <UnsubscribeButton :lesson="lesson" v-else />
+        <SubscribeButton v-if="!isRegister" :lesson="lesson" />
+        <UnsubscribeButton v-else :lesson="lesson" />
       </div>
       <v-row
         v-if="userType === 'professor'"
