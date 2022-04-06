@@ -57,7 +57,7 @@
           class="text-decoration-none"
           :to="`/professor/lesson/${lesson.id}`"
         >
-          <v-btn class="my-5" style="color: white" color="#76d9a3">
+          <v-btn @click="$store.commit('overlay/close')" class="my-5" style="color: white" color="#76d9a3">
             Modifier le cours
           </v-btn>
         </router-link>
