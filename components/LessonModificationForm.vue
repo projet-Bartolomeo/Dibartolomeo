@@ -179,14 +179,18 @@ export default {
         const hasToBeDeleted = this.lesson.studentIds.find(
           (id) => id === this.student.id
         )
+        const lessonTitle = this.$props.lesson.title
 
         if (hasToBeDeleted) {
           this.$store.dispatch('lesson/removeStudentInLesson', {
-            student: this.student
+            student: this.student,
+            description: `désinscris du cours ${lessonTitle}`
+          })
           })
         } else {
           this.$store.dispatch('lesson/addStudentInLesson', {
-            student: this.student
+            student: this.student,
+            description: `inscris au cours ${lessonTitle}`
           })
         }
       }
