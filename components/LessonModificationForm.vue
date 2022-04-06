@@ -173,37 +173,26 @@ export default {
       this.changeLessonInDatabase('archive')
     },
     async changeLessonInDatabase(action) {
-      const lessonParameters = this.getLessonParameters()
-      this.$store.commit('overlay/close')
-
       if (this.$props.student) {
         const hasToBeDeleted = this.lesson.studentIds.find(
           (id) => id === this.student.id
         )
         const lessonTitle = this.$props.lesson.title
+        const dispatchData = {
+          student: this.student, lesson: this.$props.lesson
+        }
 
         if (hasToBeDeleted) {
-          this.$store.dispatch('lesson/removeStudentInLesson', {
-            student: this.student,
-            description: `désinscris du cours ${lessonTitle}`
-          })
-          commit('removeInListField', {
-            stateName: 'details',
-            fieldName: 'studentIds',
-            toRemove: this.student.id
-          })
+          this.description = `désinscris du cours ${lessonTitle}`
+          this.$store.dispatch('lesson/removeStudentInLesson', dispatchData)
         } else {
-          this.$store.commit('addToListField', {
-            stateName: 'details',
-            fieldName: 'studentIds',
-            toAdd: this.student.id
-          })
-          this.$store.dispatch('lesson/addStudentInLesson', {
-            student: this.student,
-            description: `inscris au cours ${lessonTitle}`
-          })
+          this.description = `inscris au cours ${lessonTitle}`
+          this.$store.dispatch('lesson/addStudentInLesson', dispatchData)
         }
       }
+
+      const lessonParameters = this.getLessonParameters()
+      this.$store.commit('overlay/close')
 
       await this.$store.dispatch(`lesson/${action}`, lessonParameters)
       if (this.$props.redirectPath) this.$router.push(this.$props.redirectPath)
