@@ -213,7 +213,7 @@ export const actions = {
 
     async modify({ state, commit }, { lesson, startDate, endDate, all, newData, description }) {
         const lessonRef = this.$fire.firestore.collection('lesson')
-        let notification = { type: 'success', description: description ?? 'le cours a bien été mis à jour' }
+        let notification = { type: 'success', description }
         let lessons = []
         const payload = newData ?? state.form.payload
         const oldValues = state.form.oldValues
@@ -264,6 +264,8 @@ export const actions = {
             notification = { type: 'error', description: 'problème lors de la mise à jour' }
             commit('notification/create', notification, { root: true })
         }
+
+        if (description) commit('notification/create', notification, { root: true })
     },
 
     resetNewForm({ commit }) {

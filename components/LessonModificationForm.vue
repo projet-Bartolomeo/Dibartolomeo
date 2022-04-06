@@ -145,7 +145,7 @@ export default {
         .substr(0, 10),
       endDateMenu: false,
       optionSelected: 0,
-      description: undefined,
+      description: 'le cours a bien été mis à jour',
     }
   },
   computed: {
@@ -177,16 +177,14 @@ export default {
         const hasToBeDeleted = this.lesson.studentIds.find(
           (id) => id === this.student.id
         )
-        const lessonTitle = this.$props.lesson.title
         const dispatchData = {
           student: this.student, lesson: this.$props.lesson
         }
+        this.description = undefined
 
         if (hasToBeDeleted) {
-          this.description = `désinscris du cours ${lessonTitle}`
           this.$store.dispatch('lesson/removeStudentInLesson', dispatchData)
         } else {
-          this.description = `inscris au cours ${lessonTitle}`
           this.$store.dispatch('lesson/addStudentInLesson', dispatchData)
         }
       }
