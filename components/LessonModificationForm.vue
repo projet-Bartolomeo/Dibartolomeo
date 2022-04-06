@@ -186,8 +186,17 @@ export default {
             student: this.student,
             description: `désinscris du cours ${lessonTitle}`
           })
+          commit('removeInListField', {
+            stateName: 'details',
+            fieldName: 'studentIds',
+            toRemove: this.student.id
           })
         } else {
+          this.$store.commit('addToListField', {
+            stateName: 'details',
+            fieldName: 'studentIds',
+            toAdd: this.student.id
+          })
           this.$store.dispatch('lesson/addStudentInLesson', {
             student: this.student,
             description: `inscris au cours ${lessonTitle}`
