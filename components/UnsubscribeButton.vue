@@ -4,7 +4,20 @@
       class="ma-2"
       style="color: white"
       color="red"
-      @click="$store.dispatch('lesson/unsubscribe', { lessonToUnsubscribe: lesson })"
+      @click="
+        $store.commit('overlay/open', {
+          component: 'LessonModificationForm',
+          props: {
+            lesson: $props.lesson,
+            modify: true,
+            payload,
+            student: studentToRemove,
+          },
+          title: $props.lesson.recurrenceId
+            ? 'Voulez-vous vous désinscrire :'
+            : '',
+        })
+      "
     >
       SE DESINSCRIRE
     </v-btn>
@@ -18,6 +31,18 @@ export default {
       required: false,
       type: Object,
       default: undefined
+    }
+  },
+  computed: {
+    studentToRemove() {
+      return this.$store.state.user
+    },
+    payload() {
+      const studentIds = [ ...this.$props.lesson.studentIds].filter(
+        (id) => id !== this.studentToRemove.id
+      )
+      const payload = { studentIds }
+      return payload
     }
   }
 }
