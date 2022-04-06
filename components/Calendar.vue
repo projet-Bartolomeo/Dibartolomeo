@@ -60,8 +60,6 @@
 
 <script>
 import { convertDateToPlanningDate } from '../services/dateHelper'
-import { Recurrence } from '../enums/Recurrence'
-import { Age } from '../enums/Age'
 
 export default {
   props: {
@@ -121,8 +119,6 @@ export default {
           ...currentLesson,
           start: convertDateToPlanningDate(currentLesson.startDate),
           end: convertDateToPlanningDate(currentLesson.endDate),
-          recurrence: Recurrence[currentLesson.recurrence],
-          ageRange: Age[currentLesson.ageRange],
           studentNbr: currentLesson.studentIds.length,
           color: currentLesson.color,
           name: currentLesson.title
@@ -155,10 +151,10 @@ export default {
       this.$refs.calendar.next()
     },
     async showStudent(event) {
-      await this.$store.dispatch('lesson/setDetails', { lessonId: event.id })
       this.$store.commit('overlay/open', {
         component: 'CalendarDetails'
       })
+      await this.$store.dispatch('lesson/setDetails', { lessonId: event.id })
     },
     showEvent({ nativeEvent, event }) {
       const open = () => {

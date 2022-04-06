@@ -1,13 +1,11 @@
 <template>
-  <v-card color="grey lighten-4" min-width="350px" flat>
+  <v-card color="lighten-4" min-width="350px" flat>
     <v-row class="ma-0">
       <v-col cols="12" sm="6">
-        <v-toolbar-title v-html="lesson.title"
-          ><v-btn icon>
-            <v-icon>mdi-pencil</v-icon>
-            <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
-        ></v-toolbar-title>
-        <p>{{ lesson.studentNbr }} / {{ lesson.maximumStudents }} élèves</p>
+        <div>{{ lesson.title }}</div>
+        <p>
+          {{ lesson.studentIds.length }} / {{ lesson.maximumStudents }} élèves
+        </p>
       </v-col>
     </v-row>
     <v-spacer></v-spacer>
@@ -17,7 +15,7 @@
         <v-card class="d-flex justify-space-around pt-5 px-5 ml-5 mr-5">
           <div class="d-flex">
             <p class="ma-0 pr-3">Récurrence :</p>
-            <p>{{ lesson.recurrence }}</p>
+            <p>{{ lesson.recurrenceValue }}</p>
           </div>
           <div class="d-flex">
             <p class="ma-0 pr-3">Age :</p>
@@ -47,6 +45,7 @@
         </v-card>
       </v-col>
       <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
+
         <SubscribeButton v-if="!isRegister" :lesson="lesson" />
         <UnsubscribeButton v-else :lesson="lesson" />
       </div>
@@ -84,10 +83,15 @@
 </template>
 
 <script>
+import { Recurrence } from '../enums/Recurrence'
+import { Age } from '../enums/Age'
 export default {
   computed: {
     lesson() {
-      return this.$store.state.lesson.details
+      const lesson = { ...this.$store.state.lesson.details }
+      lesson.recurrenceValue = Recurrence[lesson.recurrence]
+      lesson.ageRange = Age[lesson.ageRange]
+      return lesson
     },
     userType() {
       return this.$store.state.user.type
