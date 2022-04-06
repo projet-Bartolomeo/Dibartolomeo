@@ -45,7 +45,6 @@
         </v-card>
       </v-col>
       <div v-if="userType === 'student'" class="w-100 d-flex justify-center">
-
         <SubscribeButton v-if="!isRegister" :lesson="lesson" />
         <UnsubscribeButton v-else :lesson="lesson" />
       </div>
@@ -57,7 +56,12 @@
           class="text-decoration-none"
           :to="`/professor/lesson/${lesson.id}`"
         >
-          <v-btn @click="$store.commit('overlay/close')" class="my-5" style="color: white" color="#76d9a3">
+          <v-btn
+            class="my-5"
+            style="color: white"
+            color="#76d9a3"
+            @click="$store.commit('overlay/close')"
+          >
             Modifier le cours
           </v-btn>
         </router-link>
