@@ -7977,7 +7977,7 @@ firebase-admin@^10.0.0:
     "@google-cloud/firestore" "^4.5.0"
     "@google-cloud/storage" "^5.3.0"
 
-firebase@^9.6.7:
+firebase@^9.2.0:
   version "9.6.10"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.6.10.tgz#542f899780780e85a7aa2a7bcaa8e76c1daea13a"
   integrity sha512-pnWXhH2J/O5To/TXEp7Dx1nSKkDRspl1bo4f4p6f2noVrn3lvz+cbQNM7DTT0xyA0RsNM/V7aSv3ZbAQj8Od3Q==
@@ -10882,11 +10882,6 @@ lru-memoizer@^2.1.4:
   dependencies:
     lodash.clonedeep "^4.5.0"
     lru-cache "~4.0.0"
-
-luxon@^2.2.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/luxon/-/luxon-2.3.1.tgz#f276b1b53fd9a740a60e666a541a7f6dbed4155a"
-  integrity sha512-I8vnjOmhXsMSlNMZlMkSOvgrxKJl0uOsEzdGgGNZuZPaS9KlefpE9KV95QFftlJSC+1UyCC9/I69R02cz/zcCA==
 
 magic-string@^0.25.7:
   version "0.25.9"
