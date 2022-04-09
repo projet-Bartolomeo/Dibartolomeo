@@ -6,8 +6,8 @@
           <div
             v-if="$store.state.overlay.title !== ''"
             class="d-flex justify-center align-center"
+            v-html="$store.state.overlay.title"
           >
-            {{ $store.state.overlay.title }}
           </div>
           <v-spacer></v-spacer>
           <v-btn

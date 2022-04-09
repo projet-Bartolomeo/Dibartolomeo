@@ -152,7 +152,8 @@ export default {
     },
     async showStudent(event) {
       this.$store.commit('overlay/open', {
-        component: 'CalendarDetails'
+        component: 'CalendarDetails',
+        title: '<div><h3>' + event.title + '</h3><p class="ma-0"> ' + event.studentNbr + '  / ' + event.maximumStudents + ' élèves</p></div>', 
       })
       await this.$store.dispatch('lesson/setDetails', { lessonId: event.id })
     },

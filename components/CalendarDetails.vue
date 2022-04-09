@@ -1,30 +1,40 @@
 <template>
   <v-card color="lighten-4" min-width="350px" flat>
-    <v-row class="ma-0">
-      <v-col cols="12" sm="6">
-        <div>{{ lesson.title }}</div>
-        <p>
-          {{ lesson.studentIds.length }} / {{ lesson.maximumStudents }} élèves
-        </p>
-      </v-col>
-    </v-row>
-    <v-spacer></v-spacer>
-
     <v-card flat>
       <v-col>
-        <v-card class="d-flex justify-space-around pt-5 px-5 ml-5 mr-5">
+        <v-card class="d-flex justify-space-around pa-5">
           <div class="d-flex">
-            <p class="ma-0 pr-3">Récurrence :</p>
-            <p>{{ lesson.recurrenceValue }}</p>
+            <div class="pa-2">
+              <p class="ma-0 pr-3">Récurrence</p>
+            </div>
+            <div
+              class="mr-3 pa-2 ma-0"
+              style="background: #f7f7f7; height: fit-content"
+            >
+              <p class="ma-0">{{ lesson.recurrenceValue }}</p>
+            </div>
           </div>
           <div class="d-flex">
-            <p class="ma-0 pr-3">Age :</p>
-            <p>{{ lesson.ageRange }}</p>
+            <div class="pa-2">
+              <p class="ma-0 pr-3">Age</p>
+            </div>
+            <div
+              class="mr-3 pa-2 ma-0"
+              style="background: #f7f7f7; height: fit-content"
+            >
+              <p class="ma-0">{{ lesson.ageRange }}</p>
+            </div>
           </div>
           <div class="d-flex">
-            <p class="ma-0 pr-3">Prix :</p>
-            <p>{{ lesson.price }}</p>
-            €
+            <div class="pa-2">
+              <p class="ma-0 pr-3">Prix</p>
+            </div>
+            <div
+              class="mr-3 pa-2 ma-0"
+              style="background: #f7f7f7; height: fit-content"
+            >
+              <p class="ma-0">{{ lesson.price }} €</p>
+            </div>
           </div>
         </v-card>
       </v-col>
@@ -50,7 +60,7 @@
       </div>
       <v-row
         v-if="userType === 'professor'"
-        class="ma-0 d-flex justify-center align-center pb-4"
+        class="ma-0 d-flex justify-space-around align-center pb-4"
       >
         <router-link
           class="text-decoration-none"
@@ -103,7 +113,7 @@ export default {
     isRegister() {
       const studentIds = this.$store.state.lesson.details.studentIds
       return studentIds && studentIds.includes(this.$store.state.user.id)
-    }
-  }
+    },
+  },
 }
 </script>
