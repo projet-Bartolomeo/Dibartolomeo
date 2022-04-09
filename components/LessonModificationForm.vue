@@ -144,7 +144,8 @@ export default {
         .toISOString()
         .substr(0, 10),
       endDateMenu: false,
-      optionSelected: 0
+      optionSelected: 0,
+      description: 'le cours a bien été mis à jour',
     }
   },
   computed: {
@@ -172,24 +173,24 @@ export default {
       this.changeLessonInDatabase('archive')
     },
     async changeLessonInDatabase(action) {
-      const lessonParameters = this.getLessonParameters()
-      this.$store.commit('overlay/close')
-
       if (this.$props.student) {
         const hasToBeDeleted = this.lesson.studentIds.find(
           (id) => id === this.student.id
         )
+        const dispatchData = {
+          student: this.student, lesson: this.$props.lesson
+        }
+        this.description = undefined
 
         if (hasToBeDeleted) {
-          this.$store.dispatch('lesson/removeStudentInLesson', {
-            student: this.student
-          })
+          this.$store.dispatch('lesson/removeStudentInLesson', dispatchData)
         } else {
-          this.$store.dispatch('lesson/addStudentInLesson', {
-            student: this.student
-          })
+          this.$store.dispatch('lesson/addStudentInLesson', dispatchData)
         }
       }
+
+      const lessonParameters = this.getLessonParameters()
+      this.$store.commit('overlay/close')
 
       await this.$store.dispatch(`lesson/${action}`, lessonParameters)
       if (this.$props.redirectPath) this.$router.push(this.$props.redirectPath)
@@ -206,7 +207,8 @@ export default {
         endDate:
           this.optionSelected === 1 && this.isRecurrent
             ? new Date(this.endDate)
-            : null
+            : null,
+        description: this.description
       }
       return parameters
     }
