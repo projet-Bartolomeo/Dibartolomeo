@@ -53,150 +53,13 @@
           @click:more="viewDay"
           @click:date="viewDay"
         ></v-calendar>
-        <v-dialog
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          offset-x
-          width="1000"
-        >
-          <v-card color="grey lighten-4" min-width="350px" flat>
-            <v-row class="ma-0">
-              <v-col cols="12" sm="6">
-                <v-toolbar-title v-html="selectedEvent.title"
-                  ><v-btn icon>
-                    <v-icon>mdi-pencil</v-icon>
-                    <v-col cols="12" sm="4" md="4"> </v-col> </v-btn
-                ></v-toolbar-title>
-                <p>
-                  {{ selectedEvent.studentNbr }} /
-                  {{ selectedEvent.maximumStudents }} élèves
-                </p>
-              </v-col>
-              <v-row class="ma-0 pa-5 justify-end">
-                <v-btn text @click="selectedOpen = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </v-row>
-            </v-row>
-            <v-spacer></v-spacer>
-
-            <v-card flat>
-              <v-col>
-                <v-card class="d-flex justify-space-around pa-5">
-                  <div class="d-flex">
-                    <div class="pa-2">
-                      <p class="ma-0 pr-3">Récurrence</p>
-                    </div>
-                    <div
-                      class="mr-3 pa-2 ma-0"
-                      style="background: #f7f7f7; height: fit-content"
-                    >
-                      <p class="ma-0">{{ selectedEvent.recurrence }}</p>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <div class="pa-2">
-                      <p class="ma-0 pr-3">Age</p>
-                    </div>
-                    <div
-                      class="mr-3 pa-2 ma-0"
-                      style="background: #f7f7f7; height: fit-content"
-                    >
-                      <p class="ma-0">{{ selectedEvent.ageRange }}</p>
-                    </div>
-                  </div>
-                  <div class="d-flex">
-                    <div class="pa-2">
-                      <p class="ma-0 pr-3">Prix</p>
-                    </div>
-                    <div
-                      class="mr-3 pa-2 ma-0"
-                      style="background: #f7f7f7; height: fit-content"
-                    >
-                      <p class="ma-0">{{ selectedEvent.price }} €</p>
-                    </div>
-                  </div>
-                </v-card>
-              </v-col>
-
-              <v-col>
-                <DataTableStudent
-                  v-if="userType === 'professor'"
-                  datas="fromLesson"
-                  message
-                  lesson
-                />
-
-                <v-card
-                  v-else
-                  class="
-                    d-flex
-                    justify-space-around justify-center
-                    py-5
-                    ml-5
-                    mr-5
-                  "
-                >
-                  {{ selectedEvent.description || 'Pas de description' }}
-                </v-card>
-              </v-col>
-              <div
-                v-if="userType === 'student'"
-                class="w-100 d-flex justify-center"
-              >
-                <v-btn
-                  v-if="!isRegister"
-                  class="ma-2"
-                  style="color: white"
-                  color="#76d9a3"
-                  @click="$store.dispatch('lesson/subscribe')"
-                >
-                  S'INSCRIRE
-                </v-btn>
-                <UnsubscribeButton v-else />
-              </div>
-              <v-row
-                v-if="userType === 'professor'"
-                class="ma-0 d-flex justify-space-around align-center pb-4"
-              >
-                <router-link
-                  class="text-decoration-none"
-                  :to="`/professor/lesson/${selectedEvent.id}`"
-                >
-                  <v-btn class="my-5" style="color: white" color="#76d9a3">
-                    Modifier le cours
-                  </v-btn>
-                </router-link>
-                <v-btn
-                  color="error"
-                  @click="
-                    $store.commit('overlay/open', {
-                      component: 'LessonModificationForm',
-                      props: {
-                        lesson: selectedEvent,
-                        archive: true,
-                        redirectPath: '',
-                      },
-                      title: 'Voulez-vous archiver ce cours',
-                    })
-                  "
-                >
-                  Supprimer le cours
-                </v-btn>
-              </v-row>
-            </v-card>
-          </v-card>
-        </v-dialog>
       </v-sheet>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { convertTimestampToPlanningDate } from '../services/dateHelper'
-import { Recurrence } from '../enums/Recurrence'
-import { Age } from '../enums/Age'
+import { convertDateToPlanningDate } from '../services/dateHelper'
 
 export default {
   props: {
@@ -254,10 +117,8 @@ export default {
 
         const lesson = {
           ...currentLesson,
-          start: convertTimestampToPlanningDate(currentLesson.startDate),
-          end: convertTimestampToPlanningDate(currentLesson.endDate),
-          recurrence: Recurrence[currentLesson.recurrence],
-          ageRange: Age[currentLesson.ageRange],
+          start: convertDateToPlanningDate(currentLesson.startDate),
+          end: convertDateToPlanningDate(currentLesson.endDate),
           studentNbr: currentLesson.studentIds.length,
           color: currentLesson.color,
           name: currentLesson.title,
@@ -290,6 +151,10 @@ export default {
       this.$refs.calendar.next()
     },
     async showStudent(event) {
+      this.$store.commit('overlay/open', {
+        component: 'CalendarDetails',
+        title: '<div><h3>' + event.title + '</h3><p class="ma-0"> ' + event.studentNbr + '  / ' + event.maximumStudents + ' élèves</p></div>', 
+      })
       await this.$store.dispatch('lesson/setDetails', { lessonId: event.id })
     },
     showEvent({ nativeEvent, event }) {

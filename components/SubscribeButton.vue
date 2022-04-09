@@ -3,23 +3,23 @@
     <v-btn
       class="ma-2"
       style="color: white"
-      color="red"
+      color="#76d9a3"
       @click="
         $store.commit('overlay/open', {
           component: 'LessonModificationForm',
           props: {
             lesson: $props.lesson,
             modify: true,
-            payload,
-            student: studentToRemove,
+            payload: getPayload(),
+            student,
           },
           title: $props.lesson.recurrenceId
-            ? 'Voulez-vous vous désinscrire :'
+            ? 'Voulez-vous rejoindre :'
             : '',
         })
       "
     >
-      SE DESINSCRIRE
+      S'INSCRIRE
     </v-btn>
   </div>
 </template>
@@ -34,13 +34,13 @@ export default {
     }
   },
   computed: {
-    studentToRemove() {
+    student() {
       return this.$store.state.user
-    },
-    payload() {
-      const studentIds = [ ...this.$props.lesson.studentIds].filter(
-        (id) => id !== this.studentToRemove.id
-      )
+    }
+  },
+  methods: {
+    getPayload() {
+      const studentIds = [ ...this.$props.lesson.studentIds, this.student.id ]
       const payload = { studentIds }
       return payload
     }
