@@ -1,11 +1,11 @@
 <template>
   <div>
     <Title value="Mes cours enregistrés">
-      <v-btn color="#41c6a9" class="white--text" elevation="2"
+      <v-btn color="#41c6a9" class="white--text" elevation="2" @click="isVisible = !isVisible"
         >Filtrer<v-icon right> mdi-filter-variant </v-icon></v-btn
       >
     </Title>
-    <Filtre></Filtre>
+    <LessonSearchBar v-if="isVisible" />
     <div class="listCard">
       <div v-for="lesson in $store.getters['lesson/studentListFiltered']" :key="lesson.id">
         <div v-if="lesson.studentIds.includes($store.state.user.id)">
@@ -21,6 +21,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      isVisible: false
+    }
+  },
   created() {
     this.$store.dispatch('lesson/setStudentList', {
       studentId: this.$store.state.user.id,
