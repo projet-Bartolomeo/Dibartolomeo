@@ -3,7 +3,7 @@
     <v-row class="ma-4 justify-space-between">
       <h1>Listes des élèves</h1>
       <router-link class="text-decoration-none" to="/student/new">
-        <v-btn style="color: white" color="teal lighten-2"
+        <v-btn style="color: white" color="#4EB4EA"
           >Ajouter un élève</v-btn
         ></router-link
       >
