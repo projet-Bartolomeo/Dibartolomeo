@@ -6,7 +6,7 @@
       >
     </Title>
     <div class="listCard">
-      <div v-for="lesson in $store.state.lesson.studentList" :key="lesson.id">
+      <div v-for="lesson in $store.getters['lesson/studentListFiltered']" :key="lesson.id">
         <div v-if="lesson.studentIds.includes($store.state.user.id)">
           <CardStudentLesson :lesson="lesson" />
           <div>
