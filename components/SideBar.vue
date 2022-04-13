@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app left class="navigation-drawer-color">
+  <v-navigation-drawer app left color="#ce1b52">
     <template #prepend>
       <v-list-item>
         <v-list-item-content>
@@ -17,7 +17,7 @@
         class="my-10 d-flex justify-center"
       >
         <router-link class="text-decoration-none" :to="item.route">
-          <v-btn class="buttonSideBar" color="white" elevation="7" outlined rounded>{{
+          <v-btn class="buttonSideBar" color="white"  outlined rounded>{{
             item.title
           }}</v-btn>
         </router-link>
@@ -80,7 +80,7 @@ export default {
           type: UserType.student,
         },
         {
-          title: 'Liste de mes cours',
+          title: 'Mes cours',
           route: '/student/lesson/list',
           type: UserType.student,
         },
@@ -100,22 +100,16 @@ export default {
 </script>
 
 <style>
-.navigation-drawer-color {
-  background: linear-gradient(
-    90deg,
-    rgba(108, 20, 36, 1) 18%,
-    rgba(91, 16, 29, 1) 91%
-  );
-}
 
 .buttonSideBar{
-  width: 14vw;
+  width: 11vw;
 }
 
 @media (min-width: 1600px) {
 
 .buttonSideBar{
-  width: 11vw;
+  width: 5vw;
+  min-width: 600px;
 }
 
 }
