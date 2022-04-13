@@ -4,6 +4,9 @@ import { convertTimestampToDate, convertDateToIso } from '../services/dateHelper
 export const state = () => ({
     teacherList: [],
     studentList: [],
+    studentListFilter:{
+        search: ''
+    },
     new: {},
     details: {},
     form: {},
