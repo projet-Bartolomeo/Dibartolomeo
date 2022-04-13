@@ -258,3 +258,16 @@ export const actions = {
         })
     }
 }
+
+export const getters = {
+    studentListFiltered: (state) => {
+        const { studentList, studentListFilter } = state
+
+        function lessonfiltered(){
+            return studentList.filter(lesson => lesson.title.toLowerCase().includes(studentListFilter.search.toLowerCase()))
+        }
+
+        const studentListFiltered = studentListFilter.search === '' ? studentList : lessonfiltered()
+        return studentListFiltered
+    }
+}
