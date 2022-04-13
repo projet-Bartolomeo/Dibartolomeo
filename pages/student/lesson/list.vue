@@ -1,12 +1,21 @@
 <template>
-  <div>
-    <Title value="Mes cours enregistrés">
-      <v-btn color="#41c6a9" class="white--text" elevation="2" @click="isVisible = !isVisible"
-        >Filtrer<v-icon right> mdi-filter-variant </v-icon></v-btn
+  <div class="TOTOTOTOTTO">
+    <div class="align-center d-flex flex-column">
+      <div style="width: 100%" class="px-16">
+        <div><Title value="Mes cours enregistrés"> </Title></div>
+
+        <Filtre></Filtre>
+      </div>
+    </div>
+
+    <div
+      v-if="$store.getters['lesson/studentListFiltered'].length != 0"
+      class="listCard"
+    >
+      <div
+        v-for="lesson in $store.getters['lesson/studentListFiltered']"
+        :key="lesson.id"
       >
-    </Title>
-    <div class="listCard">
-      <div v-for="lesson in $store.getters['lesson/studentListFiltered']" :key="lesson.id">
         <div v-if="lesson.studentIds.includes($store.state.user.id)">
           <CardStudentLesson :lesson="lesson" />
           <div>
@@ -15,6 +24,12 @@
         </div>
       </div>
     </div>
+    <div
+      class="v-else justify-center d-flex align-center"
+      style="min-width: 100vh; min-height: 100vh"
+    >
+      <h1>Oups, aucun cours disponible</h1>
+    </div>
   </div>
 </template>
 
@@ -22,7 +37,7 @@
 export default {
   data() {
     return {
-      isVisible: false
+      isVisible: false,
     }
   },
   created() {
