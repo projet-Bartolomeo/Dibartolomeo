@@ -2,11 +2,11 @@
   <div>
     <div class="d-flex">
       <div class="ml-4">de</div>
-      <input class="ml-6" v-model="startHour" type="time" />
+      <input v-model="startHour" class="ml-6" type="time" />
     </div>
     <div class="d-flex">
       <div class="ml-6">à</div>
-      <input class="ml-6" v-model="endHour" type="time" />
+      <input v-model="endHour" class="ml-6" type="time" />
     </div>
   </div>
 </template>
@@ -19,30 +19,21 @@ import {
 } from '../services/dateHelper'
 export default {
   props: {
-    getStart: {
+    getstart: {
       type: String,
       required: true,
     },
-    getEnd: {
+    getend: {
       type: String,
       required: true,
-    },
-  },
-  methods: {
-    dispatch(state, date, hourly) {
-      const newValue = convertStringToDate(date, hourly)
-      this.$store.dispatch('setFormField', {
-        stateInformations: state,
-        newValue,
-      })
     },
   },
   computed: {
     startState() {
-      return this.$store.getters.getStateFromString(this.$props.getStart)
+      return this.$store.getters.getStateFromString(this.$props.getstart)
     },
     endState() {
-      return this.$store.getters.getStateFromString(this.$props.getEnd)
+      return this.$store.getters.getStateFromString(this.$props.getend)
     },
     date() {
       if (this.startState.value === undefined) return ''
@@ -65,6 +56,15 @@ export default {
       set(newValue) {
         this.dispatch(this.endState, this.date, newValue)
       },
+    },
+  },
+  methods: {
+    dispatch(state, date, hourly) {
+      const newValue = convertStringToDate(date, hourly)
+      this.$store.dispatch('setFormField', {
+        stateInformations: state,
+        newValue,
+      })
     },
   },
 }

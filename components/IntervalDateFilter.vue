@@ -21,7 +21,7 @@
           </template>
           <v-date-picker
             v-model="startDate"
-            color="teal lighten-2"
+            color="#76d9a3"
             locale="fr"
             :max="endDate"
             @input="startDateMenu = false"
@@ -47,7 +47,7 @@
           <v-date-picker
             v-model="endDate"
             locale="fr"
-            color="teal lighten-2"
+            color="#76d9a3"
             :min="startDate"
             @input="endDateMenu = false"
           ></v-date-picker>
@@ -60,13 +60,15 @@
 <script>
 export default {
   props: {
-    getStart: {
+    getstart: {
       type: String,
       reuqired: true,
+      default: '',
     },
-    getEnd: {
+    getend: {
       type: String,
       reuqired: true,
+      default: '',
     },
   },
   data() {
@@ -83,10 +85,10 @@ export default {
       return this.formatDate(this.startState.value)
     },
     startState() {
-      return this.$store.getters.getStateFromString(this.$props.getStart)
+      return this.$store.getters.getStateFromString(this.$props.getstart)
     },
     endState() {
-      return this.$store.getters.getStateFromString(this.$props.getEnd)
+      return this.$store.getters.getStateFromString(this.$props.getend)
     },
     startDate: {
       get() {

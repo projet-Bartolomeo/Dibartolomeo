@@ -12,7 +12,11 @@
         @click="$store.commit('overlay/close')"
         >Annuler</v-btn
       >
-      <v-btn text class="white--text ma-4" color="blue-grey darken-1" @click="remove"
+      <v-btn
+        text
+        class="white--text ma-4"
+        color="blue-grey darken-1"
+        @click="remove"
         >Confirmer</v-btn
       >
       <v-spacer></v-spacer>
@@ -24,7 +28,7 @@
 export default {
   props: {
     type: {
-      type: Object,
+      type: String,
       required: true,
     },
     dataToDelete: {
@@ -32,22 +36,11 @@ export default {
       required: true,
     },
   },
-  methods: {
-    remove() {
-      this.$store.dispatch(this.datas.dispatch.key, this.datas.dispatch.value)
-      this.$store.commit('overlay/close')
-      if (this.$props.type === 'lesson') {
-        this.$router.push('/lesson/list')
-      } else {
-        this.$router.push('/student/list')
-      }
-    },
-  },
   computed: {
     datas() {
       return this.$props.type === 'lesson'
         ? {
-            text: 'Etes-vous sur de vouloir archiver votre cours',
+            text: 'Etes-vous sur de vouloir archiver votre cours ?',
             dispatch: {
               key: 'lesson/archive',
               value: {
@@ -57,12 +50,23 @@ export default {
             },
           }
         : {
-            text: 'Etes-vous sur de vouloir supprimer cet élève',
+            text: 'Etes-vous sur de vouloir supprimer cet élève ?',
             dispatch: {
               key: 'student/removeFromTeacher',
               value: { student: this.$props.dataToDelete },
             },
           }
+    },
+  },
+  methods: {
+    remove() {
+      this.$store.dispatch(this.datas.dispatch.key, this.datas.dispatch.value)
+      this.$store.commit('overlay/close')
+      if (this.$props.type === 'lesson') {
+        this.$router.push('/professor/lesson/list')
+      } else {
+        this.$router.push('/professor/student/list')
+      }
     },
   },
 }

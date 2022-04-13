@@ -44,10 +44,9 @@ export function convertTimestampToReadableDate(timestamp) {
     return `${day}/${month}/${year} ${hours}:${minutes}`
 }
 
-export function convertTimestampToPlanningDate(timestamp) {
-    const timestampConverted = convertTimestampToDate(timestamp)
-
-    const { year, month, day, minutes, hours } = getDateDetails(timestampConverted)
+export function convertDateToPlanningDate(date) {
+    const dateConverted = date.seconds === undefined ? date : convertTimestampToDate(date)
+    const { year, month, day, minutes, hours } = getDateDetails(dateConverted)
 
     return `${year}-${month}-${day} ${hours}:${minutes}`
 }

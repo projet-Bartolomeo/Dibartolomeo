@@ -1,8 +1,8 @@
 <template>
   <div style="margin: 5%">
     <Title value="Listes des cours">
-      <router-link class="text-decoration-none" to="/lesson/new">
-        <v-btn style="color: white" color="#4EB4EA"
+      <router-link class="text-decoration-none" to="/professor/lesson/new">
+        <v-btn style="color: white" color="#53b3e6"
           >Ajouter un cours
         </v-btn>
       </router-link>

@@ -1,13 +1,12 @@
 <template>
   <div>
-    <v-row class="ma-4 justify-space-between">
-      <h1>Listes des élèves</h1>
-      <router-link class="text-decoration-none" to="/student/new">
-        <v-btn style="color: white" color="#4EB4EA"
+    <Title value="Liste des élèves">
+      <router-link class="text-decoration-none" to="/professor/student/new">
+        <v-btn style="color: white" color="#53b3e6"
           >Ajouter un élève</v-btn
         ></router-link
       >
-    </v-row>
+    </Title>
     <DataTableStudent message datas="teacherList" />
   </div>
 </template>
@@ -19,8 +18,8 @@ export default {
       recherche: '',
       open: false,
       dialog: false,
-      user : [],
-      idTeacher : '0kK1fyyWN8N2bkHNYLoo'
+      user: [],
+      idTeacher: '0kK1fyyWN8N2bkHNYLoo',
     }
   },
   created() {
@@ -28,7 +27,10 @@ export default {
   },
   methods: {
     async fetchData() {
-      this.user = await this.$store.dispatch('student/setTeacherList' , this.idTeacher)
+      this.user = await this.$store.dispatch(
+        'student/setTeacherList',
+        this.idTeacher
+      )
     },
   },
 }

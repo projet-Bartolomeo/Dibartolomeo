@@ -49,9 +49,9 @@
           ></v-text-field>
         </template>
         <v-date-picker
-          locale="fr"
-          color="teal lighten-2"
           v-model="startDate"
+          locale="fr"
+          color="#76d9a3"
           @input="startDateMenu = false"
         ></v-date-picker>
       </v-menu>
@@ -75,9 +75,9 @@
           ></v-text-field>
         </template>
         <v-date-picker
-          locale="fr"
-          color="teal lighten-2"
           v-model="endDate"
+          locale="fr"
+          color="#76d9a3"
           @input="endDateMenu = false"
         ></v-date-picker>
       </v-menu>
@@ -107,24 +107,31 @@ export default {
   props: {
     lesson: {
       type: Object,
-      required: true,
+      required: true
     },
     payload: {
       type: Object,
       required: false,
+      default: () => {}
     },
     modify: {
       type: Boolean,
-      required: false,
+      required: false
     },
     archive: {
       type: Boolean,
-      required: false,
+      required: false
     },
     redirectPath: {
       type: String,
       required: false,
+      default: ''
     },
+    student: {
+      type: Object,
+      required: false,
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -138,6 +145,7 @@ export default {
         .substr(0, 10),
       endDateMenu: false,
       optionSelected: 0,
+      description: 'le cours a bien été mis à jour',
     }
   },
   computed: {
@@ -149,7 +157,7 @@ export default {
     },
     startDateFormatted() {
       return this.formatDate(this.startDate)
-    },
+    }
   },
   methods: {
     formatDate(date) {
@@ -165,15 +173,32 @@ export default {
       this.changeLessonInDatabase('archive')
     },
     async changeLessonInDatabase(action) {
+      if (this.$props.student) {
+        const hasToBeDeleted = this.lesson.studentIds.find(
+          (id) => id === this.student.id
+        )
+        const dispatchData = {
+          student: this.student, lesson: this.$props.lesson
+        }
+        this.description = undefined
+
+        if (hasToBeDeleted) {
+          this.$store.dispatch('lesson/removeStudentInLesson', dispatchData)
+        } else {
+          this.$store.dispatch('lesson/addStudentInLesson', dispatchData)
+        }
+      }
+
       const lessonParameters = this.getLessonParameters()
       this.$store.commit('overlay/close')
+
       await this.$store.dispatch(`lesson/${action}`, lessonParameters)
       if (this.$props.redirectPath) this.$router.push(this.$props.redirectPath)
     },
     getLessonParameters() {
       const parameters = {
         lesson: this.$props.lesson,
-        payload: this.$props.payload,
+        newData: this.$props.payload,
         all: this.optionSelected === 2 && this.isRecurrent,
         startDate:
           this.optionSelected === 1 && this.isRecurrent
@@ -183,10 +208,11 @@ export default {
           this.optionSelected === 1 && this.isRecurrent
             ? new Date(this.endDate)
             : null,
+        description: this.description
       }
       return parameters
-    },
-  },
+    }
+  }
 }
 </script>
 

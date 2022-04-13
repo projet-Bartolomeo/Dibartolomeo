@@ -1,17 +1,17 @@
 <template>
   <div>
     <LessonForm datas="new" />
-    <DataTableStudent datas="fromLesson" lesson isNew>
+    <DataTableStudent datas="fromLesson" lesson isnew>
       <v-btn
         style="color: white"
-        color="teal lighten-2"
+        color="#76d9a3"
         @click="
           $store.commit('overlay/open', {
             component: 'DataTableStudent',
             props: {
               datas: 'notInLesson',
               add: true,
-              isNew: true,
+              isnew: true,
             },
             title: 'Choisissez les élèves à ajouter à votre cours',
           })
@@ -55,24 +55,7 @@ export default {
     time: null,
     menu2: false,
     modal2: false,
-    recurence: ['Unique', 'Chaque semaine'],
-    Age: ['Enfant', 'Adolescent', 'Adulte', 'Senior'],
-    jour: [
-      'Lundi',
-      'Mardi',
-      'Mercredi',
-      'Jeudi',
-      'Vendredi',
-      'Samedi',
-      'Dimanche',
-    ],
   }),
-  methods: {
-    create() {
-      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
-      this.$router.push('/lesson/list')
-    },
-  },
   computed: {
     hasModifications() {
       if (this.$store.state.lesson.form.payload === undefined) return false
@@ -92,6 +75,12 @@ export default {
   },
   created() {
     this.$store.dispatch('lesson/setNew')
+  },
+  methods: {
+    create() {
+      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      this.$router.push('/professor/lesson/list')
+    },
   },
 }
 </script>

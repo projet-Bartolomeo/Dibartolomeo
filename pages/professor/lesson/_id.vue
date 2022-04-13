@@ -1,10 +1,10 @@
 <template>
   <div>
     <LessonForm datas="details" />
-   <DataTableStudent datas="fromLesson" lesson>
+    <DataTableStudent datas="fromLesson" lesson>
       <v-btn
         style="color: white"
-        color="teal lighten-2"
+        color="#76d9a3"
         @click="
           $store.commit('overlay/open', {
             component: 'DataTableStudent',
@@ -85,13 +85,22 @@ export default {
       'Dimanche',
     ],
   }),
+  computed: {
+    valid() {
+      return this.$store.state.lesson.form.valid
+    },
+    hasModifications() {
+      if (this.$store.state.lesson.form.payload === undefined) return false
+      return Object.keys(this.$store.state.lesson.form.payload).length > 0
+    },
+  },
   async created() {
     this.$store.dispatch('resetEditionForm', {
       storeName: 'lesson',
       stateName: 'details',
     })
     await this.$store.dispatch('lesson/setDetails', {
-      lessonId: this.$route.query.id,
+      lessonId: this.$route.params.id,
     })
   },
 
@@ -110,16 +119,6 @@ export default {
 
     addToPayload(field, value) {
       this.payload = { ...this.payload, [field]: value }
-    },
-  },
-
-  computed: {
-    valid() {
-      return this.$store.state.lesson.form.valid
-    },
-    hasModifications() {
-      if (this.$store.state.lesson.form.payload === undefined) return false
-      return Object.keys(this.$store.state.lesson.form.payload).length > 0
     },
   },
 }
