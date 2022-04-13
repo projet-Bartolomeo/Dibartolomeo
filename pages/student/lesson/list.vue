@@ -5,7 +5,6 @@
         >Filtrer<v-icon right> mdi-filter-variant </v-icon></v-btn
       >
     </Title>
-    <LessonSearchBar v-if="isVisible" />
     <div class="listCard">
       <div v-for="lesson in $store.getters['lesson/studentListFiltered']" :key="lesson.id">
         <div v-if="lesson.studentIds.includes($store.state.user.id)">
