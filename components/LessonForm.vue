@@ -67,13 +67,14 @@
             <v-icon> mdi-message </v-icon>
           </v-btn>
           <v-btn
-            v-if="valid && $props.datas === 'new'"
+            v-if="$props.datas === 'new'"
             color="grey darken-2"
             fab
             text
+            :disabled="!valid"
             @click="create"
           >
-            <v-icon> mdi-content-save </v-icon>
+            <v-icon right> {{mdi-content-save}} </v-icon>
           </v-btn>
           <v-btn
             v-if="$props.datas === 'new' && hasModifications"

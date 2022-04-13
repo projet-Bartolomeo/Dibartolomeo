@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="ma-4 mb-6">
+    <v-card class=" mb-6">
       <v-card-title>
         <v-text-field
           v-model="search"
@@ -29,7 +29,7 @@
         <slot></slot>
       </v-card-title>
     </v-card>
-    <v-card class="ma-4">
+    <v-card class="">
       <v-data-table
         v-model="selected"
         :headers="headers"
