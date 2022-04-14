@@ -43,7 +43,7 @@
           <v-text-field
             label="Mot de passe"
             name="password"
-v-model="authenti.mot_pass"
+            v-model="authenti.mot_pass"
             :rules="passwordRules"
             prepend-icon="mdi-lock"
             type="password"
@@ -52,7 +52,7 @@ v-model="authenti.mot_pass"
           <v-text-field
             label="Confirmation du mot de passe"
             v-model="authenti.confirm"
-           :rules="[(v) => !!v || 'Veuiller entrer votre mot de passe']"
+            :rules="[(v) => !!v || 'Veuiller entrer votre mot de passe']"
             name="password"
             prepend-icon="mdi-lock"
             type="password"
@@ -95,31 +95,26 @@ export default {
         firstName: '',
         isRegistered: 'false',
         isDeleted: 'false',
-        email:'',
+        type: 'student',
+        email: '',
       },
       authenti: {
         mot_pass: '',
         confirm: '',
       },
-      uid:'',
+      uid: '',
     }
   },
-  
+
   methods: {
-    Inscription() {
-    if(this.authenti.mot_pass=== this.authenti.confirm){
-      this.$fire.auth
-        .createUserWithEmailAndPassword(
-          this.NewUser.email,
-          this.authenti.mot_pass
-        )
-        .then((user) => {
-          this.uid = user.uid;
-          this.$store.dispatch('user/addUser',{NewUser,uid})
-          this.$store.dispatch('user/getuserbyid', this.uid)
-          this.$nuxt.$router.push('/professor/professor')
+    async Inscription() {
+      if (this.authenti.mot_pass === this.authenti.confirm) {
+        await this.$store.dispatch('user/register', {
+          newUser: this.NewUser,
+          password: this.authenti.confirm,
         })
-    }
+        this.$router.push('/student/lesson/planning')
+      }
     },
   },
 }

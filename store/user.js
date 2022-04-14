@@ -1,44 +1,45 @@
 export const state = () => ({
-    id: 'm4LAKiljhevFTHr1wk69',
-    type:'student',
-    userlogin:{},
+    connected: {
+    }
 })
+
 export const mutations = {
-    set(state, { lesson, stateName }) {
-        state[stateName] = lesson
+    set(state, { user, stateName }) {
+        state[stateName] = user
     },
+
 }
 
 export const actions = {
     async modify({ commit }, { id, payload }) {
         try {
-            const user = await this.$fire.firestore.collection('user').doc(id).update(payload)
+            await this.$fire.firestore.collection('user').doc(id).update(payload)
             commit('notification/create', { description: 'l\'utilisateur a bien été mis à jour' }, { root: true })
-            return user
         } catch (error) {
             commit('notification/create', { description: 'problème lors de la mise à jour de l\'utilisateur', type: 'error' }, { root: true })
         }
     },
-    async addUser({ commit }, {NewUser,id}) {
+    async register({ commit }, { newUser, password }) {
         try {
-            await this.$fire.firestore.collection('user').doc(id).set(NewUser)
-            commit('notification/create', { description: 'l\'utilisateur a bien été créer' }, { root: true })
-
+            const { user } = await this.$fire.auth.createUserWithEmailAndPassword(newUser.email, password)
+            const id = user.uid
+            await this.$fire.firestore.collection('user').doc(id).set(newUser)
+            commit('set', { user: { ...newUser, id }, stateName: 'connected' })
+            commit('notification/create', { description: 'votre compte a été créé' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la créationd de l\'utilisateur', type: 'error' })
-            console.log(NewUser.uid)
-            console.log(error)
+            commit('notification/create', { description: 'problème lors de la création de votre compte', type: 'error' })
         }
-
     },
-    async getuserbyid({ commit }, id) {
-     
-         const user=   await this.$fire.firestore.collection('user').doc(id)
-         commit('set', { stateName: 'userlogin', value:  user  })
-           
-        
 
+    async login({ commit }, { email, password }) {
+        try {
+            const { user } = await this.$fire.auth.signInWithEmailAndPassword(email, password)
+            const connectedUser = await this.$fire.firestore.collection('user').doc(user.uid).get()
+            const id = user.uid
+            commit('set', { user: { ...connectedUser.data(), id }, stateName: 'connected' })
+            commit('notification/create', { description: 'votre compte a été créé' }, { root: true })
+        } catch (error) {
+            commit('notification/create', { description: 'Email ou mot de passe invalide', type: 'error' }, { root: true })
+        }
     },
-    
-    
 }

@@ -59,7 +59,7 @@ export const actions = {
     async setTeacherList({ commit, rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
-                .where('teacherIds', 'array-contains', rootState.user.id)
+                .where('teacherIds', 'array-contains', rootState.user.connected.id)
                 .get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
@@ -102,7 +102,7 @@ export const actions = {
         try {
             const studentInLessonIds = rootState.lesson[stateName].studentIds
             let students = await this.$fire.firestore.collection('user')
-                .where('teacherIds', 'array-contains', rootState.user.id)
+                .where('teacherIds', 'array-contains', rootState.user.connected.id)
                 .get()
             students = readQuerySnapshot(students).filter(student => !studentInLessonIds.includes(student.id))
             commit('set', { stateName: 'notInLesson', student: students })
@@ -120,7 +120,7 @@ export const actions = {
 
             const lastTeacherList = student.teacherIds
 
-            const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
+            const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.connected.id)
 
             let isDeleted = true
             if (student.isRegistered) isDeleted = false
@@ -137,7 +137,7 @@ export const actions = {
 
     async createFromTeacher({ rootState, commit }, student) {
         try {
-            const newStudent = { ...student, teacherIds: [rootState.user.id], isRegistered: false, isDeleted: false }
+            const newStudent = { ...student, teacherIds: [rootState.user.connected.id], isRegistered: false, isDeleted: false }
             commit('addToList', { stateName: 'teacherList', student: newStudent })
 
             await this.$fire.firestore.collection('user').add(newStudent)

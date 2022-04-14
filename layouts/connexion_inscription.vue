@@ -1,14 +1,17 @@
 <template>
- <v-app style="background: #f5f5f5">
-   
+  <v-app style="background: #f5f5f5">
     <v-main>
       <v-container fluid>
-       
+        <Overlay />
+        <Notification
+          v-for="notification in $store.state.notification.list"
+          :id="notification.id"
+          :key="notification.id"
+        />
         <router-view></router-view>
       </v-container>
     </v-main>
   </v-app>
-  
 </template>
 
 <script>

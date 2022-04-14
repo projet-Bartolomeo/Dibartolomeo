@@ -10,12 +10,11 @@
       <v-card-text>
         <v-form>
           <v-text-field
-            label="Login"
+            label="Email"
             name="login"
             prepend-icon="mdi-email"
             type="text"
-            :open="open"
-           v-model="auth.login" 
+            v-model="auth.login"
             :rules="[
               (v) => !!v || 'Veuiller entrer votre email',
               (v) => /.+@.+\..+/.test(v) || 'Le mail n\'est pas valide',
@@ -24,27 +23,26 @@
           ></v-text-field>
 
           <v-text-field
-            label="Password"
+            label="Mot de passe"
             name="password"
             prepend-icon="mdi-lock"
             type="password"
-            :open="open"
-             v-model="auth.password"
+            v-model="auth.password"
             :rules="[(v) => !!v || 'Veuiller entrer votre mot de passe']"
             filled
           ></v-text-field>
         </v-form>
       </v-card-text>
       <div class="text-center">
-        <v-dialog v-model="dialog" width="500">
+        <v-dialog width="500">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" rounded> forgot Password </v-btn>
+            <v-btn v-bind="attrs" v-on="on" rounded>Mot de passe oublié</v-btn>
           </template>
 
           <v-card>
             <v-row class="d-flex justify-center mb-6 align-center mt-5">
               <v-card-title class="red--text text--lighten-1"
-                >forgot Password</v-card-title
+                >Mot de passe oublié</v-card-title
               >
             </v-row>
             <v-text-field
@@ -68,8 +66,15 @@
       </div>
 
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
-        <v-btn rounded class="login-button" @click="login" depressed large
-          >Login</v-btn
+        <v-btn
+          color="#fa3257"
+          style="color: white"
+          rounded
+          class="login-button"
+          @click="login"
+          depressed
+          large
+          >Connexion</v-btn
         >
       </v-row>
 
@@ -97,16 +102,15 @@ export default {
     }
   },
   methods: {
-    login() {
-      this.$fire.auth
-        .signInWithEmailAndPassword(this.auth.email, this.auth.password)
-        .then((user) => {
-          this.id = user.uid
+    async login() {
+      await this.$store.dispatch('user/login', {
+        email: this.auth.login,
+        password: this.auth.password,
+      })
 
-          this.$store.dispatch('user/getuserbyid', this.id)
-
-          this.$nuxt.$router.push('/professor')
-        })
+      if (this.$store.state.user.connected.id) {
+        this.$router.push('/student/lesson/planning')
+      }
     },
     forgotPassword() {
       this.$fire.auth
