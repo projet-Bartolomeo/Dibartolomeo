@@ -42,4 +42,15 @@ export const actions = {
             commit('notification/create', { description: 'Email ou mot de passe invalide', type: 'error' }, { root: true })
         }
     },
+
+    async resetPassword({ commit }, { password }) {
+        try {
+            const user = await this.$fire.auth.currentUser;
+            await user.updatePassword(password)
+            commit('notification/create', { description: 'Votre mot de passe à été chnager' }, { root: true })
+        } catch (error) {
+            commit('notification/create', { description: 'Imposible de modifier le mot de passe', type: 'error' }, { root: true })
+        }
+    }
+
 }

@@ -56,6 +56,28 @@
             <TextField :open="open" :get="`student.${$props.datas}.phone`" />
           </v-row>
         </v-col>
+
+        <v-col md="6" class="d-flex">
+          <v-row class="align-center justify-center">
+            <div
+              v-if="$props.datas == 'details'"
+              class="d-flex flex-column justify-center align-center"
+            >
+              <v-btn
+                v-if="$store.state.user.connected.type == 'student'"
+                color="#fa3257"
+                style="color: white"
+                @click="
+                  $store.commit('overlay/open', {
+                    component: 'ResetPassword',
+                    title: 'Taper votre nouveau mot de passe',
+                  })
+                "
+                >	Changer le mot de passe
+              </v-btn>
+            </div>
+          </v-row>
+        </v-col>
       </v-row>
     </v-card>
     <div
@@ -65,8 +87,7 @@
       <v-btn
         v-if="$props.redirect == '/professor/student/list'"
         color="#53b3e6"
-        style="color: white;
-        width: 12vw"
+        style="color: white; width: 12vw"
         @click="
           $store.commit('overlay/open', {
             component: 'MessageForm',
@@ -77,18 +98,17 @@
             title: 'Tapez votre message',
           })
         "
-      >Message
+        >Message
         <v-icon class="ml-2"> mdi-message </v-icon>
       </v-btn>
       <v-btn
         v-if="valid && hasModifications"
         color="#76d9a3"
         class="ma-2"
-        style="color: white;
-        width: 12vw"
+        style="color: white; width: 12vw"
         @click="validate()"
       >
-      Enregistrer
+        Enregistrer
         <v-icon class="ml-2"> mdi-content-save </v-icon>
       </v-btn>
       <v-btn
@@ -103,15 +123,14 @@
           })
         "
       >
-      Rétablir
+        Rétablir
         <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
       <v-btn
         v-if="$props.redirect == '/professor/student/list'"
         color="#fa3257"
         class="ma-2"
-        style="color: white;
-        width: 12vw"
+        style="color: white; width: 12vw"
         @click="
           $store.commit('overlay/open', {
             component: 'DeleteForm',
@@ -122,7 +141,7 @@
             title: '',
           })
         "
-      >Suprrimer
+        >Suprrimer
         <v-icon class="ml-2"> mdi-delete </v-icon>
       </v-btn>
     </div>
@@ -165,11 +184,11 @@ export default {
     },
     idstudent: {
       type: String,
-      required: true,
+      required: false,
     },
     redirect: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   computed: {

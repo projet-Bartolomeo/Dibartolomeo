@@ -113,7 +113,7 @@ export const actions = {
 
 
     
-    
+
     async removeFromTeacher({ commit, rootState }, { student }) {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
@@ -149,15 +149,20 @@ export const actions = {
     },
 
 
-    async modify({ commit }, { studentId, payload }) {
+    async modify({ commit ,rootState }, { studentId, payload }) {
         try {
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
-
+            if(rootState.user.connected.type === "student"){
+                const auth = await this.$fire.auth.currentUser
+                auth.updateEmail(payload.email)
+            }
+            
             commit('notification/create', { description: 'élève mis à jour' }, { root: true })
 
         } catch (error) {
+            console.log(error)
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
     },

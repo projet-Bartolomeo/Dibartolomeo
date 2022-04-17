@@ -22,7 +22,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-actions>
-        <v-container class="pt-0">
+        <v-container style="min-height: unset" class="pt-0">
           <component
             :is="$store.state.overlay.component"
             v-if="$store.state.overlay.component !== ''"

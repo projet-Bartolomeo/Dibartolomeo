@@ -128,7 +128,6 @@ export default {
 <style>
 .container {
   margin: 0 auto;
-  min-height: 85vh;
   justify-content: center;
   align-items: center;
 }
