@@ -98,15 +98,15 @@
 
     <Formlogin v-if="affichage === 1" />
 
-    <FormInscripiton v-else />
+    <FormInscription v-else />
   </div>
 </template>
 
 <script>
-import FormInscripiton from './FormInscripiton.vue'
+import FormInscription from './FormInscription.vue'
 import Formlogin from './Formlogin.vue'
 export default {
-  components: { Formlogin, FormInscripiton },
+  components: { Formlogin, FormInscription },
   layout: 'connexion_inscription',
   data() {
     return {
