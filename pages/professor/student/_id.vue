@@ -18,7 +18,7 @@ export default {
   async created() {
     this.$store.dispatch('student/setNew')
     await this.$store.dispatch('student/setDetails', this.$route.params.id)
-    await this.$store.dispatch('lesson/setStudentList', this.$route.params.id)
+    await this.$store.dispatch('lesson/setStudentList', { studentId: this.$route.params.id })
   },
 }
 </script>
