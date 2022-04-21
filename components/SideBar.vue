@@ -27,20 +27,20 @@
       <div class="d-flex justify-center flex-wrap" style="color: white">
         <router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3 ma-0">
-            <NuxtLink to="/">A propos</NuxtLink>
+            <NuxtLink to="/politics/in-regards-to">A propos</NuxtLink>
           </p>
         </router-link>
         <router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3">
-            <NuxtLink to="/">CGU</NuxtLink>
+            <NuxtLink to="/politics/term-of-service">CGU</NuxtLink>
           </p> </router-link
         ><router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3">
-            <NuxtLink to="/politics/politique-de-protection-des-donnees">Politique de confidentialité</NuxtLink>
+            <NuxtLink to="/politics/data-protection-policy">Politique de confidentialité</NuxtLink>
           </p> </router-link
         ><router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3">
-            <NuxtLink to="/">Mention légale</NuxtLink>
+            <NuxtLink to="/politics/legal-notice">Mention légale</NuxtLink>
           </p>
         </router-link>
       </div>
