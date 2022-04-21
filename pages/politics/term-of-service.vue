@@ -1,3 +1,5 @@
+<template>
+<div>
 CONDITIONS GÉNÉRALES D'UTILISATION
 
 Les présentes conditions générales d'utilisation (ci-après "CGU") ont pour objet de fixer les conditions d’utilisation des services (ci-après désignées "les Services") proposés sur le site web accessibles à l’adresse URL https://www.yokoshop.com (ci-après "le Site") et les applications mobile et tablette (ci-après "les Applications").
@@ -85,3 +87,5 @@ L’Editeur et l’Utilisateur acceptent de communiquer principalement par voie 
 ARTICLE 8 LOI APPLICABLE ET JUGE COMPETENT
 
 Le non-respect par l’Utilisateur, quelle que soit sa localisation, de l’une quelconque des dispositions des présentes Conditions Générales d’Utilisation et de façon plus générale toute difficulté touchant à son exécution, son interprétation ou sa validité, sont soumis à la loi Française et aux juridictions françaises.
+</div>
+</template>
