@@ -27,20 +27,20 @@
       <div class="d-flex justify-center flex-wrap" style="color: white">
         <router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3 ma-0">
-            A propos
+            <NuxtLink to="/">A propos</NuxtLink>
           </p>
         </router-link>
         <router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3">
-            CGU
+            <NuxtLink to="/">CGU</NuxtLink>
           </p> </router-link
         ><router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3">
-            Politique de confidentialité
+            <NuxtLink to="/politics/politique-de-protection-des-donnees">Politique de confidentialité</NuxtLink>
           </p> </router-link
         ><router-link class="text-decoration-none" color="white" to="/"
           ><p style="font-size: 11px; color: white" class="px-3">
-            Mention légale
+            <NuxtLink to="/">Mention légale</NuxtLink>
           </p>
         </router-link>
       </div>
@@ -108,7 +108,7 @@ export default {
 @media (min-width: 1600px) {
 
 .buttonSideBar{
-  width: 5vw;
+  width: 9vw;
   min-width: 600px;
 }
 
