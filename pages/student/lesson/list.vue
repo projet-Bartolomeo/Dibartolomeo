@@ -2,8 +2,7 @@
   <div class="TOTOTOTOTTO">
     <div class="align-center d-flex flex-column">
       <div style="width: 100%" class="px-16">
-        <div><Title value="Mes cours enregistrés"> </Title></div>
-
+        <div><Title value="Mes cours"> </Title></div>
         <Filtre></Filtre>
       </div>
     </div>
@@ -25,7 +24,7 @@
       </div>
     </div>
     <div
-      class="v-else justify-center d-flex align-center"
+      class="v-else justify-center d-flex align-center font"
       style="min-width: 100vh; min-height: 100vh"
     >
       <h1>Oups, aucun cours disponible</h1>
@@ -68,5 +67,12 @@ export default {
 .separator {
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.font {
+  background-image: url(/image/logo.png);
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 </style>
