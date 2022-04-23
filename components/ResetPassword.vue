@@ -1,22 +1,31 @@
 <template>
   <v-col class="d-flex flex-column align-center" style="width: 30vw">
     <v-text-field
+      v-model="auth.password"
       label="Mot de passe"
       name="password"
       prepend-icon="mdi-lock"
       type="password"
       :rules="passwordRules"
-      v-model="auth.password"
+      filled
+    ></v-text-field>
+    <v-text-field
+      v-model="auth.confirmPassword"
+      label="Confirmation mot de passe"
+      name="confirmPassword"
+      prepend-icon="mdi-lock"
+      type="password"
+      :rules="passwordRules"
       filled
     ></v-text-field>
     <v-btn
       color="#fa3257"
       style="color: white"
       rounded
-      class="login-button"
-      @click="resetPassword"
       depressed
       large
+      class="login-button"
+      @click="resetPassword"
       >Changer mot de passe</v-btn
     >
   </v-col>
@@ -28,6 +37,7 @@ export default {
     return {
       auth: {
         password: '',
+        confirmPassword: '',
       },
       passwordRules: [
         (value) => !!value || 'Entrez un mot de passe',
@@ -38,10 +48,18 @@ export default {
 
   methods: {
     async resetPassword() {
-      await this.$store.dispatch('user/resetPassword', {
-        password: this.auth.password,
-      })
-      this.$store.commit('overlay/close')
+      if (this.auth.password === this.auth.confirmPassword) {
+        await this.$store.dispatch('user/resetPassword', {
+          password: this.auth.password,
+        })
+        this.$store.commit('overlay/close')
+      } else {
+        this.$store.commit(
+          'notification/create',
+          { description: 'Les mots de passe ne sont pas identiques', type: 'error' },
+          { root: true }
+        )
+      }
     },
   },
 }

@@ -47,7 +47,7 @@ export const actions = {
         try {
             const user = await this.$fire.auth.currentUser
             await user.updatePassword(password)
-            commit('notification/create', { description: 'Votre mot de passe à été changé' }, { root: true })
+            commit('notification/create', { description: 'Votre mot de passe a été changé' }, { root: true })
         } catch (error) {
             commit('notification/create', { description: 'Impossible de modifier le mot de passe', type: 'error' }, { root: true })
         }
