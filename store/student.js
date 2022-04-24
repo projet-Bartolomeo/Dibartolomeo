@@ -61,7 +61,7 @@ export const actions = {
     async setTeacherList({ commit, rootState }) {
         try {
             const studentsSnapshot = await this.$fire.firestore.collection('user')
-                .where('teacherIds', 'array-contains', rootState.user.id)
+                .where('teacherIds', 'array-contains', rootState.user.connected.id)
                 .get()
             const students = readQuerySnapshot(studentsSnapshot)
             commit('set', { stateName: 'teacherList', student: students })
@@ -104,7 +104,7 @@ export const actions = {
         try {
             const studentInLessonIds = rootState.lesson[stateName].studentIds
             let students = await this.$fire.firestore.collection('user')
-                .where('teacherIds', 'array-contains', rootState.user.id)
+                .where('teacherIds', 'array-contains', rootState.user.connected.id)
                 .get()
             students = readQuerySnapshot(students).filter(student => !studentInLessonIds.includes(student.id))
             commit('set', { stateName: 'notInLesson', student: students })
@@ -115,14 +115,14 @@ export const actions = {
 
 
     
-    
+
     async removeFromTeacher({ commit, rootState }, { student }) {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
 
             const lastTeacherList = student.teacherIds
 
-            const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.id)
+            const teacherIds = lastTeacherList.filter(lastTeacherList => lastTeacherList !== rootState.user.connected.id)
 
             let isDeleted = true
             if (student.isRegistered) isDeleted = false
@@ -139,7 +139,7 @@ export const actions = {
 
     async createFromTeacher({ rootState, commit }, student) {
         try {
-            const newStudent = { ...student, teacherIds: [rootState.user.id], isRegistered: false, isDeleted: false }
+            const newStudent = { ...student, teacherIds: [rootState.user.connected.id], isRegistered: false, isDeleted: false }
             commit('addToList', { stateName: 'teacherList', student: newStudent })
 
             await this.$fire.firestore.collection('user').add(newStudent)
@@ -151,15 +151,20 @@ export const actions = {
     },
 
 
-    async modify({ commit }, { studentId, payload }) {
+    async modify({ commit ,rootState }, { studentId, payload }) {
         try {
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
-
+            if(rootState.user.connected.type === "student"){
+                const auth = await this.$fire.auth.currentUser
+                auth.updateEmail(payload.email)
+            }
+            
             commit('notification/create', { description: 'élève mis à jour' }, { root: true })
 
         } catch (error) {
+            console.log(error)
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
     },

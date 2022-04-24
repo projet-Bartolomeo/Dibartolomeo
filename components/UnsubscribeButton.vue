@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     studentToRemove() {
-      return this.$store.state.user
+      return this.$store.state.user.connected
     },
     payload() {
       const studentIds = [ ...this.$props.lesson.studentIds].filter(

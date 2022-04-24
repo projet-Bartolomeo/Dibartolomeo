@@ -108,11 +108,11 @@ export default {
       return lesson
     },
     userType() {
-      return this.$store.state.user.type
+      return this.$store.state.user.connected.type
     },
     isRegister() {
       const studentIds = this.$store.state.lesson.details.studentIds
-      return studentIds && studentIds.includes(this.$store.state.user.id)
+      return studentIds && studentIds.includes(this.$store.state.user.connected.id)
     },
   },
 }

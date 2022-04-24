@@ -17,9 +17,14 @@
         class="my-10 d-flex justify-center"
       >
         <router-link class="text-decoration-none" :to="item.route">
-          <v-btn class="buttonSideBar" color="white"  outlined rounded>{{
-            item.title
-          }}</v-btn>
+          <v-btn
+            class="buttonSideBar"
+            color="white"
+            elevation="1"
+            outlined
+            rounded
+            >{{ item.title }}</v-btn
+          >
         </router-link>
       </div>
     </v-list>
@@ -92,7 +97,7 @@ export default {
   computed: {
     routeList() {
       return this.items.filter(
-        (item) => this.$store.state.user.type === item.type
+        (item) => this.$store.state.user.connected.type === item.type
       )
     },
   },
@@ -116,9 +121,9 @@ export default {
 
 @media (max-width: 1300px) {
 
-.buttonSideBar{
-  width: 16vw;
-}
+  .buttonSideBar{
+    width: 16vw;
+  }
 
 }
 
