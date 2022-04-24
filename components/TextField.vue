@@ -24,6 +24,7 @@
       :autofocus="!$props.open"
       :suffix="$props.suffix"
       :placeholder="$props.placeholder"
+      style="width: 14vw;"
     ></v-text-field>
     <v-btn color="grey darken-2 auto-width" fab text @click="changeState">
       <v-icon> mdi-pencil </v-icon>
