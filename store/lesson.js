@@ -224,6 +224,7 @@ export const actions = {
                     return { ...lesson, ...payload, startDate, endDate }
                 })
             }
+            delete lesson.id
 
             commit('modifyInList', { stateName: 'studentList', lessonToModify: lessons })
             commit('modifyInList', { stateName: 'teacherList', lessonToModify: lessons })
