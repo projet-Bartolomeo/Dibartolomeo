@@ -11,43 +11,31 @@
     </template>
     <v-spacer></v-spacer>
     <v-list dense nav>
-      <div
-        v-for="item in routeList"
-        :key="item.title"
-        class="my-10 d-flex justify-center"
-      >
-        <router-link class="text-decoration-none" :to="item.route">
-          <v-btn
-            class="buttonSideBar"
-            color="white"
-            elevation="1"
-            outlined
-            rounded
-            >{{ item.title }}</v-btn
-          >
-        </router-link>
+      <div v-for="item in routeList" :key="item.title" class="my-10 d-flex justify-center">
+        <NuxtLink class="text-decoration-none" :to="item.route">
+          <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded>{{ item.title }}</v-btn>
+        </NuxtLink>
       </div>
     </v-list>
     <template #append>
-      <div class="d-flex justify-center flex-wrap" style="color: white">
-        <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3 ma-0">
-            <NuxtLink to="/politics/in-regards-to">A propos</NuxtLink>
-          </p>
-        </router-link>
-        <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            <NuxtLink to="/politics/term-of-service">CGU</NuxtLink>
-          </p> </router-link
-        ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            <NuxtLink to="/politics/data-protection-policy">Politique de confidentialité</NuxtLink>
-          </p> </router-link
-        ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            <NuxtLink to="/politics/legal-notice">Mention légale</NuxtLink>
-          </p>
-        </router-link>
+      <div class="d-flex justify-center flex-wrap pb-12">
+        <NuxtLink class="nuxtlink" to="/politics/in-regards-to">A propos
+        </NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/term-of-service">CGU
+        </NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/data-protection-policy">Politique de
+          confidentialité</NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/legal-notice">Mention
+          légale</NuxtLink>
       </div>
     </template>
   </v-navigation-drawer>
@@ -105,26 +93,28 @@ export default {
 </script>
 
 <style>
+.nuxtlink {
+  font-size: 11px;
+  text-decoration: none;
+  color: white !important;
+  display: flex;
+  align-items: center;
+}
 
-.buttonSideBar{
+.buttonSideBar {
   width: 11vw;
 }
 
 @media (min-width: 1600px) {
-
-.buttonSideBar{
-  width: 9vw;
-  min-width: 600px;
-}
-
+  .buttonSideBar {
+    width: 9vw;
+    min-width: 600px;
+  }
 }
 
 @media (max-width: 1300px) {
-
-  .buttonSideBar{
+  .buttonSideBar {
     width: 16vw;
   }
-
 }
-
 </style>
