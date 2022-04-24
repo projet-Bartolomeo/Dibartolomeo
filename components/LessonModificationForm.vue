@@ -23,9 +23,9 @@
       v-if="$props.lesson.recurrence === 'everyWeek'"
       v-model="optionSelected"
     >
-      <v-radio label="Uniquement ce cours"></v-radio>
-      <v-radio label="Plusieurs cours avec la même récurrence"></v-radio>
-      <v-radio label="Tous les cours avec la même récurrence"></v-radio>
+      <v-radio label="Uniquement ce cours" :value='0'></v-radio>
+      <v-radio label="Plusieurs cours avec la même récurrence" :value='1'></v-radio>
+      <v-radio label="Tous les cours avec la même récurrence" :value='2'></v-radio>
     </v-radio-group>
 
     <div v-if="optionSelected === 1" class="d-flex ma-4">

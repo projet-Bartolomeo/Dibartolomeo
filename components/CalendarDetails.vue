@@ -11,7 +11,7 @@
               class="mr-3 pa-2 ma-0"
               style="background: #f7f7f7; height: fit-content"
             >
-              <p class="ma-0">{{ lesson.recurrenceValue }}</p>
+              <p class="ma-0">{{ recurrence }}</p>
             </div>
           </div>
           <div class="d-flex">
@@ -22,7 +22,7 @@
               class="mr-3 pa-2 ma-0"
               style="background: #f7f7f7; height: fit-content"
             >
-              <p class="ma-0">{{ lesson.ageRange }}</p>
+              <p class="ma-0">{{ ageRange }}</p>
             </div>
           </div>
           <div class="d-flex">
@@ -102,10 +102,7 @@ import { Age } from '../enums/Age'
 export default {
   computed: {
     lesson() {
-      const lesson = { ...this.$store.state.lesson.details }
-      lesson.recurrenceValue = Recurrence[lesson.recurrence]
-      lesson.ageRange = Age[lesson.ageRange]
-      return lesson
+      return { ...this.$store.state.lesson.details }
     },
     userType() {
       return this.$store.state.user.connected.type
@@ -114,6 +111,12 @@ export default {
       const studentIds = this.$store.state.lesson.details.studentIds
       return studentIds && studentIds.includes(this.$store.state.user.connected.id)
     },
+    recurrence() {
+      return Recurrence[this.lesson.recurrence]
+    },
+    ageRange() {
+      return Age[this.lesson.ageRange]
+    }
   },
 }
 </script>
