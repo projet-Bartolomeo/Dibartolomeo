@@ -18,7 +18,7 @@
       </div>
     </v-list>
     <template #append>
-      <div class="d-flex justify-center flex-wrap pb-12">
+      <div class="d-flex justify-center flex-wrap pb-12 px-12">
         <NuxtLink class="nuxtlink" to="/politics/in-regards-to">A propos
         </NuxtLink>
 
