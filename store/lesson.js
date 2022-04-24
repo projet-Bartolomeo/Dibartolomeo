@@ -10,17 +10,11 @@ import {
 export const state = () => ({
   teacherList: [],
   studentList: [],
-  studentListFilter: {
-    search: '',
-    startDate: convertDateToIso(new Date()),
-    endDate: convertDateToIso(
-      new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
-    ),
-  },
   new: {},
   details: {},
   form: {},
   filter: {
+    search: '',
     startDate: convertDateToIso(new Date()),
     endDate: convertDateToIso(
       new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000)
@@ -106,7 +100,7 @@ export const actions = {
     try {
       const teacherListRef = this.$fire.firestore
         .collection('lesson')
-        .where('teacherId', '==', rootState.user.id)
+        .where('teacherId', '==', rootState.user.connected.id)
         .where('isArchived', '==', false)
 
       const teacherListSnapshot = await teacherListRef.get()
@@ -167,7 +161,7 @@ export const actions = {
     try {
       const newLesson = {
         ...lessonDatas,
-        teacherId: rootState.user.id,
+        teacherId: rootState.user.connected.id,
         isArchived: false,
       }
       if (newLesson.recurrence === 'everyWeek') {
@@ -347,7 +341,7 @@ export const actions = {
         lessons = readQuerySnapshot(lessonsSnapshot).map((lesson) => {
           const startDate = new Date(
             convertTimestampToDate(lesson.startDate).getTime() +
-              startDateDifference
+            startDateDifference
           )
           const endDate = new Date(
             convertTimestampToDate(lesson.endDate).getTime() + endDateDifference
@@ -400,30 +394,30 @@ export const actions = {
 
 export const getters = {
   studentListFiltered: (state) => {
-    const { studentList, studentListFilter } = state
+    const { studentList, filter } = state
 
     function lessonSearchFilter() {
       return studentList.filter((lesson) =>
         lesson.title
           .toLowerCase()
-          .includes(studentListFilter.search.toLowerCase())
+          .includes(filter.search.toLowerCase())
       )
     }
 
-    function lessonDateFilter() {
-      return studentList.filter((lesson) => {
+    function lessonDateFilter(studentListFiltered) {
+      return studentListFiltered.filter((lesson) => {
         return (
           convertTimestampToDate(lesson.startDate) >=
-            new Date(studentListFilter.startDate) &&
+          new Date(filter.startDate) &&
           convertTimestampToDate(lesson.endDate) <=
-            new Date(studentListFilter.endDate)
+          new Date(filter.endDate)
         )
       })
     }
 
     let studentListFiltered =
-      studentListFilter.search === '' ? studentList : lessonSearchFilter()
-    studentListFiltered = lessonDateFilter()
+      filter.search === '' ? studentList : lessonSearchFilter()
+    studentListFiltered = lessonDateFilter(studentListFiltered)
     return studentListFiltered.sort(
       (previousLesson, nextLesson) =>
         new Date(convertTimestampToDate(previousLesson.startDate)) -
