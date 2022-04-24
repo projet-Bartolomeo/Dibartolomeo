@@ -1,6 +1,6 @@
 <template>
   <v-card elevation="5">
-    <v-row class="ma-0 pa-3 justify-space-between">
+    <v-row class="ma-0 pa-1 justify-space-between">
       <TextField
         :open="true"
         get="lesson.studentListFilter.search"
