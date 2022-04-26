@@ -4,7 +4,7 @@
       <div style="display: flex; width: 100%">
         <div>
           <h1 style="margin-bottom: 3vh; margin-left: 1vw">Ajouter un cours</h1>
-          <v-card elevation="6" width="45vw" height="7.6vh">
+          <v-card elevation="6" width="45vw" height="8.8vh" min-height="55px">
             <div id="cont1">
               <TextField
                 :get="`lesson.${$props.datas}.title`"
@@ -60,7 +60,7 @@
             <v-card
               elevation="6"
               width="30vw"
-              height="36vh"
+              height="37vh"
               style="margin-bottom: 5vh"
             >
               <div class="ml-6 mr-6 mt-6" style="color: grey">
@@ -133,7 +133,7 @@
             <v-card
               elevation="6"
               width="30vw"
-              height="36vh"
+              height="37vh"
               style="margin-bottom: 5vh"
             >
               <div class="ma-6">
