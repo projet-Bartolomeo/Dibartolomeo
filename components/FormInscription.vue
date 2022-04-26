@@ -40,24 +40,7 @@
             filled
           ></v-text-field>
 
-          <v-text-field
-            label="Mot de passe"
-            name="password"
-            v-model="authenti.mot_pass"
-            :rules="passwordRules"
-            prepend-icon="mdi-lock"
-            type="password"
-            filled
-          ></v-text-field>
-          <v-text-field
-            label="Confirmation du mot de passe"
-            v-model="authenti.confirm"
-            :rules="[(v) => !!v || 'Veuiller entrer votre mot de passe']"
-            name="password"
-            prepend-icon="mdi-lock"
-            type="password"
-            filled
-          ></v-text-field>
+            :rules="passwordConfirmationRules" name="password" prepend-icon="mdi-lock"
         </v-form>
       </v-card-text>
 
@@ -90,6 +73,10 @@ export default {
         (value) => !!value || 'Please type password.',
         (value) => (value && value.length >= 6) || 'minimum 6 characters',
       ],
+      passwordConfirmationRules: [
+        (value) => !!value || 'Please type password.',
+        (value) => (value === this.authenti.mot_pass) || 'les mots de passes ne correspondent pas',
+      ],
       NewUser: {
         lastName: '',
         firstName: '',
@@ -108,13 +95,11 @@ export default {
 
   methods: {
     async Inscription() {
-      if (this.authenti.mot_pass === this.authenti.confirm) {
-        await this.$store.dispatch('user/register', {
-          newUser: this.NewUser,
-          password: this.authenti.confirm,
-        })
-        this.$router.push('/student/lesson/planning')
-      }
+      await this.$store.dispatch('user/register', {
+        newUser: this.NewUser,
+        password: this.authenti.confirm,
+      })
+      this.$router.push('/student/lesson/planning')
     },
   },
 }
