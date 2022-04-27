@@ -20,7 +20,7 @@
               style="color: white"
               class="d-flex justify-center mb-6 align-center mt-5"
             >
-              Inscris toi
+              Inscrivez-vous
             </h1>
           </v-col>
           <v-col cols="12" sm="4" md="4" align="center"> </v-col>
@@ -29,7 +29,7 @@
               style="color: white"
               class="d-flex justify-center mb-6 align-center mt-5"
             >
-              Pour vous inscrit veuiller entrer vos informations personnels
+              Pour vous inscrire veuillez entrer vos informations personnels
             </p>
           </v-col>
 
@@ -67,7 +67,7 @@
             style="color: white"
             class="d-flex justify-center mb-6 align-center mt-5"
           >
-            Content de te revoir
+            Content de vous revoir
           </h1>
         </v-col>
         <v-col cols="4" sm="3" md="4" align="center"> </v-col>
@@ -83,7 +83,7 @@
             "
             style="color: white"
           >
-            Pour vous connecter veuiller entrer vos informations personnels
+            Pour vous connecter veuillez entrer vos informations personnels
           </p>
         </v-col>
 

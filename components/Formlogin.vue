@@ -16,7 +16,7 @@
             type="text"
             v-model="auth.login"
             :rules="[
-              (v) => !!v || 'Veuiller entrer votre email',
+              (v) => !!v || 'Veuillez entrer votre email',
               (v) => /.+@.+\..+/.test(v) || 'Le mail n\'est pas valide',
             ]"
             filled
@@ -28,7 +28,7 @@
             prepend-icon="mdi-lock"
             type="password"
             v-model="auth.password"
-            :rules="[(v) => !!v || 'Veuiller entrer votre mot de passe']"
+            :rules="[(v) => !!v || 'Veuillez entrer votre mot de passe']"
             filled
           ></v-text-field>
         </v-form>
