@@ -163,12 +163,15 @@ export const actions = {
     dispatch('student/setFromLesson', { stateName: 'new' }, { root: true })
   },
 
-  async create({ rootState, commit, dispatch }, lessonDatas) {
+  async create({ rootState, commit, dispatch }, {lessonDatas}) {
     try {
+
+     const picturename=this.$store.picture.picture
       const newLesson = {
         ...lessonDatas,
         teacherId: rootState.user.id,
         isArchived: false,
+        image:picturename
       }
       if (newLesson.recurrence === 'everyWeek') {
         const weekInYear = 52
