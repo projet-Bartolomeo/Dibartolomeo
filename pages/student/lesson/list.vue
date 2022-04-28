@@ -1,9 +1,16 @@
 <template>
-  <div class="TOTOTOTOTTO">
+  <div class="page-container">
     <div class="align-center d-flex flex-column">
       <div style="width: 100%" class="px-16">
-        <div><Title value="Mes cours"> </Title></div>
-        <Filtre></Filtre>
+        <div>
+          <Title value="Mes cours"> </Title>
+        </div>
+        <LessonFilter
+          search-store="lesson.filter.search"
+          start-date-store="lesson.filter.startDate"
+          end-date-store="lesson.filter.endDate"
+        >
+        </LessonFilter>
       </div>
     </div>
 
@@ -15,19 +22,16 @@
         v-for="lesson in $store.getters['lesson/studentListFiltered']"
         :key="lesson.id"
       >
-        <div v-if="lesson.studentIds.includes($store.state.user.id)">
-          <CardStudentLesson :lesson="lesson" />
-          <div>
-            <v-divider class="separator"></v-divider>
-          </div>
+        <CardStudentLesson :lesson="lesson" />
+        <div>
+          <v-divider class="separator"></v-divider>
         </div>
       </div>
     </div>
-    <div
-      class="v-else justify-center d-flex align-center font"
-      style="min-width: 100vh; min-height: 100vh"
-    >
-      <h1>Oups, aucun cours disponible</h1>
+    <div v-else class="justify-center d-flex align-center" style="flex-grow: 1">
+      <img class="logolessonList" src="/image/logo-grey.png" />
+
+      <h1 class="text">Oups, aucun cours disponible</h1>
     </div>
   </div>
 </template>
@@ -48,8 +52,14 @@ export default {
 </script>
 
 <style>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .filtre {
-  background-color: #03f1a2; /* Green */
+  background-color: #03f1a2;
   border: none;
   border-radius: 6px;
   color: white;
@@ -60,19 +70,29 @@ export default {
   height: 30px;
   width: 160px;
 }
+
 .listCard {
   height: 80vh;
   padding-left: 50px;
 }
+
 .separator {
   margin-top: 30px;
   margin-bottom: 30px;
 }
 
-.font {
-  background-image: url(/image/logo.png);
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
+.text {
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.logolessonList {
+  width: 55vh;
+  height: 14vh;
+  position: absolute;
+  z-index: 1;
+  object-fit: fill;
 }
 </style>
