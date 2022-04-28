@@ -4,7 +4,7 @@
     <v-col>
       <StudentForm
         datas="details"
-        :idstudent="$store.state.user.id"
+        :idstudent="$store.state.user.connected.id"
         redirect="/student/lesson/planning"
         class="ma-5"
       />
@@ -16,11 +16,11 @@
 export default {
 
   async created() {
-    this.$store.dispatch('student/setNew', this.$store.state.user.id)
+    this.$store.dispatch('student/setNew', this.$store.state.user.connected.id)
     
     await this.$store.dispatch(
       'student/setDetails',
-      this.$store.state.user.id
+      this.$store.state.user.connected.id
     )
   },
 }

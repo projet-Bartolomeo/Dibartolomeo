@@ -100,10 +100,10 @@ export default {
             currentLesson.color = '#76d9a3'
           }
         } else if (this.$props.userType === 'student') {
-          if (currentLesson.studentIds.includes(this.$store.state.user.id)) {
+          if (currentLesson.studentIds.includes(this.$store.state.user.connected.id)) {
             currentLesson.color = '#53b3e6'
           } else if (
-            !currentLesson.studentIds.includes(this.$store.state.user.id)
+            !currentLesson.studentIds.includes(this.$store.state.user.connected.id)
           ) {
             if (
               currentLesson.studentIds.length >= currentLesson.maximumStudents
@@ -129,7 +129,7 @@ export default {
     },
     isRegister() {
       const studentIds = this.$store.state.lesson.details.studentIds
-      return studentIds && studentIds.includes(this.$store.state.user.id)
+      return studentIds && studentIds.includes(this.$store.state.user.connected.id)
     },
   },
   mounted() {

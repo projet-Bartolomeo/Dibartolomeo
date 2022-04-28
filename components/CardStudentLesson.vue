@@ -5,7 +5,7 @@
 
       <div class="text">
         <h1 class="titre">{{ lesson.title }}</h1>
-        <h3>{{ lesson.newDate }}</h3>
+        <h3>{{ newDate }}</h3>
         <h5 class="description">
           {{ lesson.description || 'pas de description' }}
         </h5>
@@ -23,14 +23,14 @@ export default {
   props: {
     lesson: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     newDate() {
-      return convertTimestampToReadableDate(this.$props.date)
-    }
-  }
+      return convertTimestampToReadableDate(this.$props.lesson.startDate)
+    },
+  },
 }
 </script>
 
