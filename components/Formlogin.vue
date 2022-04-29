@@ -10,11 +10,11 @@
       <v-card-text>
         <v-form>
           <v-text-field
+            v-model="auth.login"
             label="Email"
             name="login"
             prepend-icon="mdi-email"
             type="text"
-            v-model="auth.login"
             :rules="[
               (v) => !!v || 'Veuillez entrer votre email',
               (v) => /.+@.+\..+/.test(v) || 'Le mail n\'est pas valide',
@@ -23,11 +23,11 @@
           ></v-text-field>
 
           <v-text-field
+            v-model="auth.password"
             label="Mot de passe"
             name="password"
             prepend-icon="mdi-lock"
             type="password"
-            v-model="auth.password"
             :rules="[(v) => !!v || 'Veuillez entrer votre mot de passe']"
             filled
           ></v-text-field>
@@ -35,8 +35,8 @@
       </v-card-text>
       <div class="text-center">
         <v-dialog width="500">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" rounded>Mot de passe oublié</v-btn>
+          <template #activator="{ on, attrs }">
+            <v-btn v-bind="attrs" rounded v-on="on">Mot de passe oublié</v-btn>
           </template>
 
           <v-card>
@@ -46,18 +46,18 @@
               >
             </v-row>
             <v-text-field
+              v-model="auth.email_forgot"
               label="email"
               name="email"
               prepend-icon="mdi-email"
               type="email"
-              v-model="auth.email_forgot"
             ></v-text-field>
             <v-row class="d-flex justify-center mb-6 align-center mt-5">
               <v-btn
                 class="reset-button"
-                @click="forgotPassword"
                 depressed
                 large
+                @click="forgotPassword"
                 >Envoie du lien</v-btn
               >
             </v-row>
@@ -71,14 +71,14 @@
           style="color: white"
           rounded
           class="login-button"
-          @click="login"
           depressed
           large
+          @click="login"
           >Connexion</v-btn
         >
       </v-row>
 
-      <v-snackbar :timeout="4000" v-model="snackbar" absolute bottom center>
+      <v-snackbar v-model="snackbar" :timeout="4000" absolute bottom center>
         {{ snackbarText }}
       </v-snackbar>
     </v-col>
@@ -111,7 +111,7 @@ export default {
       if (this.$store.state.user.connected.id) {
         if (this.$store.state.user.connected.type === 'student') {
           this.$router.push('/student/lesson/planning')
-        }else{
+        } else {
           this.$router.push('/professor/lesson/planning')
         }
       }

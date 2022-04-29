@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-navigation-drawer
+      v-if="affichage === 1"
       width="500"
       max-height="170"
       app
       right
       style="background: #ce1b52"
-      v-if="affichage === 1"
     >
       <template #prepend>
         <v-list-item>
@@ -38,11 +38,11 @@
               <v-btn
                 v-if="affichage === 1"
                 rounded
-                @click="init2"
                 outlined
                 color="white"
                 large
                 class="d-flex justify-center align-center"
+                @click="init2"
                 >S'inscrire</v-btn
               >
             </v-col>
@@ -51,12 +51,12 @@
       </template>
     </v-navigation-drawer>
     <v-navigation-drawer
+      v-else
       width="500"
       max-height="170"
       app
       left
       style="background: #ce1b52"
-      v-else
     >
       <template #prepend>
         <v-list-item>
@@ -80,7 +80,7 @@
             </p>
           </v-col>
           <v-col cols="12" align="center">
-            <v-btn rounded outlined @click="init" color="white" large
+            <v-btn rounded outlined color="white" large @click="init"
               >Se connecter</v-btn
             >
           </v-col>

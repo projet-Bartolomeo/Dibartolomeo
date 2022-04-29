@@ -10,9 +10,9 @@
       <v-card-text>
         <v-form v-model="isFormValid">
           <v-text-field
+            v-model="NewUser.firstName"
             label="Nom"
             name="name"
-            v-model="NewUser.firstName"
             :rules="[(v) => !!v || 'Veuillez entrer votre nom']"
             prepend-icon="mdi-account"
             type="text"
@@ -21,9 +21,9 @@
           >
           </v-text-field>
           <v-text-field
+            v-model="NewUser.lastName"
             label="Prenom"
             name="firstname"
-            v-model="NewUser.lastName"
             :rules="[(v) => !!v || 'Veuillez entrer votre prénom']"
             prepend-icon="mdi-account"
             type="text"
@@ -31,9 +31,9 @@
             required
           ></v-text-field>
           <v-text-field
+            v-model="NewUser.email"
             label="Email"
             name="login"
-            v-model="NewUser.email"
             :rules="[
               (v) => !!v || 'Veuillez entrer votre email',
               (v) => /.+@.+\..+/.test(v) || 'Le mail n\'est pas valide',
@@ -45,9 +45,9 @@
           ></v-text-field>
 
           <v-text-field
+            v-model="authenti.mot_pass"
             label="Mot de passe"
             name="password"
-            v-model="authenti.mot_pass"
             prepend-icon="mdi-lock"
             :rules="passwordRules"
             type="password"
@@ -55,8 +55,8 @@
             required
           ></v-text-field>
           <v-text-field
-            label="Confirmation du mot de passe"
             v-model="authenti.confirm"
+            label="Confirmation du mot de passe"
             :rules="passwordConfirmationRules"
             name="password"
             prepend-icon="mdi-lock"
@@ -71,18 +71,18 @@
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
         <v-btn
           :disabled="!isFormValid"
-          @click="Inscription"
           depressed
           rounded
           large
           color="#fa3257"
           style="color: white"
+          @click="Inscription"
         >
           S'inscrire</v-btn
         >
       </v-row>
 
-      <v-snackbar :timeout="4000" v-model="snackbar" absolute bottom center>
+      <v-snackbar v-model="snackbar" :timeout="4000" absolute bottom center>
         {{ snackbarText }}
       </v-snackbar>
     </v-col>
@@ -96,7 +96,7 @@ export default {
     return {
       isFormValid: false,
       snackbar: false,
-      snackbarText: 'Pas de message d\'erreur',
+      snackbarText: "Pas de message d'erreur",
       passwordRules: [
         (value) => !!value || 'Veuillez entrer votre mot de passe.',
         (value) => (value && value.length >= 6) || 'Minimum 6 caractères',
