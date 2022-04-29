@@ -109,7 +109,11 @@ export default {
       })
 
       if (this.$store.state.user.connected.id) {
-        this.$router.push('/student/lesson/planning')
+        if (this.$store.state.user.connected.type === 'student') {
+          this.$router.push('/student/lesson/planning')
+        }else{
+          this.$router.push('/professor/lesson/planning')
+        }
       }
     },
     forgotPassword() {
