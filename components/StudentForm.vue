@@ -27,6 +27,7 @@
           <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Email :</p>
             <TextField
+              :disabled="$store.state.user.connected.type === 'student' ? false : true"
               :open="open"
               :get="`student.${$props.datas}.email`"
               :rules="[

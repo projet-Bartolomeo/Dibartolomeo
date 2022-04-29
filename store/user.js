@@ -51,6 +51,15 @@ export const actions = {
         } catch (error) {
             commit('notification/create', { description: 'Impossible de modifier le mot de passe', type: 'error' }, { root: true })
         }
+    },
+
+    async forgotPassword({ commit }, { email }) {
+        try {
+            await this.$fire.auth.sendPasswordResetEmail(email)
+            commit('notification/create', { description: 'Un mail a été envoyer pour réinitialiser le mot de passe' }, { root: true })
+        } catch (error) {
+            commit('notification/create', { description: 'Impossible d\'envoyer le mail', type: 'error' }, { root: true })
+        }
     }
 
 }

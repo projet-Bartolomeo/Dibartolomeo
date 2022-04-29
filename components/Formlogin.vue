@@ -2,7 +2,7 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4" align="center">
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
-        <v-card-title class="red--text text--lighten-1"
+        <v-card-title class="text--lighten-1" style="color: #fa3257"
           >Se connecter</v-card-title
         >
       </v-row>
@@ -34,35 +34,16 @@
         </v-form>
       </v-card-text>
       <div class="text-center">
-        <v-dialog width="500">
-          <template #activator="{ on, attrs }">
-            <v-btn v-bind="attrs" rounded v-on="on">Mot de passe oublié</v-btn>
-          </template>
-
-          <v-card>
-            <v-row class="d-flex justify-center mb-6 align-center mt-5">
-              <v-card-title class="red--text text--lighten-1"
-                >Mot de passe oublié</v-card-title
-              >
-            </v-row>
-            <v-text-field
-              v-model="auth.email_forgot"
-              label="email"
-              name="email"
-              prepend-icon="mdi-email"
-              type="email"
-            ></v-text-field>
-            <v-row class="d-flex justify-center mb-6 align-center mt-5">
-              <v-btn
-                class="reset-button"
-                depressed
-                large
-                @click="forgotPassword"
-                >Envoie du lien</v-btn
-              >
-            </v-row>
-          </v-card>
-        </v-dialog>
+        <v-btn
+          rounded
+          @click="
+            $store.commit('overlay/open', {
+              component: 'ForgetPassord',
+              title: 'Mot de passe oublié',
+            })
+          "
+          >Mot de passe oublié</v-btn
+        >
       </div>
 
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
@@ -115,18 +96,6 @@ export default {
           this.$router.push('/professor/lesson/planning')
         }
       }
-    },
-    forgotPassword() {
-      this.$fire.auth
-        .sendPasswordResetEmail(this.auth.email_forgot)
-        .then(function () {
-          this.snackbarText = 'reset link sent to ' + this.auth.email_forgot
-          this.snackbar = true
-        })
-        .catch(function (error) {
-          this.snackbarText = error.message
-          this.snackbar = true
-        })
     },
   },
 }

@@ -1,24 +1,27 @@
 <template>
   <v-col class="d-flex flex-column align-center" style="width: 30vw">
-    <v-text-field
-      v-model="auth.password"
-      label="Mot de passe"
-      name="password"
-      prepend-icon="mdi-lock"
-      type="password"
-      :rules="passwordRules"
-      filled
-    ></v-text-field>
-    <v-text-field
-      v-model="auth.confirmPassword"
-      label="Confirmation mot de passe"
-      name="confirmPassword"
-      prepend-icon="mdi-lock"
-      type="password"
-      :rules="passwordRules"
-      filled
-    ></v-text-field>
+    <v-form v-model="isFormValid">
+      <v-text-field
+        v-model="auth.password"
+        label="Mot de passe"
+        name="password"
+        prepend-icon="mdi-lock"
+        type="password"
+        :rules="passwordRules"
+        filled
+      ></v-text-field>
+      <v-text-field
+        v-model="auth.confirmPassword"
+        label="Confirmation mot de passe"
+        name="confirmPassword"
+        prepend-icon="mdi-lock"
+        type="password"
+        :rules="passwordRules"
+        filled
+      ></v-text-field>
+    </v-form>
     <v-btn
+      :disabled="!isFormValid"
       color="#fa3257"
       style="color: white"
       rounded
@@ -35,6 +38,7 @@
 export default {
   data() {
     return {
+      isFormValid: false,
       auth: {
         password: '',
         confirmPassword: '',
@@ -56,7 +60,10 @@ export default {
       } else {
         this.$store.commit(
           'notification/create',
-          { description: 'Les mots de passe ne sont pas identiques', type: 'error' },
+          {
+            description: 'Les mots de passe ne sont pas identiques',
+            type: 'error',
+          },
           { root: true }
         )
       }
