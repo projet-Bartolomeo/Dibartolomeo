@@ -303,7 +303,7 @@ export const actions = {
   },
 
   async modify(
-    { state, commit },
+    { state, commit, dispatch },
     { lesson, startDate, endDate, all, newData, description }
   ) {
     const lessonRef = this.$fire.firestore.collection('lesson')
@@ -362,13 +362,13 @@ export const actions = {
         stateName: 'teacherList',
         lessonToModify: lessons,
       })
+
       commit('set', { stateName: 'details', lesson: { ...lesson, ...payload } })
 
-      await Promise.all(
-        lessons.map(
-          async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })
-        )
-      )
+      await Promise.all([
+        ...lessons.map(async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })),
+        dispatch('picture/upload', { uid: payload.coverPicture }, { root: true })
+      ])
       commit('set', { stateName: 'form', lesson: { valid: true } })
     } catch (error) {
       notification = {
