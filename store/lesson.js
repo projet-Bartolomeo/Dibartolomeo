@@ -381,7 +381,8 @@ export const actions = {
     if (description) commit('notification/create', notification, { root: true })
   },
 
-  resetNewForm({ commit }) {
+  resetNewForm({ commit, dispatch }) {
+    const coverPicture = '936425860921.361'
     commit('set', {
       stateName: 'new',
       lesson: {
@@ -390,8 +391,10 @@ export const actions = {
         recurrence: 'everyWeek',
         ageRange: 'adult',
         studentIds: [],
+        coverPicture
       },
     })
+    dispatch('picture/setFromLesson', { fileName: coverPicture }, { root: true })
   },
 }
 
