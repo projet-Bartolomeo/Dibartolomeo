@@ -15,34 +15,37 @@
           </v-list-item-content>
         </v-list-item>
         <div class="container">
+          <v-spacer style="height: 7vw"></v-spacer>
           <v-col cols="12" align="center">
-            <h1
-              style="color: white"
-              class="d-flex justify-center mb-6 align-center mt-5"
-            >
-              Inscrivez-vous
-            </h1>
-          </v-col>
-          <v-col cols="12" sm="4" md="4" align="center"> </v-col>
-          <v-col cols="12" align="center">
-            <p
-              style="color: white"
-              class="d-flex justify-center mb-6 align-center mt-5"
-            >
-              Pour vous inscrire veuillez entrer vos informations personnels
-            </p>
-          </v-col>
+            <v-col cols="12" align="center">
+              <h1
+                style="color: white"
+                class="d-flex justify-center align-center"
+              >
+                Inscrivez-vous
+              </h1>
+            </v-col>
+            <v-col cols="12" align="center">
+              <p
+                style="color: white"
+                class="d-flex justify-center align-center"
+              >
+                Pour vous inscrire veuillez entrer vos informations personnels
+              </p>
+            </v-col>
 
-          <v-col cols="12" sm="" md="4" align="center"> </v-col>
-
-          <v-col cols="12" align="center">
-            <v-btn
-              v-if="affichage === 1"
-              rounded
-              @click="init2"
-              class="d-flex justify-center mb-6 align-center mt-5"
-              >S'inscrire</v-btn
-            >
+            <v-col cols="12" align="center">
+              <v-btn
+                v-if="affichage === 1"
+                rounded
+                @click="init2"
+                outlined
+                color="white"
+                large
+                class="d-flex justify-center align-center"
+                >S'inscrire</v-btn
+              >
+            </v-col>
           </v-col>
         </div>
       </template>
@@ -61,36 +64,26 @@
             <v-img src="/image/logo.png" max-height="170" max-width="220" />
           </v-list-item-content>
         </v-list-item>
-
+        <v-spacer style="height: 7vw"></v-spacer>
         <v-col cols="12" align="center">
-          <h1
-            style="color: white"
-            class="d-flex justify-center mb-6 align-center mt-5"
-          >
-            Content de vous revoir
-          </h1>
-        </v-col>
-        <v-col cols="4" sm="3" md="4" align="center"> </v-col>
-        <v-col cols="12" align="center">
-          <p
-            class="
-              font-weight-medium
-              d-flex
-              justify-center
-              mb-6
-              align-center
-              mt-5
-            "
-            style="color: white"
-          >
-            Pour vous connecter veuillez entrer vos informations personnels
-          </p>
-        </v-col>
-
-        <v-col cols="12" sm="8" md="4" align="center"> </v-col>
-
-        <v-col cols="12" align="center">
-          <v-btn rounded @click="init">Se connecter</v-btn>
+          <v-col cols="12" align="center">
+            <h1 style="color: white" class="d-flex justify-center align-center">
+              Content de vous revoir
+            </h1>
+          </v-col>
+          <v-col cols="12" align="center">
+            <p
+              class="font-weight-medium d-flex justify-center align-center"
+              style="color: white"
+            >
+              Pour vous connecter veuillez entrer vos informations personnels
+            </p>
+          </v-col>
+          <v-col cols="12" align="center">
+            <v-btn rounded outlined @click="init" color="white" large
+              >Se connecter</v-btn
+            >
+          </v-col>
         </v-col>
       </template>
       <v-spacer></v-spacer>

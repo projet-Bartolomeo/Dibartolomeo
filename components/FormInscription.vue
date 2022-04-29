@@ -2,8 +2,8 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4" align="center">
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
-        <v-card-title class="red--text text--lighten-1"
-          >Créer un Compte</v-card-title
+        <v-card-title class="text--lighten-1" style="color: #fa3257"
+          >Créer un compte</v-card-title
         >
       </v-row>
 
@@ -71,11 +71,12 @@
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
         <v-btn
           :disabled="!isFormValid"
-          class="login-button"
           @click="Inscription"
           depressed
+          rounded
           large
-          color="error"
+          color="#fa3257"
+          style="color: white"
         >
           S'inscrire</v-btn
         >
