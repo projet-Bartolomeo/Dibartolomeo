@@ -148,13 +148,13 @@ export const actions = {
     }
   },
 
-  setNew({ commit, dispatch }) {
+  async setNew({ commit, dispatch }) {
     dispatch('resetNewForm')
     commit('set', {
       stateName: 'form',
       lesson: { valid: false },
     })
-    dispatch('student/setFromLesson', { stateName: 'new' }, { root: true })
+    await dispatch('student/setFromLesson', { stateName: 'new' }, { root: true })
   },
 
   async create({ rootState, commit, dispatch }, { lessonDatas }) {
