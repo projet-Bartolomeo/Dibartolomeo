@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="img__text">
-      <img :src="lesson.image || '/image/cours.jpg'" alt="Image" />
+      <img :src="lesson.coverPicture || '/image/cours.jpg'" alt="Image" />
 
       <div class="text">
         <h1 class="titre">{{ lesson.title }}</h1>
