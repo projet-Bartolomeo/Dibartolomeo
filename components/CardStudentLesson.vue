@@ -26,10 +26,18 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      picture: ''
+    }
+  },
   computed: {
     newDate() {
       return convertTimestampToReadableDate(this.$props.lesson.startDate)
-    },
+    }
+  },
+  async created() {
+    this.picture = await this.$store.dispatch('picture/get', { fileName: this.lesson.coverPicture })
   },
 }
 </script>
