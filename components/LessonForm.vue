@@ -195,6 +195,7 @@
               :getstart="`lesson.${$props.datas}.startDate`"
               :getend="`lesson.${$props.datas}.endDate`"
             />
+             <LessonPictureInput picture-datas="picture.lessonPictureSelected" />
           </v-card>
         </v-row>
         <v-row class="justify-center">
