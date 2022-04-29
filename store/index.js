@@ -11,6 +11,13 @@ export const mutations = {
 export const getters = {
     getStateFromString: (state) => (stateToConvert) => {
         const stateInformation = stateToConvert.split('.')
+        if(stateInformation.length === 2) {
+            return {
+                storeName: stateInformation[0],
+                fieldName: stateInformation[1],
+                value: state[stateInformation[0]][stateInformation[1]],
+            }
+        }
         if(stateInformation.length === 3) {
             return {
                 storeName: stateInformation[0],
