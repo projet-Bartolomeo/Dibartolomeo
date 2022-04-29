@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="img__text">
-      <img :src="lesson.coverPicture || '/image/cours.jpg'" alt="Image" />
+      <img :src="picture" alt="Image" />
 
       <div class="text">
         <h1 class="titre">{{ lesson.title }}</h1>
@@ -67,6 +67,8 @@ img {
 }
 
 .text {
+  display: flex;
+  flex-direction: column;
   width: 10vw;
   min-width: 200px;
   margin-left: 30px;
