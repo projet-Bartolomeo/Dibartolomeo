@@ -157,16 +157,14 @@ export const actions = {
     dispatch('student/setFromLesson', { stateName: 'new' }, { root: true })
   },
 
-  async create({ rootState, commit, dispatch }, {lessonDatas}) {
+  async create({ rootState, commit, dispatch }, { lessonDatas }) {
     try {
-
-     const picturename=this.$store.picture.picture
       const newLesson = {
         ...lessonDatas,
         teacherId: rootState.user.connected.id,
-        isArchived: false,
-        image:picturename
+        isArchived: false
       }
+
       if (newLesson.recurrence === 'everyWeek') {
         const weekInYear = 52
         const { startDate, endDate } = newLesson
@@ -193,10 +191,15 @@ export const actions = {
             }
             return await this.$fire.firestore.collection('lesson').add(lesson)
           }),
+          dispatch('picture/upload', { uid: lessonDatas.coverPicture }, { root: true })
         ])
       } else {
-        await this.$fire.firestore.collection('lesson').add(newLesson)
+        await Promise.all([
+          this.$fire.firestore.collection('lesson').add(newLesson),
+          dispatch('picture/upload', { uid: lessonDatas.coverPicture }, { root: true })
+        ])
       }
+
       commit(
         'notification/create',
         { description: 'votre cours a bien été créé' },
