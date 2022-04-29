@@ -20,6 +20,9 @@ export const actions = {
         }
     },
 
+    async setFromLesson({ commit, dispatch }, { fileName }) {
+        const picture = await dispatch('get', { fileName })
+        commit('set', { picture, stateName: 'lessonPictureSelected' })
     },
 
     async get({ commit }, { fileName }) {
@@ -31,5 +34,4 @@ export const actions = {
             commit('notification/create', { description: 'Problème lors de la récupération de l\'image', type: 'error' }, { root: true })
         }
     }
-
 }
