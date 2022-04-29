@@ -119,7 +119,7 @@ export const actions = {
     }
   },
 
-  async setDetails({ commit, dispatch }, { lessonId }) {
+  async setDetails({ commit, dispatch, state }, { lessonId }) {
     try {
       const lesson = await this.$fire.firestore
         .collection('lesson')
@@ -131,11 +131,10 @@ export const actions = {
         stateName: 'details',
         lesson: { ...lesson.data(), id: lesson.id, startDate, endDate },
       })
-      dispatch(
-        'student/setFromLesson',
-        { stateName: 'details' },
-        { root: true }
-      )
+      await Promise.all([
+        dispatch('student/setFromLesson', { stateName: 'details' }, { root: true }),
+        dispatch('picture/setFromLesson', { fileName: state.details.coverPicture }, { root: true })
+      ])
     } catch (error) {
       commit(
         'notification/create',
