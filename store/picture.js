@@ -2,6 +2,8 @@ import { generateRandomId } from '../services/firestoreHelper'
 
 export const state = () => ({
     lessonPictureSelected: undefined,
+    newPictureSelected: undefined,
+    oldLessonPicture: undefined,
 })
 
 export const mutations = {
@@ -24,7 +26,9 @@ export const actions = {
 
     async setFromLesson({ commit, dispatch }, { fileName }) {
         const picture = await dispatch('get', { fileName })
-        commit('set', { picture, stateName: 'lessonPictureSelected' })
+        commit('set', { stateName: 'lessonPictureSelected', picture })
+        commit('set', { stateName: 'newPictureSelected', picture: undefined })
+        commit('set', { stateName: 'oldLessonPicture', picture })
     },
 
     get({ commit }, { fileName }) {
