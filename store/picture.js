@@ -33,5 +33,13 @@ export const actions = {
         } catch (error) {
             commit('notification/create', { description: 'Problème lors de la récupération de l\'image', type: 'error' }, { root: true })
         }
+    setNew({ commit, rootState }, { newPicture, initialPictureValue, fieldName }) {
+        commit('set', { stateName: 'oldLessonPicture', picture: initialPictureValue })
+        commit('set', { picture: URL.createObjectURL(newPicture), stateName: 'newPictureSelected' })
+        commit('set', { picture: newPicture, stateName: fieldName })
+        commit('lesson/modify', {
+            payload: { payload: { ...rootState.lesson.form.payload, coverPicture: generateRandomId() } },
+            stateName: 'form',
+        }, { root: true })
     }
 }
