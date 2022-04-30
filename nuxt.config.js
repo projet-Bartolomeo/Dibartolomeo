@@ -46,6 +46,11 @@ export default {
     '@nuxtjs/vuetify',
   ],
 
+  env: {
+    defaultCoverPictureName: process.env.defaultCoverPictureName,
+    projectId: process.env.projectId
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
