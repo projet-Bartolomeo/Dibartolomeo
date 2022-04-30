@@ -19,7 +19,6 @@ export default {
     },
     data() {
         return {
-            pictureSelected: undefined,
             newPicture: undefined,
             rules: [
                 value => !value || value.size < 20000000 || "La taille de l'image devrait etre inférieur à 20MB",
@@ -31,8 +30,8 @@ export default {
             return this.$store.getters.getStateFromString(this.$props.pictureDatas)
         },
         pictureToDisplay() {
-            const hasSetNewPicture = this.newPicture
-            return hasSetNewPicture ? URL.createObjectURL(this.newPicture) : this.getInitialPictureStore.value
+            const hasSetNewPicture = this.$store.state.picture.newPictureSelected
+            return hasSetNewPicture ? this.$store.state.picture.newPictureSelected : this.getInitialPictureStore.value
         }
     },
     methods: {
