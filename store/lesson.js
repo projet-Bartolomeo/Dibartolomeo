@@ -384,7 +384,7 @@ export const actions = {
   },
 
   resetNewForm({ commit, dispatch }) {
-    const coverPicture = '936425860921.361'
+    const coverPicture = process.env.defaultCoverPictureName
     commit('set', {
       stateName: 'new',
       lesson: {

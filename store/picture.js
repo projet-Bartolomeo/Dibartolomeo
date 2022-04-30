@@ -11,7 +11,7 @@ export const mutations = {
 export const actions = {
     async upload({ commit, state }, { uid }) {
         try {
-            if (uid === undefined) return
+            if (uid === undefined || uid === process.env.defaultCoverPictureName) return
             const imageRef = this.$fire.storage.ref(uid)
             await imageRef.put(state.lessonPictureSelected)
             commit('set', { stateName: 'lessonPictureSelected', picture: imageRef })
