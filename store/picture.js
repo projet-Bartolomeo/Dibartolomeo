@@ -13,12 +13,12 @@ export const mutations = {
 }
 
 export const actions = {
-    async upload({ commit, state }, { uid }) {
+    async upload({ commit, state, dispatch }, { uid }) {
         try {
             if (uid === undefined || uid === process.env.defaultCoverPictureName) return
             const imageRef = this.$fire.storage.ref(uid)
             await imageRef.put(state.lessonPictureSelected)
-            commit('set', { stateName: 'lessonPictureSelected', picture: imageRef })
+            await dispatch('setFromLesson', { fileName: uid })
         } catch (error) {
             commit('notification/create', { description: 'Problème lors de l\'upload de l\'image', type: 'error' }, { root: true })
         }
