@@ -117,7 +117,7 @@
         style="width: 12vw"
         class="ma-2"
         @click="
-          $store.dispatch('studentResetEditionForm', {
+          $store.dispatch('resetEditionForm', {
             storeName: 'student',
             stateName: $props.datas,
           })
@@ -163,7 +163,7 @@
         text
         class="ma-2"
         @click="
-          $store.dispatch('studentResetEditionForm', {
+          $store.dispatch('resetEditionForm', {
             storeName: 'student',
             stateName: $props.datas,
           })
