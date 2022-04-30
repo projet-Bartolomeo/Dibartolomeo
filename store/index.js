@@ -65,19 +65,14 @@ export const actions = {
             })
         }
     },
-    resetEditionForm({ commit, rootState }, { storeName, stateName }) {
-        commit(`${storeName}/modify`, { stateName, payload: rootState[storeName].form.oldValues })
+
+    resetEditionForm({ commit, rootState, dispatch }, { storeName, stateName }) {
+        const oldValues = rootState[storeName].form.oldValues
+        commit(`${storeName}/modify`, { stateName, payload: oldValues })
         commit(`${storeName}/set`, {
             stateName: 'form',
             lesson: { valid: true },
         })
-    },
-
-    studentResetEditionForm({ commit, rootState }, { storeName, stateName }) {
-        commit(`${storeName}/modify`, { stateName, payload: rootState[storeName].form.oldValues })
-        commit(`${storeName}/set`, {
-            stateName: 'form',
-            student: { valid: true },
-        })
+        dispatch('picture/resetEditionForm')
     },
 }
