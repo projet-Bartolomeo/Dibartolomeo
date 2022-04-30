@@ -1,3 +1,5 @@
+import { generateRandomId } from '../services/firestoreHelper'
+
 export const state = () => ({
     lessonPictureSelected: undefined,
 })
@@ -25,10 +27,9 @@ export const actions = {
         commit('set', { picture, stateName: 'lessonPictureSelected' })
     },
 
-    async get({ commit }, { fileName }) {
+    get({ commit }, { fileName }) {
         try {
-            const ref = await this.$fire.storage.ref(fileName)
-            const coverPicture = await ref.getDownloadURL()
+            const coverPicture = `https://firebasestorage.googleapis.com/v0/b/${process.env.projectId}.appspot.com/o/${fileName}?alt=media`
             return coverPicture
         } catch (error) {
             commit('notification/create', { description: 'Problème lors de la récupération de l\'image', type: 'error' }, { root: true })
