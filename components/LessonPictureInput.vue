@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { generateRandomId } from '../services/firestoreHelper'
 
 export default {
     props: {
@@ -38,12 +37,13 @@ export default {
     },
     methods: {
         onFileSelected(picture) {
-            this.pictureToDisplay = URL.createObjectURL(picture)
-            this.$store.commit('picture/set', { picture, stateName: this.getInitialPictureStore.fieldName })
-            this.$store.commit(`lesson/modify`, {
-                payload: { payload: { ...this.$store.state.lesson.form.payload, coverPicture: generateRandomId() } },
-                stateName: 'form',
-            })
+            this.$store.dispatch('picture/setNew',
+                {
+                    newPicture: picture,
+                    initialPictureValue: this.getInitialPictureStore.value,
+                    fieldName: this.getInitialPictureStore.fieldName
+                }
+            )
         },
     },
 }
