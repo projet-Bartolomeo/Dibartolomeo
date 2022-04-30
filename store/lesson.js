@@ -65,7 +65,7 @@ export const actions = {
 
             commit('set', { stateName: 'studentList', lesson: studentList })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération de vos cours', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la récupération de vos cours', type: 'error' }, { root: true })
         }
     },
 
@@ -80,7 +80,7 @@ export const actions = {
 
             commit('set', { stateName: 'teacherList', lesson: teacherList })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },
 
@@ -94,7 +94,7 @@ export const actions = {
             commit('set', { stateName: 'details', lesson: { ...lesson.data(), id: lesson.id, startDate, endDate } })
             dispatch('student/setFromLesson', { stateName: 'details' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération de votre cours', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la récupération de votre cours', type: 'error' }, { root: true })
         }
     },
 
@@ -131,10 +131,10 @@ export const actions = {
             } else {
                 await this.$fire.firestore.collection('lesson').add(newLesson)
             }
-            commit('notification/create', { description: 'votre cours a bien été créé' }, { root: true })
+            commit('notification/create', { description: 'Votre cours a bien été créé' }, { root: true })
             dispatch('setTeacherList', {})
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la création de votre cours', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la création de votre cours', type: 'error' }, { root: true })
         }
     },
 
@@ -150,7 +150,7 @@ export const actions = {
 
     async archive({ commit }, { lesson, startDate, endDate, all }) {
         const lessonRef = this.$fire.firestore.collection('lesson')
-        let notification = { type: 'success', description: 'les cours ont bien été archivés' }
+        let notification = { type: 'success', description: 'Les cours ont bien été archivés' }
 
         try {
             if (all) {
@@ -177,10 +177,10 @@ export const actions = {
             } else {
                 await lessonRef.doc(lesson.id).update({ isArchived: true })
                 commit('removeFromList', { stateName: 'teacherList', lessonIdsToDelete: [lesson.id] })
-                notification = { type: 'success', description: 'le cours a bien été archivé' }
+                notification = { type: 'success', description: 'Le cours a bien été archivé' }
             }
         } catch (error) {
-            notification = { type: 'error', description: 'problème lors de l\'achivage' }
+            notification = { type: 'error', description: 'Problème lors de l\'achivage' }
         }
         commit('notification/create', notification, { root: true })
     },
@@ -236,7 +236,7 @@ export const actions = {
                     .update({ ...lesson })))
             commit('set', { stateName: 'form', lesson: { valid: true } })
         } catch (error) {
-            notification = { type: 'error', description: 'problème lors de la mise à jour' }
+            notification = { type: 'error', description: 'Problème lors de la mise à jour' }
             commit('notification/create', notification, { root: true })
         }
 
