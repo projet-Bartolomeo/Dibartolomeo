@@ -112,7 +112,7 @@ export const actions = {
     },
 
 
-    
+
 
     async removeFromTeacher({ commit, rootState }, { student }) {
         try {
@@ -135,12 +135,14 @@ export const actions = {
         }
     },
 
-    async createFromTeacher({ rootState, commit }, student) {
+    async createFromTeacher({ rootState, commit }, { student, password }) {
         try {
-            const newStudent = { ...student, teacherIds: [rootState.user.connected.id], isRegistered: false, isDeleted: false }
+            const { user } = await this.$fire.auth.createUserWithEmailAndPassword(student.email, password)
+            const id = user.uid
+            const newStudent = { ...student, teacherIds: [rootState.user.connected.id], isRegistered: false, isDeleted: false, type: 'student' }
             commit('addToList', { stateName: 'teacherList', student: newStudent })
+            await this.$fire.firestore.collection('user').doc(id).set(newStudent)
 
-            await this.$fire.firestore.collection('user').add(newStudent)
             commit('notification/create', { description: 'Élève créé' }, { root: true })
 
         } catch (error) {
@@ -149,16 +151,16 @@ export const actions = {
     },
 
 
-    async modify({ commit ,rootState }, { studentId, payload }) {
+    async modify({ commit, rootState }, { studentId, payload }) {
         try {
             commit('modifyList', { stateName: 'teacherList', studentId, payload })
 
             await this.$fire.firestore.collection('user').doc(studentId).update(payload)
-            if(rootState.user.connected.type === "student"){
+            if (rootState.user.connected.type === "student") {
                 const auth = await this.$fire.auth.currentUser
                 auth.updateEmail(payload.email)
             }
-            
+
             commit('notification/create', { description: 'Le compte a été mis à jour' }, { root: true })
 
         } catch (error) {

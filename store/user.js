@@ -17,9 +17,9 @@ export const actions = {
             const id = user.uid
             await this.$fire.firestore.collection('user').doc(id).set(newUser)
             commit('set', { user: { ...newUser, id }, stateName: 'connected' })
-            commit('notification/create', { description: 'votre compte a été créé' }, { root: true })
+            commit('notification/create', { description: 'Votre compte a été créé' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'Problème lors de la création de votre compte', type: 'error' })
+            commit('notification/create', { description: 'Problème lors de la création de votre compte', type: 'error' }, { root: true })
         }
     },
 
