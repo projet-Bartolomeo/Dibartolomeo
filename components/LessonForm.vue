@@ -282,4 +282,17 @@ export default {
   margin-bottom: 14px;
   color: rgb(87, 87, 87);
 }
+#cont1 {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+#divbug {
+  width: 65vw;
+  margin-top: 5vh;
+  display: flex;
+  justify-content: space-between;
+}
 </style>
+                                                                       

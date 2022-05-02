@@ -1,5 +1,5 @@
 <template>
-  <div>
+   <div class="flex-column " style="margin-top:6vh;margin-left:6vw">
     <LessonForm datas="new" />
     <DataTableStudent datas="fromLesson" lesson isnew>
       <v-btn

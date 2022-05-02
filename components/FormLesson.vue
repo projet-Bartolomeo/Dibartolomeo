@@ -7,12 +7,11 @@
           <v-card elevation="6" width="45vw" height="8.8vh" min-height="55px">
             <div id="cont1">
               <TextField
-                :get="`lesson.${$props.datas}.title`"
-                :rules="[(v) => !!v || 'Le titre est obligatoire']"
-                
-                :open="open"
-                placeholder="Entrez le titre"
-              />
+              :get="`lesson.${$props.datas}.title`"
+              :rules="[(v) => !!v || 'Le titre est obligatoire']"
+              :open="open"
+              placeholder="Entrez le titre"
+            />
               <TextField
                 :suffix="$props.datas === 'new' ? '' : 'élèves'"
                 :get="`lesson.${$props.datas}.maximumStudents`"
@@ -26,7 +25,11 @@
                 :open="open"
                 placeholder="Entrez le nb max d'élèves"
               />
-            </div>
+         
+        <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp, image/jpeg" placeholder="Choisissez l'image de votre cours"
+            prepend-icon="mdi-camera" label="L'image de mon cours" @change="onFileSelected">
+        </v-file-input>
+    </div>
           </v-card>
         </div>
         <div style="display: flex; flex-direction: column; width: 21vw">
@@ -181,6 +184,14 @@ export default {
       required: true,
     },
   },
+    data() {
+        return {
+            pictureDatas: undefined,
+            rules: [
+                value => !value || value.size < 20000000 || "La taille de l'image devrait etre inférieur à 20MB",
+            ]
+        }
+    },
   computed: {
     lesson() {
       return this.$store.state.lesson[this.$props.datas]
@@ -211,10 +222,16 @@ export default {
   },
   methods: {
     create() {
-      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+              this.$store.dispatch('picture/uploadPicture',{pictureDatas:this.pictureDatas})
+
+      this.$store.dispatch('lesson/create' ,{lessonDatas:this.$store.state.lesson.new})
       this.$router.push('/lesson/list')
     },
+      onFileSelected(file) {
+            this.pictureDatas = file
+        },
   },
+
 }
 </script>
 <style scoped>
