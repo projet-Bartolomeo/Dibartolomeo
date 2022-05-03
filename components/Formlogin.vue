@@ -58,10 +58,6 @@
           >Connexion</v-btn
         >
       </v-row>
-
-      <v-snackbar v-model="snackbar" :timeout="4000" absolute bottom center>
-        {{ snackbarText }}
-      </v-snackbar>
     </v-col>
   </v-row>
 </template>
@@ -71,8 +67,6 @@ export default {
   layout: 'connexion_inscription',
   data() {
     return {
-      snackbar: false,
-      snackbarText: 'No error message',
       id: '',
       auth: {
         email: '',
@@ -88,13 +82,13 @@ export default {
         email: this.auth.login,
         password: this.auth.password,
       })
+      
+      const isConnected = this.$store.state.user.connected.id
 
-      if (this.$store.state.user.connected.id) {
-        if (this.$store.state.user.connected.type === 'student') {
-          this.$router.push('/student/lesson/planning')
-        } else {
-          this.$router.push('/professor/lesson/planning')
-        }
+      if (isConnected) {
+        this.$router.push(
+          `/${this.$store.state.user.connected.type}/lesson/planning`
+        )
       }
     },
   },
