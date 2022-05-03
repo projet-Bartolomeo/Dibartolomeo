@@ -7,7 +7,8 @@ export const state = () => ({
     details: {},
     new: {},
     form: {},
-    participant: {}
+    participant: {},
+  
 
 })
 
@@ -164,7 +165,6 @@ export const actions = {
             commit('notification/create', { description: 'Le compte a été mis à jour' }, { root: true })
 
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
     },

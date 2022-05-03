@@ -1,6 +1,7 @@
 <template>
-  <v-row class="ma-4 justify-space-between">
+  <v-row class="py-4 px-4">
     <h1>{{ $props.value }}</h1>
+    <v-spacer></v-spacer>
     <slot></slot>
   </v-row>
 </template>

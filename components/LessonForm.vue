@@ -195,6 +195,7 @@
               :getstart="`lesson.${$props.datas}.startDate`"
               :getend="`lesson.${$props.datas}.endDate`"
             />
+             <LessonPictureInput picture-datas="picture.lessonPictureSelected" />
           </v-card>
         </v-row>
         <v-row class="justify-center">
@@ -269,7 +270,8 @@ export default {
   },
   methods: {
     create() {
-      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      const lessonDatas = { ...this.$store.state.lesson.new, ...this.$store.state.lesson.form.payload }
+      this.$store.dispatch('lesson/create', { lessonDatas })
       this.$router.push('/professor/lesson/list')
     },
   },

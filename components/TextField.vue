@@ -25,8 +25,9 @@
       :suffix="$props.suffix"
       :placeholder="$props.placeholder"
       :disabled="$props.disabled"
+      style="width: 16vw;"
     ></v-text-field>
-    <v-btn color="grey darken-2 auto-width" fab text @click="changeState">
+    <v-btn v-if='!$props.open' color="grey darken-2 auto-width" fab text @click="changeState">
       <v-icon> mdi-pencil </v-icon>
     </v-btn>
   </v-card>

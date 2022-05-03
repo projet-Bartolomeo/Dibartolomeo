@@ -2,52 +2,37 @@
   <div>
     <LessonForm datas="details" />
     <DataTableStudent datas="fromLesson" lesson>
-      <v-btn
-        style="color: white"
-        color="#76d9a3"
-        @click="
-          $store.commit('overlay/open', {
-            component: 'DataTableStudent',
-            props: {
-              datas: 'notInLesson',
-              add: true,
-            },
-            title: 'Choisissez les élèves à ajouter à votre cours',
-          })
-        "
-        >Ajouter un élève</v-btn
-      >
+      <v-btn style="color: white" color="#76d9a3" @click="
+        $store.commit('overlay/open', {
+          component: 'DataTableStudent',
+          props: {
+            datas: 'notInLesson',
+            add: true,
+          },
+          title: 'Choisissez les élèves à ajouter à votre cours',
+        })
+      ">Ajouter un élève</v-btn>
     </DataTableStudent>
     <div v-if="hasModifications && valid" class="button-icons-container">
-      <v-btn
-        color="grey darken-2"
-        fab
-        text
-        @click="
-          $store.commit('overlay/open', {
-            component: 'LessonModificationForm',
-            props: {
-              lesson: $store.state.lesson.details,
-              payload: $store.state.lesson.form.payload,
-              modify: true,
-            },
-            title: lesson.recurrenceId ? 'Voulez-vous enregistrer :' : '',
-          })
-        "
-      >
+      <v-btn color="grey darken-2" fab text @click="
+        $store.commit('overlay/open', {
+          component: 'LessonModificationForm',
+          props: {
+            lesson: $store.state.lesson.details,
+            payload: $store.state.lesson.form.payload,
+            modify: true,
+          },
+          title: lesson.recurrenceId ? 'Voulez-vous enregistrer :' : '',
+        })
+      ">
         <v-icon> mdi-content-save </v-icon>
       </v-btn>
-      <v-btn
-        color="grey darken-2"
-        fab
-        text
-        @click="
-          $store.dispatch('resetEditionForm', {
-            storeName: 'lesson',
-            stateName: 'details',
-          })
-        "
-      >
+      <v-btn color="grey darken-2" fab text @click="
+        $store.dispatch('resetEditionForm', {
+          storeName: 'lesson',
+          stateName: 'details',
+        })
+      ">
         <v-icon> mdi-arrow-u-down-left </v-icon>
       </v-btn>
     </div>

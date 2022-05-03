@@ -1,11 +1,11 @@
 <template>
   <div class="card">
     <div class="img__text">
-      <img :src="lesson.image || '/image/cours.jpg'" alt="Image" />
+      <img :src="picture" alt="Image" />
 
       <div class="text">
         <h1 class="titre">{{ lesson.title }}</h1>
-        <h3>{{ lesson.newDate }}</h3>
+        <h3>{{ newDate }}</h3>
         <h5 class="description">
           {{ lesson.description || 'pas de description' }}
         </h5>
@@ -23,14 +23,22 @@ export default {
   props: {
     lesson: {
       type: Object,
-      required: true
+      required: true,
+    },
+  },
+  data() {
+    return {
+      picture: ''
     }
   },
   computed: {
     newDate() {
-      return convertTimestampToReadableDate(this.$props.date)
+      return convertTimestampToReadableDate(this.$props.lesson.startDate)
     }
-  }
+  },
+  async created() {
+    this.picture = await this.$store.dispatch('picture/get', { fileName: this.lesson.coverPicture })
+  },
 }
 </script>
 
@@ -59,6 +67,8 @@ img {
 }
 
 .text {
+  display: flex;
+  flex-direction: column;
   width: 10vw;
   min-width: 200px;
   margin-left: 30px;
