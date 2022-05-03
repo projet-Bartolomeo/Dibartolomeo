@@ -119,7 +119,7 @@ export const actions = {
     }
   },
 
-  async setDetails({ commit, dispatch }, { lessonId }) {
+  async setDetails({ commit, dispatch, state }, { lessonId }) {
     try {
       const lesson = await this.$fire.firestore
         .collection('lesson')
@@ -131,11 +131,10 @@ export const actions = {
         stateName: 'details',
         lesson: { ...lesson.data(), id: lesson.id, startDate, endDate },
       })
-      dispatch(
-        'student/setFromLesson',
-        { stateName: 'details' },
-        { root: true }
-      )
+      await Promise.all([
+        dispatch('student/setFromLesson', { stateName: 'details' }, { root: true }),
+        dispatch('picture/setFromLesson', { fileName: state.details.coverPicture }, { root: true })
+      ])
     } catch (error) {
       commit(
         'notification/create',
@@ -148,22 +147,23 @@ export const actions = {
     }
   },
 
-  setNew({ commit, dispatch }) {
+  async setNew({ commit, dispatch }) {
     dispatch('resetNewForm')
     commit('set', {
       stateName: 'form',
       lesson: { valid: false },
     })
-    dispatch('student/setFromLesson', { stateName: 'new' }, { root: true })
+    await dispatch('student/setFromLesson', { stateName: 'new' }, { root: true })
   },
 
-  async create({ rootState, commit, dispatch }, lessonDatas) {
+  async create({ rootState, commit, dispatch }, { lessonDatas }) {
     try {
       const newLesson = {
         ...lessonDatas,
         teacherId: rootState.user.connected.id,
-        isArchived: false,
+        isArchived: false
       }
+
       if (newLesson.recurrence === 'everyWeek') {
         const weekInYear = 52
         const { startDate, endDate } = newLesson
@@ -190,10 +190,15 @@ export const actions = {
             }
             return await this.$fire.firestore.collection('lesson').add(lesson)
           }),
+          dispatch('picture/upload', { uid: lessonDatas.coverPicture }, { root: true })
         ])
       } else {
-        await this.$fire.firestore.collection('lesson').add(newLesson)
+        await Promise.all([
+          this.$fire.firestore.collection('lesson').add(newLesson),
+          dispatch('picture/upload', { uid: lessonDatas.coverPicture }, { root: true })
+        ])
       }
+
       commit(
         'notification/create',
         { description: 'votre cours a bien été créé' },
@@ -300,7 +305,7 @@ export const actions = {
   },
 
   async modify(
-    { state, commit },
+    { state, commit, dispatch },
     { lesson, startDate, endDate, all, newData, description }
   ) {
     const lessonRef = this.$fire.firestore.collection('lesson')
@@ -359,13 +364,13 @@ export const actions = {
         stateName: 'teacherList',
         lessonToModify: lessons,
       })
+
       commit('set', { stateName: 'details', lesson: { ...lesson, ...payload } })
 
-      await Promise.all(
-        lessons.map(
-          async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })
-        )
-      )
+      await Promise.all([
+        ...lessons.map(async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })),
+        dispatch('picture/upload', { uid: payload.coverPicture }, { root: true })
+      ])
       commit('set', { stateName: 'form', lesson: { valid: true } })
     } catch (error) {
       notification = {
@@ -378,7 +383,8 @@ export const actions = {
     if (description) commit('notification/create', notification, { root: true })
   },
 
-  resetNewForm({ commit }) {
+  resetNewForm({ commit, dispatch }) {
+    const coverPicture = process.env.defaultCoverPictureName
     commit('set', {
       stateName: 'new',
       lesson: {
@@ -387,8 +393,10 @@ export const actions = {
         recurrence: 'everyWeek',
         ageRange: 'adult',
         studentIds: [],
+        coverPicture
       },
     })
+    dispatch('picture/setFromLesson', { fileName: coverPicture }, { root: true })
   },
 }
 

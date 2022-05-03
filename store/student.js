@@ -163,7 +163,6 @@ export const actions = {
             commit('notification/create', { description: 'élève mis à jour' }, { root: true })
 
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
         }
     },
