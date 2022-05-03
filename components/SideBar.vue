@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app left class="navigation-drawer-color">
+  <v-navigation-drawer app left color="#ce1b52">
     <template #prepend>
       <v-list-item>
         <v-list-item-content>
@@ -11,43 +11,31 @@
     </template>
     <v-spacer></v-spacer>
     <v-list dense nav>
-      <div
-        v-for="item in routeList"
-        :key="item.title"
-        class="my-10 d-flex justify-center"
-      >
-        <router-link class="text-decoration-none" :to="item.route">
-          <v-btn
-            class="buttonSideBar"
-            color="white"
-            elevation="1"
-            outlined
-            rounded
-            >{{ item.title }}</v-btn
-          >
-        </router-link>
+      <div v-for="item in routeList" :key="item.title" class="my-10 d-flex justify-center">
+        <NuxtLink class="text-decoration-none" :to="item.route">
+          <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded>{{ item.title }}</v-btn>
+        </NuxtLink>
       </div>
     </v-list>
     <template #append>
-      <div class="d-flex justify-center flex-wrap" style="color: white">
-        <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3 ma-0">
-            A propos
-          </p>
-        </router-link>
-        <router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            CGU
-          </p> </router-link
-        ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            Politique de confidentialité
-          </p> </router-link
-        ><router-link class="text-decoration-none" color="white" to="/"
-          ><p style="font-size: 11px; color: white" class="px-3">
-            Mention légale
-          </p>
-        </router-link>
+      <div class="d-flex justify-center flex-wrap pb-12 px-12">
+        <NuxtLink class="nuxtlink" to="https://www.pagesjaunes.fr/pros/08713989">A propos
+        </NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/term-of-service">CGU
+        </NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/data-protection-policy">Politique de
+          confidentialité</NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/legal-notice">Mention
+          légale</NuxtLink>
       </div>
     </template>
   </v-navigation-drawer>
@@ -85,7 +73,7 @@ export default {
           type: UserType.student,
         },
         {
-          title: 'Liste de mes cours',
+          title: 'Mes cours',
           route: '/student/lesson/list',
           type: UserType.student,
         },
@@ -105,32 +93,28 @@ export default {
 </script>
 
 <style>
-.navigation-drawer-color {
-  background: linear-gradient(
-    90deg,
-    rgba(108, 20, 36, 1) 18%,
-    rgba(91, 16, 29, 1) 91%
-  );
+.nuxtlink {
+  font-size: 11px;
+  text-decoration: none;
+  color: white !important;
+  display: flex;
+  align-items: center;
 }
 
-.buttonSideBar{
-  width: 14vw;
+.buttonSideBar {
+  width: 11vw;
 }
 
 @media (min-width: 1600px) {
-  
-  .buttonSideBar{
-    width: 11vw;
+  .buttonSideBar {
+    width: 9vw;
+    min-width: 600px;
   }
-
 }
 
 @media (max-width: 1300px) {
-
-  .buttonSideBar{
+  .buttonSideBar {
     width: 16vw;
   }
-
 }
-
 </style>

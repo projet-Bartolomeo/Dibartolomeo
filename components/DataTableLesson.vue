@@ -1,93 +1,50 @@
 <template>
   <div>
-    <v-card class="ma-4 mb-6">
-      <v-card-title>
-        <IntervalDateFilter
-          getend="lesson.filter.endDate"
-          getstart="lesson.filter.startDate"
-        />
-
-        <v-text-field
-          v-model="search"
-          class="ma-2 text-field pa-0"
-          append-icon="mdi-magnify"
-          :label="`Rechercher un ${type}`"
-          single-line
-          hide-details
-          clearable
-        ></v-text-field>
-        <v-spacer></v-spacer>
-        <v-btn
-          v-if="$props.message"
-          :disabled="selected.length === 0"
-          style="color: white"
-          color="#76d9a3"
-          @click="
-            $store.commit('overlay/open', {
-              component: 'MessageForm',
-              props: { recipients: selected, type: 'lesson' },
-              title: 'Tapez votre message',
-            })
-          "
-          >Envoyer message</v-btn
-        >
-      </v-card-title>
-    </v-card>
+    <LessonFilter search-store='lesson.filter.search' start-date-store='lesson.filter.startDate'
+      end-date-store='lesson.filter.endDate'>
+      <v-btn v-if="$props.message" :disabled="selected.length === 0" style="color: white" color="#76d9a3" @click="
+        $store.commit('overlay/open', {
+          component: 'MessageForm',
+          props: { recipients: selected, type: 'lesson' },
+          title: 'Tapez votre message',
+        })
+      ">Envoyer message</v-btn>
+    </LessonFilter>
     <v-card class="ma-4">
-      <v-data-table
-        v-model="selected"
-        :headers="headers"
-        :items="lessons"
-        sort-by="startDate"
-        :sort-desc="true"
-        class="elevation-1"
-        :footer-props="{
+      <v-data-table v-model="selected" :headers="headers" :items="lessons" sort-by="startDate" :sort-desc="true"
+        class="elevation-1" :footer-props="{
           'items-per-page-text': `${type} par page`,
-        }"
-        :search="search"
-        :single-select="singleSelect"
-        item-key="id"
-        :show-select="getShowSelect"
-        :customsort="customsort"
-      >
+        }" :search="$store.state.lesson.filter.search" :single-select="singleSelect" item-key="id" :show-select="getShowSelect"
+        :custom-sort="customsort">
         <template #[`item.actions`]="{ item }">
           <div class="d-flex">
-            <v-icon
-              v-if="$props.message"
-              class="mr-1"
-              @click="
-                $store.commit('overlay/open', {
-                  component: 'MessageForm',
-                  props: { recipients: [item], type: 'lesson' },
-                  title: 'Tapez votre message',
-                })
-              "
-              >mdi-message</v-icon
-            >
+            <v-icon v-if="$props.message" class="mr-1" @click="
+              $store.commit('overlay/open', {
+                component: 'MessageForm',
+                props: { recipients: [item], type: 'lesson' },
+                title: 'Tapez votre message',
+              })
+            ">mdi-message</v-icon>
             <NuxtLink class="nuxtlink" :to="`/professor/lesson/${item.id}`">
               <v-icon class="mr-1"> mdi-pencil </v-icon>
             </NuxtLink>
-            <v-icon
-              v-if="$props.delete"
-              class="mr-1"
-              @click="
-                $store.commit('overlay/open', {
-                  component: 'LessonModificationForm',
-                  props: {
-                    lesson: {
-                      ...item,
-                      recurrence:
-                        item.recurrence === 'Chaque semaine'
-                          ? 'everyWeek'
-                          : 'unique',
-                    },
-                    archive: true,
-                    redirectPath: '/professor/lesson/list',
+            <v-icon v-if="$props.delete" class="mr-1" @click="
+              $store.commit('overlay/open', {
+                component: 'LessonModificationForm',
+                props: {
+                  lesson: {
+                    ...item,
+                    recurrence:
+                      item.recurrence === 'Chaque semaine'
+                        ? 'everyWeek'
+                        : 'unique',
                   },
-                  title: item.recurrenceId ? 'Voulez-vous archiver :' : '',
-                })
-              "
-            >
+                  archive: true,
+                  redirectPath: '/professor/lesson/list',
+                },
+                title: item.recurrenceId ? 'Voulez-vous archiver :' : '',
+              })
+            ">
               mdi-delete
             </v-icon>
           </div>
@@ -157,7 +114,6 @@ export default {
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       showSelect: false,
-      search: '',
       dialog: false,
       dialogDelete: false,
       ressource: [],
@@ -308,9 +264,11 @@ export default {
   word-break: break-word;
   text-align: center;
 }
+
 .nuxtlink {
   text-decoration: none;
 }
+
 .text-field {
   flex: none;
   display: flex;
