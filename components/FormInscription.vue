@@ -81,10 +81,6 @@
           S'inscrire</v-btn
         >
       </v-row>
-
-      <v-snackbar v-model="snackbar" :timeout="4000" absolute bottom center>
-        {{ snackbarText }}
-      </v-snackbar>
     </v-col>
   </v-row>
 </template>
@@ -95,8 +91,6 @@ export default {
   data() {
     return {
       isFormValid: false,
-      snackbar: false,
-      snackbarText: "Pas de message d'erreur",
       passwordRules: [
         (value) => !!value || 'Veuillez entrer votre mot de passe.',
         (value) => (value && value.length >= 6) || 'Minimum 6 caractères',

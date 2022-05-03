@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Secondbar />
+    <AuthBar />
   </div>
 </template>
 <script>
