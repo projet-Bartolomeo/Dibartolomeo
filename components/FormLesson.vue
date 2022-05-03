@@ -1,21 +1,19 @@
 <template>
   <div class="d-flex">
-    <v-form v-model="valid">
+    <v-form v-model="valid" class="lesson-form">
       <div style="display: flex">
         <div>
           <h1 style="margin-bottom: 3vh; margin-left: 1vw">Ajouter un cours</h1>
           <v-card elevation="6" width="45vw" height="8.8vh" min-height="55px">
-            <div id="cont1">
               <TextField :get="`lesson.${$props.datas}.title`" :rules="[(v) => !!v || 'Le titre est obligatoire']"
-                :open="open" placeholder="Entrez le titre" />
-              <TextField :suffix="$props.datas === 'new' ? '' : 'élèves'"
-                :get="`lesson.${$props.datas}.maximumStudents`" :rules="[
-                  (v) => !!v || 'Le nombre maximum d\'élèves est obligatoire',
-                  (v) =>
-                    !isNaN(Number(v)) ||
-                    'Le nombre maximum d\'élèves doit etre un nombre',
-                ]" number :open="open" placeholder="Entrez le nb max d'élèves" />
-            </div>
+                  :open="open" placeholder="Entrez le titre" />
+              <TextField :suffix="$props.datas === 'new' ? '' : 'élèves'" :get="`lesson.${$props.datas}.maximumStudents`"
+                  :rules="[
+                      (v) => !!v || 'Le nombre maximum d\'élèves est obligatoire',
+                      (v) =>
+                          !isNaN(Number(v)) ||
+                          'Le nombre maximum d\'élèves doit etre un nombre',
+                  ]" number :open="open" placeholder="Entrez le nb max d'élèves" />
           </v-card>
         </div>
         <div style="display: flex; flex-direction: column; width: 21vw">
@@ -65,7 +63,7 @@
       <div>
         <div id="divbug">
           <div style="display: flex; flex-direction: column">
-            <v-card elevation="6" width="30vw" height="37vh" style="margin-bottom: 5vh">
+            <v-card elevation="6" width="40vw" height="37vh" style="margin: 5vh">
               <div class="ml-6 mr-6 mt-6" style="color: grey">
                 Réccurence
                 <v-divider> </v-divider>
@@ -101,7 +99,7 @@
                 </div>
               </div>
             </v-card>
-            <v-card width="30vw" class="pa-4">
+            <v-card width="40vw" class="pa-4" style="margin: 5vh">
               <div>
                 <p v-if="$props.datas === 'new'" class="mb-0">
                   Description du cours (optionnel):
@@ -113,7 +111,7 @@
             </v-card>
           </div>
           <div style="display: flex; flex-direction: column">
-            <v-card elevation="6" width="30vw" height="37vh" style="margin-bottom: 5vh">
+            <v-card elevation="6" width="40vw" height="37vh" style="margin: 5vh">
               <div class="ma-6">
                 <div class="ml-6 mr-6 mt-6" style="color: grey">
                   Jour et horaires de cours
@@ -125,7 +123,7 @@
                   :getend="`lesson.${$props.datas}.endDate`" />
               </div>
             </v-card>
-            <v-card width="30vw" class="pa-4">
+            <v-card width="40vw" class="pa-4" style="margin: 5vh">
               <div>
                 <p v-if="$props.datas === 'new'" class="mb-0">
                   Note pour le professeur (optionnel):
@@ -188,7 +186,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #cont1 {
   display: flex;
   width: 100%;
@@ -197,9 +195,15 @@ export default {
 }
 
 #divbug {
-  width: 65vw;
-  margin-top: 5vh;
+  margin: 5vh;
   display: flex;
   justify-content: space-between;
+}
+
+.lesson-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
 }
 </style>
