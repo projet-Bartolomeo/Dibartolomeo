@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LessonForm datas="details" />
+    <FormLesson datas="details" />
     <DataTableStudent datas="fromLesson" lesson>
       <v-btn
         style="color: white"
