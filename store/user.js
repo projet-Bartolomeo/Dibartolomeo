@@ -11,23 +11,15 @@ export const mutations = {
 }
 
 export const actions = {
-    async modify({ commit }, { id, payload }) {
-        try {
-            await this.$fire.firestore.collection('user').doc(id).update(payload)
-            commit('notification/create', { description: 'l\'utilisateur a bien été mis à jour' }, { root: true })
-        } catch (error) {
-            commit('notification/create', { description: 'problème lors de la mise à jour de l\'utilisateur', type: 'error' }, { root: true })
-        }
-    },
     async register({ commit }, { newUser, password }) {
         try {
             const { user } = await this.$fire.auth.createUserWithEmailAndPassword(newUser.email, password)
             const id = user.uid
             await this.$fire.firestore.collection('user').doc(id).set(newUser)
             commit('set', { user: { ...newUser, id }, stateName: 'connected' })
-            commit('notification/create', { description: 'votre compte a été créé' }, { root: true })
+            commit('notification/create', { description: 'Votre compte a été créé' }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la création de votre compte', type: 'error' })
+            commit('notification/create', { description: 'Problème lors de la création de votre compte', type: 'error' }, { root: true })
         }
     },
 
@@ -37,7 +29,7 @@ export const actions = {
             const connectedUser = await this.$fire.firestore.collection('user').doc(user.uid).get()
             const id = user.uid
             commit('set', { user: { ...connectedUser.data(), id }, stateName: 'connected' })
-            commit('notification/create', { description: 'votre compte a été créé' }, { root: true })
+            commit('notification/create', { description: 'Vous êtes connecté' }, { root: true })
         } catch (error) {
             commit('notification/create', { description: 'Email ou mot de passe invalide', type: 'error' }, { root: true })
         }

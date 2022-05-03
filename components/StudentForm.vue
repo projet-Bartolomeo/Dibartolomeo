@@ -27,7 +27,12 @@
           <v-row class="align-center justify-start">
             <p class="ma-0 mr-2">Email :</p>
             <TextField
-              :disabled="$store.state.user.connected.type === 'student' ? false : true"
+              :disabled="
+                $store.state.user.connected.type === 'professor' &&
+                $props.datas !== 'new'
+                  ? true
+                  : false
+              "
               :open="open"
               :get="`student.${$props.datas}.email`"
               :rules="[
@@ -74,7 +79,8 @@
                     title: 'Taper votre nouveau mot de passe',
                   })
                 "
-                >	Changer le mot de passe
+              >
+                Changer le mot de passe
               </v-btn>
             </div>
           </v-row>
@@ -148,20 +154,19 @@
     </div>
     <div v-if="$props.datas == 'new'" class="d-flex flex-column justify-center">
       <v-btn
-        v-if="valid"
-        fab
-        text
-        color="grey darken-2"
+        v-if="valid && hasModifications"
+        color="#76d9a3"
         class="ma-2"
+        style="color: white; width: 12vw"
         @click="create()"
       >
-        <v-icon> mdi-content-save </v-icon>
+        Enregistrer
+        <v-icon class="ml-2"> mdi-content-save </v-icon>
       </v-btn>
       <v-btn
         v-if="hasModifications"
-        color="grey darken-2"
-        fab
-        text
+        color="#f4f4f4;"
+        style="width: 12vw"
         class="ma-2"
         @click="
           $store.dispatch('resetEditionForm', {
@@ -170,13 +175,16 @@
           })
         "
       >
-        <v-icon> mdi-arrow-u-down-left </v-icon>
+        Rétablir
+        <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
     </div>
   </v-form>
 </template>
 
 <script>
+import { generateRandomId } from '../services/firestoreHelper'
+
 export default {
   props: {
     datas: {
@@ -195,6 +203,9 @@ export default {
   computed: {
     student() {
       return this.$store.state.student[this.$props.datas]
+    },
+    password() {
+      return generateRandomId()
     },
     valid: {
       get() {
@@ -216,13 +227,16 @@ export default {
     },
   },
   methods: {
-    create() {
-      this.$store.state.student.new.isPrincipal = true
+    async create() {
       if (this.valid) {
-        this.$store.dispatch(
-          'student/createFromTeacher',
-          this.$store.state.student.new
-        )
+        await this.$store.dispatch('student/createFromTeacher', {
+          student: this.$store.state.student.new,
+          password: this.password,
+        })
+        await this.$store.dispatch('user/forgotPassword', {
+          email: this.$store.state.student.new.email,
+        })
+
         this.$router.push('/professor/student/list')
       }
     },
