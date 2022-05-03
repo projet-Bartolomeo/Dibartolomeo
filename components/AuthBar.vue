@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer
-      v-if="affichage === 1"
+      v-if="affichage === 'register'"
       width="500"
       max-height="170"
       app
@@ -30,19 +30,19 @@
                 style="color: white"
                 class="d-flex justify-center align-center"
               >
-                Pour vous inscrire veuillez entrer vos informations personnels
+                Pour vous inscrire, veuillez entrer vos informations personnels
               </p>
             </v-col>
 
             <v-col cols="12" align="center">
               <v-btn
-                v-if="affichage === 1"
+                v-if="affichage === 'register'"
                 rounded
                 outlined
                 color="white"
                 large
                 class="d-flex justify-center align-center"
-                @click="init2"
+                @click="initLogin"
                 >S'inscrire</v-btn
               >
             </v-col>
@@ -76,11 +76,11 @@
               class="font-weight-medium d-flex justify-center align-center"
               style="color: white"
             >
-              Pour vous connecter veuillez entrer vos informations personnels
+              Pour vous connecter, veuillez entrer vos informations personnels
             </p>
           </v-col>
           <v-col cols="12" align="center">
-            <v-btn rounded outlined color="white" large @click="init"
+            <v-btn rounded outlined color="white" large @click="initRegister"
               >Se connecter</v-btn
             >
           </v-col>
@@ -89,7 +89,7 @@
       <v-spacer></v-spacer>
     </v-navigation-drawer>
 
-    <Formlogin v-if="affichage === 1" />
+    <Formlogin v-if="affichage === 'register'" />
 
     <FormInscription v-else />
   </div>
@@ -103,17 +103,17 @@ export default {
   layout: 'connexion_inscription',
   data() {
     return {
-      affichage: '1',
+      affichage: 'register',
 
       permanent: true,
     }
   },
   methods: {
-    init() {
-      this.affichage = 1
+    initRegister() {
+      this.affichage = 'register'
     },
-    init2() {
-      this.affichage = 2
+    initLogin() {
+      this.affichage = 'login'
     },
   },
 }

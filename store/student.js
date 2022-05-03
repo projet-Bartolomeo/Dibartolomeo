@@ -46,7 +46,7 @@ export const actions = {
                 .get()
             commit('set', { stateName: 'details', student: { ...user.data(), id: user.id } })
         } catch (error) {
-            commit('notification/create', { description: 'Problème lors de la récupération de votre élève', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la récupération des informations', type: 'error' }, { root: true })
         }
     },
 
@@ -95,7 +95,7 @@ export const actions = {
             commit('set', { stateName: 'fromLesson', student: students })
             dispatch('setNotInLesson', { stateName })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la récupération des élèves', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
     },
 
@@ -142,10 +142,10 @@ export const actions = {
             commit('addToList', { stateName: 'teacherList', student: newStudent })
 
             await this.$fire.firestore.collection('user').add(newStudent)
-            commit('notification/create', { description: 'élève créé' }, { root: true })
+            commit('notification/create', { description: 'Élève créé' }, { root: true })
 
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de la création de l\'élève', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de la création de l\'élève', type: 'error' }, { root: true })
         }
     },
 
@@ -160,7 +160,7 @@ export const actions = {
                 auth.updateEmail(payload.email)
             }
             
-            commit('notification/create', { description: 'élève mis à jour' }, { root: true })
+            commit('notification/create', { description: 'Le compte a été mis à jour' }, { root: true })
 
         } catch (error) {
             commit('notification/create', { description: 'Problème lors de la modifiction ', type: 'error' }, { root: true })
