@@ -30,8 +30,6 @@
               :disabled="
                 $store.state.user.connected.type === 'professor' &&
                 $props.datas !== 'new'
-                  ? true
-                  : false
               "
               :open="open"
               :get="`student.${$props.datas}.email`"
@@ -228,17 +226,15 @@ export default {
   },
   methods: {
     async create() {
-      if (this.valid) {
-        await this.$store.dispatch('student/createFromTeacher', {
-          student: this.$store.state.student.new,
-          password: this.password,
-        })
-        await this.$store.dispatch('user/forgotPassword', {
-          email: this.$store.state.student.new.email,
-        })
+      await this.$store.dispatch('student/createFromTeacher', {
+        student: this.$store.state.student.new,
+        password: this.password,
+      })
+      await this.$store.dispatch('user/forgotPassword', {
+        email: this.$store.state.student.new.email,
+      })
 
-        this.$router.push('/professor/student/list')
-      }
+      this.$router.push('/professor/student/list')
     },
     async validate() {
       if (this.valid) {

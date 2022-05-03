@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer
-      v-if="affichage === 'register'"
+      v-if="authBar === 'register'"
       width="500"
       max-height="170"
       app
@@ -36,7 +36,7 @@
 
             <v-col cols="12" align="center">
               <v-btn
-                v-if="affichage === 'register'"
+                v-if="authBar === 'register'"
                 rounded
                 outlined
                 color="white"
@@ -89,7 +89,7 @@
       <v-spacer></v-spacer>
     </v-navigation-drawer>
 
-    <Formlogin v-if="affichage === 'register'" />
+    <Formlogin v-if="authBar === 'register'" />
 
     <FormInscription v-else />
   </div>
@@ -103,17 +103,17 @@ export default {
   layout: 'connexion_inscription',
   data() {
     return {
-      affichage: 'register',
+      authBar: 'register',
 
       permanent: true,
     }
   },
   methods: {
     initRegister() {
-      this.affichage = 'register'
+      this.authBar = 'register'
     },
     initLogin() {
-      this.affichage = 'login'
+      this.authBar = 'login'
     },
   },
 }
