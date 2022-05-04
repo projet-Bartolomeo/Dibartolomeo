@@ -9,8 +9,6 @@
 export default {
   methods: {
     logout() {
-      logout() {    
-    logout() {
       this.$router.push('/authentification/login')
     }
   },

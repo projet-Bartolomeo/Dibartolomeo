@@ -99,8 +99,7 @@
 import FormInscription from './FormInscription.vue'
 import Formlogin from './Formlogin.vue'
 export default {
-  components: { Formlogin, FormInscription },
-  layout: 'connexion_inscription',
+  layout: 'connect',
   data() {
     return {
       authBar: 'register',

@@ -64,7 +64,7 @@
 
 <script>
 export default {
-  layout: 'connexion_inscription',
+  layout: 'connect',
   data() {
     return {
       id: '',
