@@ -92,111 +92,23 @@
         </div>
       </v-row>
       <v-col>
-        <v-row class="justify-center">
-          <v-card width="450" class="ma-6">
-            <v-col>
-              <div
-                v-if="$props.datas === 'new'"
-                class="d-flex justify-start align-center"
-              >
-                <p class="pa-4 text-no-wrap">Récurrence :</p>
-                <div class="pt-3 pl-2 recurrence-title">
-                  <SelectField
-                    :get="`lesson.${$props.datas}.recurrence`"
-                    :items="[
-                      { text: 'Chaque semaine', value: 'everyWeek' },
-                      { text: 'Unique', value: 'unique' },
-                    ]"
-                    :open="open"
-                    :defaultvalue="$props.datas === 'new' ? 'everyWeek' : ''"
-                  />
-                </div>
-              </div>
-              <div v-else class="d-flex justify-start align-center">
-                <p class="pa-4 text-no-wrap">Récurrence :</p>
-                <div class="pa-4 recurrence-title">
-                  {{ recurrence }}
-                </div>
-              </div>
-              <div class="d-flex justify-start align-center">
-                <p class="pa-4 text-no-wrap">Tranche d'age:</p>
-                <div class="pa-4">
-                  <SelectField
-                    :get="`lesson.${$props.datas}.ageRange`"
-                    :items="[
-                      { text: 'Enfant', value: 'child' },
-                      { text: 'Adolescent', value: 'teenager' },
-                      { text: 'Adulte', value: 'adult' },
-                      { text: 'Mixte', value: 'mixed' },
-                    ]"
-                    :open="open"
-                    :defaultvalue="$props.datas === 'new' ? 'mixed' : ''"
-                  />
-                </div>
-              </div>
-              <div class="d-flex justify-start align-center">
-                <p class="pa-4 text-no-wrap">Prix:</p>
-                <div class="pb-4 pl-4 pr-4">
-                  <TextField
-                    suffix=" €"
-                    :get="`lesson.${$props.datas}.price`"
-                    :rules="[
-                      (v) => !!v || 'Le prix est obligatoire',
-                      (v) => !isNaN(Number(v)) || 'Le prix doit etre un nombre',
-                    ]"
-                    number
-                    :open="open"
-                    placeholder="Entrez le prix du cours "
-                  />
-                </div>
-              </div>
-            </v-col>
-          </v-card>
-          <v-card
-            width="450"
-            class="ma-6 pa-9 d-flex flex-column justify-start align-start"
-          >
-            <div>Jour du cours:</div>
-            <UniqueDatePicker
-              v-if="lesson.recurrence === 'unique'"
-              :getstart="`lesson.${$props.datas}.startDate`"
-              :getend="`lesson.${$props.datas}.endDate`"
-            />
-            <EveryWeekDatePicker
-              v-else
-              :getstart="`lesson.${$props.datas}.startDate`"
-              :getend="`lesson.${$props.datas}.endDate`"
-            />
-             <LessonPictureInput picture-datas="picture.lessonPictureSelected" />
-          </v-card>
+        <v-row >
+          
+         <LessonDetailsinformation :datas="$props.datas" />
+         <LessonDetailDate :state-name="$props.datas" />
         </v-row>
+
+        
+     <LessonPictureInput picture-datas="picture.lessonPictureSelected" />
         <v-row class="justify-center">
-          <v-card width="450" class="ma-6 pa-4">
+         
             <div class="pa-3">
-              <p v-if="$props.datas === 'new'" class="mb-0">
-                Description du cours (optionnel):
-              </p>
-              <p v-else class="mb-0">Description du cours:</p>
-              <TextArea
-                :get="`lesson.${$props.datas}.description`"
-                :open="open"
-                placeholder="Entrez la description"
-              />
+                <v-row >
+            <LessonDetaildescription :state-name="$props.datas" />
+            <LessonDescription :state-name="$props.datas" />
+            </v-row>
             </div>
-          </v-card>
-          <v-card width="450" class="ma-6 pa-4">
-            <div class="pa-3">
-              <p v-if="$props.datas === 'new'" class="mb-0">
-                Note pour le professeur (optionnel):
-              </p>
-              <p v-else class="mb-0">Note pour le professeur:</p>
-              <TextArea
-                :get="`lesson.${$props.datas}.teacherNote`"
-                :open="open"
-                placeholder="Entrez la note du cours"
-              />
-            </div>
-          </v-card>
+      
         </v-row>
       </v-col>
     </v-form>
@@ -205,48 +117,53 @@
 
 <script>
 import { Recurrence } from '../enums/Recurrence'
+import LessonDetailDate from './LessonDetailDate.vue'
+import LessonPictureInput from './LessonPictureInput.vue';
 export default {
-  props: {
-    datas: {
-      type: String,
-      required: true,
+    props: {
+        datas: {
+            type: String,
+            required: true,
+        },
     },
-  },
-  computed: {
-    lesson() {
-      return this.$store.state.lesson[this.$props.datas]
+    computed: {
+        lesson() {
+            return this.$store.state.lesson[this.$props.datas];
+        },
+        valid: {
+            get() {
+                return this.$store.state.lesson.form.valid;
+            },
+            set(newValue) {
+                this.$store.commit("lesson/modify", {
+                    stateName: "form",
+                    payload: { valid: newValue },
+                });
+            },
+        },
+        recurrence() {
+            if (this.$store.state.lesson[this.$props.datas] === undefined)
+                return "";
+            const recurrence = this.$store.state.lesson[this.$props.datas].recurrence;
+            return Recurrence[recurrence];
+        },
+        hasModifications() {
+            if (this.$store.state.lesson.form.payload === undefined)
+                return false;
+            return Object.keys(this.$store.state.lesson.form.payload).length > 0;
+        },
+        open() {
+            return this.$props.datas === "new";
+        },
     },
-    valid: {
-      get() {
-        return this.$store.state.lesson.form.valid
-      },
-      set(newValue) {
-        this.$store.commit('lesson/modify', {
-          stateName: 'form',
-          payload: { valid: newValue },
-        })
-      },
+    methods: {
+        create() {
+            const lessonDatas = { ...this.$store.state.lesson.new, ...this.$store.state.lesson.form.payload };
+            this.$store.dispatch("lesson/create", { lessonDatas });
+            this.$router.push("/professor/lesson/list");
+        },
     },
-    recurrence() {
-      if (this.$store.state.lesson[this.$props.datas] === undefined) return ''
-      const recurrence = this.$store.state.lesson[this.$props.datas].recurrence
-      return Recurrence[recurrence]
-    },
-    hasModifications() {
-      if (this.$store.state.lesson.form.payload === undefined) return false
-      return Object.keys(this.$store.state.lesson.form.payload).length > 0
-    },
-    open() {
-      return this.$props.datas === 'new'
-    },
-  },
-  methods: {
-    create() {
-      const lessonDatas = { ...this.$store.state.lesson.new, ...this.$store.state.lesson.form.payload }
-      this.$store.dispatch('lesson/create', { lessonDatas })
-      this.$router.push('/professor/lesson/list')
-    },
-  },
+    components: { LessonDetailDate, LessonPictureInput }
 }
 </script>
 

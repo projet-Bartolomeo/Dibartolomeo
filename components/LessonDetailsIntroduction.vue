@@ -1,10 +1,13 @@
 <template>
-    <v-col class="pa-0">
+<div>
+<v-card elevation="6" width="45vw" height="8.8vh" min-height="55px">
+
+         
         <v-row class="ma-0 align-center d-flex">
+            
             <TextField :get="`lesson.${$props.stateName}.title`" :rules="[(v) => !!v || 'Le titre est obligatoire']"
-                title :open="open" placeholder="Entrez le titre" />
-        </v-row>
-        <v-row class="ma-0">
+                :open="open" placeholder="Entrez le titre" style=" margin-left: 90px" /> 
+       
             <p class="ma-0 align-center d-flex">
                 {{ $props.studentIds ? $props.studentIds.length : 0 }}/
             </p>
@@ -14,9 +17,12 @@
                     (v) =>
                         !isNaN(Number(v)) ||
                         'Le nombre maximum d\'élèves doit etre un nombre',
-                ]" number :open="open" placeholder="Entrez le nb max d'élèves" />
+                ]" number :open="open" placeholder="Entrez le nb max d'élèves" style=" margin-left: 200px" />
         </v-row>
-    </v-col>
+        
+
+    </v-card>
+    </div>
 </template>
 
 <script>
@@ -31,9 +37,11 @@ export default {
         open() {
             return this.$props.stateName === 'new'
         },
+        lesson() {
+            return this.$store.state.lesson[this.$props.stateName]
+        },
         studentIds() {
-            const lesson = this.$store.state.lesson[this.$props.stateName]
-            return lesson ? lesson.studentIds : 0
+            return this.lesson ? this.lesson.studentIds : 0
         }
     }
 }
