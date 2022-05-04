@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Title value="Ajouter un cours"> </Title>
     <LessonForm datas="new" />
     <DataTableStudent datas="fromLesson" lesson isnew>
       <v-btn
@@ -20,17 +21,23 @@
       >
     </DataTableStudent>
     <div class="button-icons-container">
-      <v-btn v-if="valid" color="grey darken-2" fab text @click="create">
-        <v-icon> mdi-content-save </v-icon>
+      <v-btn
+        v-if="valid"
+        color="#76d9a3"
+        style="color: white; width: 12vw"
+        class="ma-2"
+        @click="create"
+        >Enregistrer
+        <v-icon class="ml-2"> mdi-content-save </v-icon>
       </v-btn>
       <v-btn
         v-if="hasModifications"
-        color="grey darken-2"
-        fab
-        text
+        color="#f4f4f4"
+        style="width: 12vw"
+        class="ma-2"
         @click="$store.dispatch('lesson/resetNewForm')"
-      >
-        <v-icon> mdi-arrow-u-down-left </v-icon>
+        >Rétablir
+        <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
     </div>
   </div>
