@@ -350,21 +350,14 @@ export const actions = {
         return { ...lesson, ...payload, startDate, endDate }
       })
 
-      commit('modifyInList', {
-        stateName: 'studentList',
-        lessonToModify: lessons,
-      })
-      commit('modifyInList', {
-        stateName: 'teacherList',
-        lessonToModify: lessons,
-      })
-
+      dispatch('updateUserLessons', { lessons })
       commit('set', { stateName: 'details', lesson: { ...lesson, ...payload } })
 
       await Promise.all([
         ...lessons.map(async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })),
         dispatch('picture/upload', { uid: payload.coverPicture }, { root: true })
       ])
+
       commit('set', { stateName: 'form', lesson: { valid: true } })
     } catch (error) {
       notification = {
@@ -375,6 +368,17 @@ export const actions = {
     }
 
     if (description) commit('notification/create', notification, { root: true })
+  },
+
+  updateUserLessons({ commit }, { lessons }) {
+    commit('modifyInList', {
+      stateName: 'studentList',
+      lessonToModify: lessons,
+    })
+    commit('modifyInList', {
+      stateName: 'teacherList',
+      lessonToModify: lessons,
+    })
   },
 
   resetNewForm({ commit, dispatch }) {
@@ -420,6 +424,7 @@ export const getters = {
     let studentListFiltered =
       filter.search === '' ? studentList : lessonSearchFilter()
     studentListFiltered = lessonDateFilter(studentListFiltered)
+
     return studentListFiltered.sort(
       (previousLesson, nextLesson) =>
         new Date(convertTimestampToDate(previousLesson.startDate)) -
