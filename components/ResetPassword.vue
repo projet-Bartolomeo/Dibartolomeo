@@ -6,18 +6,22 @@
         label="Mot de passe"
         name="password"
         prepend-icon="mdi-lock"
-        type="password"
+        :type="isPasswordDisplay ? 'text' : 'password'"
         :rules="passwordRules"
         filled
+        :append-icon="isPasswordDisplay ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append="isPasswordDisplay = !isPasswordDisplay"
       ></v-text-field>
       <v-text-field
         v-model="auth.confirmPassword"
         label="Confirmation mot de passe"
         name="confirmPassword"
         prepend-icon="mdi-lock"
-        type="password"
+        :type="isConfirmPasswordDisplay ? 'text' : 'password'"
         :rules="passwordRules"
         filled
+        :append-icon="isConfirmPasswordDisplay ? 'mdi-eye' : 'mdi-eye-off'"
+         @click:append="isConfirmPasswordDisplay = !isConfirmPasswordDisplay"
       ></v-text-field>
     </v-form>
     <v-btn
@@ -38,6 +42,8 @@
 export default {
   data() {
     return {
+      isPasswordDisplay: false,
+      isConfirmPasswordDisplay:false,
       isFormValid: false,
       auth: {
         password: '',
