@@ -10,6 +10,7 @@
       <v-card-text>
         <v-form>
           <v-text-field
+          
             v-model="auth.login"
             label="Email"
             name="login"
@@ -23,13 +24,16 @@
           ></v-text-field>
 
           <v-text-field
+          
             v-model="auth.password"
             label="Mot de passe"
+            :append-icon="isPasswordDisplay ? 'mdi-eye' : 'mdi-eye-off'"
             name="password"
             prepend-icon="mdi-lock"
-            type="password"
+            :type="isPasswordDisplay ? 'text' : 'password'"
             :rules="[(v) => !!v || 'Veuillez entrer votre mot de passe']"
             filled
+            @click:append="isPasswordDisplay = !isPasswordDisplay"
           ></v-text-field>
         </v-form>
       </v-card-text>
@@ -67,6 +71,7 @@ export default {
   layout: 'connexion_inscription',
   data() {
     return {
+      isPasswordDisplay: false,
       id: '',
       auth: {
         email: '',
