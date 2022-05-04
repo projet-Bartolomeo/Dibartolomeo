@@ -1,8 +1,6 @@
 <template>
   <v-app style="background: #fafafa">
-   
       <side-bar />
-    
     <v-main>
       <v-container fluid>
         <Overlay />

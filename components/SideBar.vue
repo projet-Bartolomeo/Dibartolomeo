@@ -19,7 +19,7 @@
     </v-list>
     <template #append>
       <div class="d-flex justify-center flex-wrap pb-12 px-12">
-        <NuxtLink class="nuxtlink" to="/politics/in-regards-to">A propos
+        <NuxtLink class="nuxtlink" to="https://www.pagesjaunes.fr/pros/08713989">A propos
         </NuxtLink>
 
         <div class="mx-1 white--text">|</div>
