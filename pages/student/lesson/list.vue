@@ -35,7 +35,7 @@ export default {
   },
   created() {
     this.$store.dispatch('lesson/setStudentList', {
-      studentId: this.$store.state.user.id,
+      studentId: this.$store.state.user.connected.id,
     })
   },
 }
