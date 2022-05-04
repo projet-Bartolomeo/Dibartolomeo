@@ -7,7 +7,10 @@ export const mutations = {
     set(state, { user, stateName }) {
         state[stateName] = user
     },
-
+    logout( state  ) {
+        // state.connected = {}
+        console.log(state.connected)
+    },
 }
 
 export const actions = {
@@ -52,6 +55,8 @@ export const actions = {
         } catch (error) {
             commit('notification/create', { description: 'Impossible d\'envoyer le mail', type: 'error' }, { root: true })
         }
-    }
-
+    },
+    // async logout({ commit }) {
+    //     await commit('set', { connected: null })
+    // },
 }
