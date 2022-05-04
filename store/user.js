@@ -1,5 +1,6 @@
 export const state = () => ({
     connected: {
+        type: 'visitor'
     }
 })
 
@@ -7,9 +8,8 @@ export const mutations = {
     set(state, { user, stateName }) {
         state[stateName] = user
     },
-    logout( state  ) {
-        // state.connected = {}
-        console.log(state.connected)
+    logout(state) {
+        state.connected = {}
     },
 }
 
