@@ -7,7 +7,6 @@ export const mutations = {
     set(state, { user, stateName }) {
         state[stateName] = user
     },
-
 }
 
 export const actions = {
@@ -15,7 +14,8 @@ export const actions = {
         try {
             const { user } = await this.$fire.auth.createUserWithEmailAndPassword(newUser.email, password)
             const id = user.uid
-            await this.$fire.firestore.collection('user').doc(id).set(newUser)
+            const userToSave = { ...newUser, teacherIds: [], isRegistered: false, isDeleted: false }
+            await this.$fire.firestore.collection('user').doc(id).set(userToSave)
             commit('set', { user: { ...newUser, id }, stateName: 'connected' })
             commit('notification/create', { description: 'Votre compte a été créé' }, { root: true })
         } catch (error) {
