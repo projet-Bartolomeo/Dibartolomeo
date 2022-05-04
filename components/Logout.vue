@@ -8,10 +8,11 @@
 
 export default {
   methods: {
+    logout() {
       logout() {    
-          this.$store.commit('user/logout')
-          this.$router.push('/authentification/login')
-      }
+    logout() {
+      this.$router.push('/authentification/login')
+    }
   },
 }
 </script>
