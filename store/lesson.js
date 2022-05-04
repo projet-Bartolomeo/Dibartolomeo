@@ -329,32 +329,26 @@ export const actions = {
           .get()
       }
 
-      const hasOneToUpdate = !all && !startDate && !endDate
+      let startDateDifference = 0
+      let endDateDifference = 0
+      if (payload.startDate !== undefined)
+        startDateDifference =
+          payload.startDate.getTime() - oldValues.startDate.getTime()
+      if (payload.endDate !== undefined)
+        endDateDifference =
+          payload.endDate.getTime() - oldValues.endDate.getTime()
 
-      if (hasOneToUpdate) {
-        lessons = [{ ...lesson, ...payload }]
-      } else {
-        let startDateDifference = 0
-        let endDateDifference = 0
-        if (payload.startDate !== undefined)
-          startDateDifference =
-            payload.startDate.getTime() - oldValues.startDate.getTime()
-        if (payload.endDate !== undefined)
-          endDateDifference =
-            payload.endDate.getTime() - oldValues.endDate.getTime()
+      lessons = readQuerySnapshot(lessonsSnapshot).map((lesson) => {
+        const startDate = new Date(
+          convertTimestampToDate(lesson.startDate).getTime() +
+          startDateDifference
+        )
+        const endDate = new Date(
+          convertTimestampToDate(lesson.endDate).getTime() + endDateDifference
+        )
 
-        lessons = readQuerySnapshot(lessonsSnapshot).map((lesson) => {
-          const startDate = new Date(
-            convertTimestampToDate(lesson.startDate).getTime() +
-            startDateDifference
-          )
-          const endDate = new Date(
-            convertTimestampToDate(lesson.endDate).getTime() + endDateDifference
-          )
-
-          return { ...lesson, ...payload, startDate, endDate }
-        })
-      }
+        return { ...lesson, ...payload, startDate, endDate }
+      })
 
       commit('modifyInList', {
         stateName: 'studentList',
