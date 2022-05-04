@@ -8,8 +8,6 @@ export const state = () => ({
     new: {},
     form: {},
     participant: {},
-  
-
 })
 
 export const mutations = {
@@ -84,7 +82,6 @@ export const actions = {
         }
     },
 
-
     async setFromLesson({ rootState, commit, dispatch }, { stateName }) {
         try {
             const studentIds = rootState.lesson[stateName].studentIds
@@ -111,9 +108,6 @@ export const actions = {
             commit('notification/create', { description: 'Problème lors de la récupération des élèves', type: 'error' }, { root: true })
         }
     },
-
-
-
 
     async removeFromTeacher({ commit, rootState }, { student }) {
         try {
@@ -151,6 +145,16 @@ export const actions = {
         }
     },
 
+    async addProfessor({ rootState }, { teacherId }) {
+        const connectedUser = rootState.user.connected
+        const { teacherIds, id } = connectedUser
+
+        const hasAlreadyThisProfessor = teacherIds.includes(teacherId)
+        if (hasAlreadyThisProfessor) return
+
+        const newTeacherIds = [...teacherIds, teacherId]
+        await this.$fire.firestore.collection('user').doc(id).update({ teacherIds: newTeacherIds })
+    },
 
     async modify({ commit, rootState }, { studentId, payload }) {
         try {

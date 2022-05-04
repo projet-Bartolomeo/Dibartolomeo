@@ -355,7 +355,7 @@ export const actions = {
 
       await Promise.all([
         ...lessons.map(async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })),
-        dispatch('picture/upload', { uid: payload.coverPicture }, { root: true })
+        dispatch('student/addProfessor', { teacherId: lesson.teacherId }, { root: true })
       ])
 
       commit('set', { stateName: 'form', lesson: { valid: true } })
