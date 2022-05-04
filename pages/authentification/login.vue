@@ -13,5 +13,8 @@ export default {
       
     }
   },
+  created() {
+    this.$store.commit('user/logout')
+  },
 }
 </script>
