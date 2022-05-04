@@ -33,6 +33,10 @@ export default {
   plugins: [
   ],
 
+  router: {
+    middleware: 'auth'
+  },
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
@@ -45,6 +49,11 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
   ],
+
+  env: {
+    defaultCoverPictureName: process.env.defaultCoverPictureName,
+    projectId: process.env.projectId
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [

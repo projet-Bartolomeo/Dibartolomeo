@@ -32,7 +32,7 @@ export const actions = {
 
             commit('notification/create', { description }, { root: true })
         } catch (error) {
-            commit('notification/create', { description: 'problème lors de l\'envoi du message', type: 'error' }, { root: true })
+            commit('notification/create', { description: 'Problème lors de l\'envoi du message', type: 'error' }, { root: true })
         }
     },
 }

@@ -2,79 +2,85 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4" align="center">
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
-        <v-card-title class="red--text text--lighten-1"
-          >Créer un Compte</v-card-title
+        <v-card-title class="text--lighten-1" style="color: #fa3257"
+          >Créer un compte</v-card-title
         >
       </v-row>
 
       <v-card-text>
-        <v-form>
+        <v-form v-model="isFormValid">
           <v-text-field
+            v-model="NewUser.firstName"
             label="Nom"
             name="name"
-            v-model="NewUser.firstName"
-            :rules="[(v) => !!v || 'Veuiller entrer votre Nom']"
+            :rules="[(v) => !!v || 'Veuillez entrer votre nom']"
             prepend-icon="mdi-account"
             type="text"
             filled
-          ></v-text-field>
+            required
+          >
+          </v-text-field>
           <v-text-field
+            v-model="NewUser.lastName"
             label="Prenom"
             name="firstname"
-            v-model="NewUser.lastName"
-            :rules="[(v) => !!v || 'Veuiller entrer votre prenom']"
+            :rules="[(v) => !!v || 'Veuillez entrer votre prénom']"
             prepend-icon="mdi-account"
             type="text"
             filled
+            required
           ></v-text-field>
           <v-text-field
+            v-model="NewUser.email"
             label="Email"
             name="login"
-            v-model="NewUser.email"
             :rules="[
-              (v) => !!v || 'Veuiller entrer votre email',
+              (v) => !!v || 'Veuillez entrer votre email',
               (v) => /.+@.+\..+/.test(v) || 'Le mail n\'est pas valide',
             ]"
             prepend-icon="mdi-email"
             type="text"
             filled
+            required
           ></v-text-field>
 
           <v-text-field
+            v-model="authenti.mot_pass"
             label="Mot de passe"
             name="password"
-            v-model="authenti.mot_pass"
-            :rules="passwordRules"
             prepend-icon="mdi-lock"
+            :rules="passwordRules"
             type="password"
             filled
+            required
           ></v-text-field>
           <v-text-field
-            label="Confirmation du mot de passe"
             v-model="authenti.confirm"
-            :rules="[(v) => !!v || 'Veuiller entrer votre mot de passe']"
+            label="Confirmation du mot de passe"
+            :rules="passwordConfirmationRules"
             name="password"
             prepend-icon="mdi-lock"
             type="password"
             filled
-          ></v-text-field>
+            required
+          >
+          </v-text-field>
         </v-form>
       </v-card-text>
 
       <v-row class="d-flex justify-center mb-6 align-center mt-5">
         <v-btn
-          class="login-button"
-          @click="Inscription"
+          :disabled="!isFormValid"
           depressed
+          rounded
           large
-          color="error"
-          >S'inscrire</v-btn
+          color="#fa3257"
+          style="color: white"
+          @click="Inscription"
+        >
+          S'inscrire</v-btn
         >
       </v-row>
-
-      <v-snackbar :timeout="4000" v-model="snackbar" absolute bottom center>
-        {{ snackbarText }}
-      </v-snackbar>
     </v-col>
   </v-row>
 </template>
@@ -84,11 +90,16 @@ export default {
   layout: 'connexion',
   data() {
     return {
-      snackbar: false,
-      snackbarText: 'No error message',
+      isFormValid: false,
       passwordRules: [
-        (value) => !!value || 'Please type password.',
-        (value) => (value && value.length >= 6) || 'minimum 6 characters',
+        (value) => !!value || 'Veuillez entrer votre mot de passe.',
+        (value) => (value && value.length >= 6) || 'Minimum 6 caractères',
+      ],
+      passwordConfirmationRules: [
+        (value) => !!value || 'Veuillez entrer votre mot de passe.',
+        (value) =>
+          value === this.authenti.mot_pass ||
+          'Les mots de passe ne correspondent pas',
       ],
       NewUser: {
         lastName: '',
@@ -108,13 +119,11 @@ export default {
 
   methods: {
     async Inscription() {
-      if (this.authenti.mot_pass === this.authenti.confirm) {
-        await this.$store.dispatch('user/register', {
-          newUser: this.NewUser,
-          password: this.authenti.confirm,
-        })
-        this.$router.push('/student/lesson/planning')
-      }
+      await this.$store.dispatch('user/register', {
+        newUser: this.NewUser,
+        password: this.authenti.confirm,
+      })
+      this.$router.push('/student/lesson/planning')
     },
   },
 }

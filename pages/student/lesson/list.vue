@@ -5,23 +5,14 @@
         <div>
           <Title value="Mes cours"> </Title>
         </div>
-        <LessonFilter
-          search-store="lesson.filter.search"
-          start-date-store="lesson.filter.startDate"
-          end-date-store="lesson.filter.endDate"
-        >
+        <LessonFilter search-store="lesson.filter.search" start-date-store="lesson.filter.startDate"
+          end-date-store="lesson.filter.endDate">
         </LessonFilter>
       </div>
     </div>
 
-    <div
-      v-if="$store.getters['lesson/studentListFiltered'].length != 0"
-      class="listCard"
-    >
-      <div
-        v-for="lesson in $store.getters['lesson/studentListFiltered']"
-        :key="lesson.id"
-      >
+    <div v-if="$store.getters['lesson/studentListFiltered'].length != 0" class="listCard">
+      <div v-for="lesson in $store.getters['lesson/studentListFiltered']" :key="lesson.id">
         <CardStudentLesson :lesson="lesson" />
         <div>
           <v-divider class="separator"></v-divider>
@@ -29,9 +20,8 @@
       </div>
     </div>
     <div v-else class="justify-center d-flex align-center" style="flex-grow: 1">
+      <h1 class="text-list">Oups, aucun cours disponible</h1>
       <img class="logolessonList" src="/image/logo-grey.png" />
-
-      <h1 class="text">Oups, aucun cours disponible</h1>
     </div>
   </div>
 </template>
@@ -72,7 +62,6 @@ export default {
 }
 
 .listCard {
-  height: 80vh;
   padding-left: 50px;
 }
 
@@ -81,11 +70,12 @@ export default {
   margin-bottom: 30px;
 }
 
-.text {
+.text-list {
   z-index: 2;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .logolessonList {

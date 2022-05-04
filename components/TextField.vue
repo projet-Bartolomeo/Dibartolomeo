@@ -24,7 +24,7 @@
       :autofocus="!$props.open"
       :suffix="$props.suffix"
       :placeholder="$props.placeholder"
-      style="width: 16vw;"
+      :disabled="$props.disabled"
     ></v-text-field>
     <v-btn v-if='!$props.open' color="grey darken-2 auto-width" fab text @click="changeState">
       <v-icon> mdi-pencil </v-icon>
@@ -64,6 +64,10 @@ export default {
       default: '',
     },
     open: {
+      type: Boolean,
+      required: false,
+    },
+    disabled: {
       type: Boolean,
       required: false,
     },
