@@ -306,7 +306,7 @@ export const actions = {
 
   async modify(
     { state, commit, dispatch },
-    { lesson, startDate, endDate, all, newData, description }
+    { lesson, startDate, endDate, all, newData, description, isRecurrent }
   ) {
     const lessonRef = this.$fire.firestore.collection('lesson')
     let notification = { type: 'success', description }
@@ -316,7 +316,11 @@ export const actions = {
 
     try {
       let lessonsSnapshot
-      if (all) {
+      if (!isRecurrent) {
+        lessonsSnapshot = await lessonRef
+          .doc(lesson.id)
+          .get()
+      } else if (all) {
         lessonsSnapshot = await lessonRef
           .where('recurrenceId', '==', lesson.recurrenceId)
           .where('startDate', '>=', new Date())
@@ -329,32 +333,37 @@ export const actions = {
           .get()
       }
 
-      let startDateDifference = 0
-      let endDateDifference = 0
-      if (payload.startDate !== undefined)
-        startDateDifference =
-          payload.startDate.getTime() - oldValues.startDate.getTime()
-      if (payload.endDate !== undefined)
-        endDateDifference =
-          payload.endDate.getTime() - oldValues.endDate.getTime()
+      if (!isRecurrent) {
+        lessons = [{ ...lesson, ...payload }]
+      } else {
+        lessons = readQuerySnapshot(lessonsSnapshot).map((lesson) => {
+          let startDateDifference = 0
+          let endDateDifference = 0
+          if (payload.startDate !== undefined)
+            startDateDifference =
+              payload.startDate.getTime() - oldValues.startDate.getTime()
+          if (payload.endDate !== undefined)
+            endDateDifference =
+              payload.endDate.getTime() - oldValues.endDate.getTime()
 
-      lessons = readQuerySnapshot(lessonsSnapshot).map((lesson) => {
-        const startDate = new Date(
-          convertTimestampToDate(lesson.startDate).getTime() +
-          startDateDifference
-        )
-        const endDate = new Date(
-          convertTimestampToDate(lesson.endDate).getTime() + endDateDifference
-        )
+          const startDate = new Date(
+            convertTimestampToDate(lesson.startDate).getTime() +
+            startDateDifference
+          )
+          const endDate = new Date(
+            convertTimestampToDate(lesson.endDate).getTime() + endDateDifference
+          )
 
-        return { ...lesson, ...payload, startDate, endDate }
-      })
+          return { ...lesson, ...payload, startDate, endDate }
+        })
+      }
 
       dispatch('updateUserLessons', { lessons })
       commit('set', { stateName: 'details', lesson: { ...lesson, ...payload } })
 
       await Promise.all([
         ...lessons.map(async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })),
+        dispatch('picture/upload', { uid: payload.coverPicture }, { root: true }),
         dispatch('student/addProfessor', { teacherId: lesson.teacherId }, { root: true })
       ])
 
