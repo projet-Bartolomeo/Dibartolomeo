@@ -96,14 +96,11 @@
 </template>
 
 <script>
-import FormInscription from './FormInscription.vue'
-import Formlogin from './Formlogin.vue'
 export default {
   layout: 'connect',
   data() {
     return {
       authBar: 'register',
-
       permanent: true,
     }
   },
