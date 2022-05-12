@@ -45,24 +45,29 @@
           ></v-text-field>
 
           <v-text-field
+          
             v-model="authenti.mot_pass"
+            :append-icon="isPasswordDisplay ? 'mdi-eye' : 'mdi-eye-off'"
             label="Mot de passe"
             name="password"
             prepend-icon="mdi-lock"
             :rules="passwordRules"
-            type="password"
+            :type="isPasswordDisplay ? 'text' : 'password'"
             filled
             required
+            @click:append="isPasswordDisplay = !isPasswordDisplay"
           ></v-text-field>
-          <v-text-field
+          <v-text-field          
             v-model="authenti.confirm"
+            :append-icon="isConfirmPasswordDisplay ? 'mdi-eye' : 'mdi-eye-off'"
             label="Confirmation du mot de passe"
             :rules="passwordConfirmationRules"
             name="password"
             prepend-icon="mdi-lock"
-            type="password"
+           :type="isPasswordDisplay ? 'text' : 'password'"           
             filled
             required
+            @click:append="isConfirmPasswordDisplay = !isConfirmPasswordDisplay"
           >
           </v-text-field>
         </v-form>
@@ -90,6 +95,8 @@ export default {
   layout: 'connexion',
   data() {
     return {
+      isPasswordDisplay: false,
+      isConfirmPasswordDisplay:false,
       isFormValid: false,
       passwordRules: [
         (value) => !!value || 'Veuillez entrer votre mot de passe.',

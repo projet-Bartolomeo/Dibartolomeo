@@ -203,11 +203,11 @@ export default {
         startDate:
           this.optionSelected === 1 && this.isRecurrent
             ? new Date(this.startDate)
-            : null,
+            : this.$props.lesson.startDate,
         endDate:
           this.optionSelected === 1 && this.isRecurrent
             ? new Date(this.endDate)
-            : null,
+            : this.$props.lesson.endDate,
         description: this.description
       }
       return parameters

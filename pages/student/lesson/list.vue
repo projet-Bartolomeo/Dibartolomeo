@@ -35,7 +35,7 @@ export default {
   },
   created() {
     this.$store.dispatch('lesson/setStudentList', {
-      studentId: this.$store.state.user.id,
+      studentId: this.$store.state.user.connected.id,
     })
   },
 }
@@ -79,8 +79,10 @@ export default {
 }
 
 .logolessonList {
-  width: 55vh;
-  height: 14vh;
+  margin: 20;
+  min-width: 70vw;
+  width: 60vw;
+  height: auto;
   position: absolute;
   z-index: 1;
   object-fit: fill;

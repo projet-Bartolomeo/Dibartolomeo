@@ -329,48 +329,35 @@ export const actions = {
           .get()
       }
 
-      const hasOneToUpdate = !all && !startDate && !endDate
+      let startDateDifference = 0
+      let endDateDifference = 0
+      if (payload.startDate !== undefined)
+        startDateDifference =
+          payload.startDate.getTime() - oldValues.startDate.getTime()
+      if (payload.endDate !== undefined)
+        endDateDifference =
+          payload.endDate.getTime() - oldValues.endDate.getTime()
 
-      if (hasOneToUpdate) {
-        lessons = [{ ...lesson, ...payload }]
-      } else {
-        let startDateDifference = 0
-        let endDateDifference = 0
-        if (payload.startDate !== undefined)
-          startDateDifference =
-            payload.startDate.getTime() - oldValues.startDate.getTime()
-        if (payload.endDate !== undefined)
-          endDateDifference =
-            payload.endDate.getTime() - oldValues.endDate.getTime()
+      lessons = readQuerySnapshot(lessonsSnapshot).map((lesson) => {
+        const startDate = new Date(
+          convertTimestampToDate(lesson.startDate).getTime() +
+          startDateDifference
+        )
+        const endDate = new Date(
+          convertTimestampToDate(lesson.endDate).getTime() + endDateDifference
+        )
 
-        lessons = readQuerySnapshot(lessonsSnapshot).map((lesson) => {
-          const startDate = new Date(
-            convertTimestampToDate(lesson.startDate).getTime() +
-            startDateDifference
-          )
-          const endDate = new Date(
-            convertTimestampToDate(lesson.endDate).getTime() + endDateDifference
-          )
-
-          return { ...lesson, ...payload, startDate, endDate }
-        })
-      }
-
-      commit('modifyInList', {
-        stateName: 'studentList',
-        lessonToModify: lessons,
-      })
-      commit('modifyInList', {
-        stateName: 'teacherList',
-        lessonToModify: lessons,
+        return { ...lesson, ...payload, startDate, endDate }
       })
 
+      dispatch('updateUserLessons', { lessons })
       commit('set', { stateName: 'details', lesson: { ...lesson, ...payload } })
 
       await Promise.all([
         ...lessons.map(async (lesson) => await lessonRef.doc(lesson.id).update({ ...lesson })),
         dispatch('picture/upload', { uid: payload.coverPicture }, { root: true })
       ])
+
       commit('set', { stateName: 'form', lesson: { valid: true } })
     } catch (error) {
       notification = {
@@ -381,6 +368,17 @@ export const actions = {
     }
 
     if (description) commit('notification/create', notification, { root: true })
+  },
+
+  updateUserLessons({ commit }, { lessons }) {
+    commit('modifyInList', {
+      stateName: 'studentList',
+      lessonToModify: lessons,
+    })
+    commit('modifyInList', {
+      stateName: 'teacherList',
+      lessonToModify: lessons,
+    })
   },
 
   resetNewForm({ commit, dispatch }) {
@@ -426,6 +424,7 @@ export const getters = {
     let studentListFiltered =
       filter.search === '' ? studentList : lessonSearchFilter()
     studentListFiltered = lessonDateFilter(studentListFiltered)
+
     return studentListFiltered.sort(
       (previousLesson, nextLesson) =>
         new Date(convertTimestampToDate(previousLesson.startDate)) -
