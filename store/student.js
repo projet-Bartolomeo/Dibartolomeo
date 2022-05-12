@@ -141,7 +141,6 @@ export const actions = {
 
             commit('notification/create', { description: 'L\'élève a été supprimé' }, { root: true })
         } catch (error) {
-            console.log(error)
             commit('notification/create', { description: 'Problème lors de la suppression ', type: 'error' }, { root: true })
         }
     },
