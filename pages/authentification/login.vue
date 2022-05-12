@@ -6,15 +6,6 @@
 
 <script>
 export default {
-  layout: 'connect',
-  data() {
-    return {
-      snackbar: false,
-      snackbarText: 'No error message',
-    }
-  },
-  created() {
-    this.$store.commit('user/logout')
-  },
+  layout: 'connect'
 }
 </script>
