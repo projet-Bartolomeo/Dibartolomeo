@@ -65,7 +65,9 @@
               class="nuxtlink d-flex justify-center align-center"
               :to="`/professor/student/${item.id}`"
             >
-              <v-icon class="mr-1"> mdi-pencil </v-icon>
+              <v-icon @click="$store.commit('overlay/close')" class="mr-1">
+                mdi-pencil
+              </v-icon>
             </NuxtLink>
 
             <v-icon v-if="$props.lesson" @click="deleteStudentFromLesson(item)">
@@ -90,24 +92,24 @@ export default {
   props: {
     datas: {
       type: String,
-      required: true
+      required: true,
     },
     message: {
       type: Boolean,
-      required: false
+      required: false,
     },
     lesson: {
       type: Boolean,
-      required: false
+      required: false,
     },
     add: {
       type: Boolean,
-      required: false
+      required: false,
     },
     isnew: {
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
@@ -119,22 +121,22 @@ export default {
           value: 'email',
           initialValue: '',
           type: 'input',
-          align: 'start'
+          align: 'start',
         },
         { text: 'Nom', value: 'lastName', initialValue: '', type: 'input' },
         {
           text: 'Prenom',
           value: 'firstName',
           initialValue: '',
-          type: 'input'
+          type: 'input',
         },
-        { text: 'Actions', value: 'actions', sortable: false, type: 'switch' }
+        { text: 'Actions', value: 'actions', sortable: false, type: 'switch' },
       ],
       search: '',
       currentHeader: {},
       singleSelect: false,
       selected: [],
-      delete: []
+      delete: [],
     }
   },
   computed: {
@@ -142,8 +144,8 @@ export default {
       return this.$props.isnew ? 'new' : 'details'
     },
     student() {
-      return [ ...this.$store.state.student[this.$props.datas] ]
-    }
+      return [...this.$store.state.student[this.$props.datas]]
+    },
   },
 
   created() {
@@ -159,7 +161,7 @@ export default {
         component: 'DeleteForm',
         props: {
           dataToDelete: student,
-          type: 'student'
+          type: 'student',
         },
       })
     },
@@ -176,9 +178,11 @@ export default {
           lesson: lessonState,
           modify: true,
           payload,
-          student
+          student,
         },
-        title: lessonState.recurrenceId ? 'Voulez-vous retirer cet élève :' : ''
+        title: lessonState.recurrenceId
+          ? 'Voulez-vous retirer cet élève :'
+          : '',
       })
     },
 
@@ -193,12 +197,14 @@ export default {
           lesson: lessonState,
           modify: true,
           payload,
-          student
+          student,
         },
-        title: lessonState.recurrenceId ? 'Voulez-vous ajouter cet élève :' : ''
+        title: lessonState.recurrenceId
+          ? 'Voulez-vous ajouter cet élève :'
+          : '',
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
