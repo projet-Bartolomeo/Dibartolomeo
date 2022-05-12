@@ -1,5 +1,5 @@
 <template>
-  <v-btn depressed color="error" style="width: 12vw" class="ma-2" @click="logout()">
+  <v-btn depressed color="error" style="width: 12vw" class="ma-2" @click="logout">
     Déconnexion
     <v-icon class="ml-2"> mdi-logout </v-icon>
   </v-btn>
@@ -9,7 +9,8 @@
 export default {
   methods: {
     logout() {
-      this.$router.push('/authentification/login')
+      this.$store.commit('user/logout')
+      this.$router.push('/')
     }
   },
 }
