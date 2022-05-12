@@ -1,7 +1,5 @@
 export const state = () => ({
-    connected: {
-        type: 'visitor'
-    }
+    connected: {}
 })
 
 export const mutations = {
@@ -56,7 +54,4 @@ export const actions = {
             commit('notification/create', { description: 'Impossible d\'envoyer le mail', type: 'error' }, { root: true })
         }
     },
-    // async logout({ commit }) {
-    //     await commit('set', { connected: null })
-    // },
 }
