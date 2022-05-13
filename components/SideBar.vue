@@ -16,7 +16,7 @@
           <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded>{{ item.title }}</v-btn>
         </NuxtLink>
       </div>
-      <div class="my-10 d-flex justify-center">
+      <div v-if="$store.state.user.connected.type === 'professor'" class="my-10 d-flex justify-center">
         <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded @click="logout">Déconnexion</v-btn>
       </div>
     </v-list>
