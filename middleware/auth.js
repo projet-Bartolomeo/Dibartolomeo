@@ -7,7 +7,10 @@ export default function ({ store, redirect, route }) {
         return redirect('/authentification/login')
     }
 
-    if (userType !== pageType) {
-        return redirect(`/${userType}/lesson/planning`)
+    if (userType === "student" && pageType === "professor") {
+        return redirect(`/student/lesson/planning`)
+    }
+    if (userType === "professor" && pageType === "student") {
+        return redirect(`/professor/lesson/planning`)
     }
 }
