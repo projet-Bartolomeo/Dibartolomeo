@@ -200,6 +200,7 @@ export default {
         lesson: this.$props.lesson,
         newData: this.$props.payload,
         all: this.optionSelected === 2 && this.isRecurrent,
+        isRecurrent: this.isRecurrent,
         startDate:
           this.optionSelected === 1 && this.isRecurrent
             ? new Date(this.startDate)
