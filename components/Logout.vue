@@ -1,5 +1,5 @@
 <template>
-  <v-btn depressed color="error" style="width: 12vw" class="ma-2" @click="logout">
+  <v-btn depressed color="#fa3257" style="width: 12vw" class="ma-2 white--text" @click="logout">
     Déconnexion
     <v-icon class="ml-2"> mdi-logout </v-icon>
   </v-btn>
