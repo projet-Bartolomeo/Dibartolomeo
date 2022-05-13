@@ -9,6 +9,7 @@ export const mutations = {
     logout(state) {
         state.connected = {}
     },
+
 }
 
 export const actions = {
