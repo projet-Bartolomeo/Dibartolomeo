@@ -161,7 +161,8 @@ export const actions = {
         const { teacherIds, id } = connectedUser
 
         const hasAlreadyThisProfessor = teacherIds.includes(teacherId)
-        if (hasAlreadyThisProfessor) return
+        const isNotStudent = connectedUser.type !== 'professor'
+        if (hasAlreadyThisProfessor && isNotStudent) return
 
         const newTeacherIds = [...teacherIds, teacherId]
         await this.$fire.firestore.collection('user').doc(id).update({ teacherIds: newTeacherIds })
