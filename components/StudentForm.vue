@@ -131,6 +131,7 @@
         Rétablir
         <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
+      <Logout v-if="$store.state.user.connected.type === 'student'" />
       <v-btn
         v-if="$props.redirect == '/professor/student/list'"
         color="#fa3257"

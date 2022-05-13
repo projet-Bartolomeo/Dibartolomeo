@@ -16,11 +16,14 @@
           <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded>{{ item.title }}</v-btn>
         </NuxtLink>
       </div>
+      <div v-if="$store.state.user.connected.type === 'professor'" class="my-10 d-flex justify-center">
+        <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded @click="logout">Déconnexion</v-btn>
+      </div>
     </v-list>
     <template #append>
       <div class="d-flex justify-center flex-wrap pb-12 px-12">
-        <NuxtLink class="nuxtlink" to="https://www.pagesjaunes.fr/pros/08713989">A propos
-        </NuxtLink>
+        <a class="nuxtlink" href="https://www.pagesjaunes.fr/pros/08713989">A propos
+        </a>
 
         <div class="mx-1 white--text">|</div>
 
@@ -29,13 +32,11 @@
 
         <div class="mx-1 white--text">|</div>
 
-        <NuxtLink class="nuxtlink" to="/politics/data-protection-policy">Politique de
-          confidentialité</NuxtLink>
+        <NuxtLink class="nuxtlink" to="/politics/data-protection-policy">Politique de confidentialité</NuxtLink>
 
         <div class="mx-1 white--text">|</div>
 
-        <NuxtLink class="nuxtlink" to="/politics/legal-notice">Mention
-          légale</NuxtLink>
+        <NuxtLink class="nuxtlink" to="/politics/legal-notice">Mention légale</NuxtLink>
       </div>
     </template>
   </v-navigation-drawer>
@@ -80,6 +81,12 @@ export default {
       ],
 
       permanent: true,
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.commit('user/logout')
+      this.$router.push('/')
     }
   },
   computed: {
