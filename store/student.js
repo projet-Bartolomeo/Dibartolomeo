@@ -8,7 +8,7 @@ export const state = () => ({
     new: {},
     form: {},
     participant: {},
-  
+
 
 })
 
@@ -113,8 +113,6 @@ export const actions = {
     },
 
 
-
-
     async removeFromTeacher({ commit, rootState }, { student }) {
         try {
             commit('removeFromList', { stateName: 'teacherList', studentId: student.id })
@@ -126,9 +124,20 @@ export const actions = {
             let isDeleted = true
             if (student.isRegistered) isDeleted = false
 
-            await this.$fire.firestore.collection('user')
-                .doc(student.id)
-                .update({ teacherIds, isDeleted })
+            const lessonsToUdpateSnapshot = await this.$fire.firestore.collection('lesson')
+                .where('studentIds', 'array-contains', student.id).get()
+
+            const lessonsToUpdate = readQuerySnapshot(lessonsToUdpateSnapshot)
+
+            await Promise.all([
+                ...lessonsToUpdate.map(async lesson => {
+                    const studentIds = lesson.studentIds.filter(id => student.id !== id)
+                    await this.$fire.firestore.collection('lesson').doc(lesson.id).update({ studentIds })
+                }),
+                this.$fire.firestore.collection('user')
+                    .doc(student.id)
+                    .update({ teacherIds, isDeleted })
+            ])
 
             commit('notification/create', { description: 'L\'élève a été supprimé' }, { root: true })
         } catch (error) {
