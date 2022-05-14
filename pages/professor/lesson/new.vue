@@ -24,7 +24,7 @@
       <v-btn
         v-if="valid"
         color="#76d9a3"
-        style="color: white; width: 12vw"
+        style="color: white"
         class="ma-2"
         @click="create"
         >Enregistrer
@@ -33,7 +33,6 @@
       <v-btn
         v-if="hasModifications"
         color="#f4f4f4"
-        style="width: 12vw"
         class="ma-2"
         @click="$store.dispatch('lesson/resetNewForm')"
         >Rétablir

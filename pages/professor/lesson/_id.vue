@@ -22,7 +22,7 @@
     <div v-if="hasModifications && valid" class="button-icons-container">
       <v-btn
         color="#76d9a3"
-        style="color: white; width: 12vw"
+        style="color: white"
         class="ma-2"
         @click="
           $store.commit('overlay/open', {
@@ -40,7 +40,6 @@
       </v-btn>
       <v-btn
         color="#f4f4f4"
-        style="width: 12vw"
         class="ma-2"
         @click="
           $store.dispatch('resetEditionForm', {
