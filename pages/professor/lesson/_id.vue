@@ -1,10 +1,11 @@
 <template>
   <div>
+    <Title value="Modifier un cours"> </Title>
     <LessonForm datas="details" />
-   <DataTableStudent datas="fromLesson" lesson>
+    <DataTableStudent datas="fromLesson" lesson>
       <v-btn
         style="color: white"
-        color="teal lighten-2"
+        color="#76d9a3"
         @click="
           $store.commit('overlay/open', {
             component: 'DataTableStudent',
@@ -20,9 +21,9 @@
     </DataTableStudent>
     <div v-if="hasModifications && valid" class="button-icons-container">
       <v-btn
-        color="grey darken-2"
-        fab
-        text
+        color="#76d9a3"
+        style="color: white"
+        class="ma-2"
         @click="
           $store.commit('overlay/open', {
             component: 'LessonModificationForm',
@@ -34,21 +35,20 @@
             title: lesson.recurrenceId ? 'Voulez-vous enregistrer :' : '',
           })
         "
-      >
-        <v-icon> mdi-content-save </v-icon>
+        >Enrregistrer
+        <v-icon class="ma-2"> mdi-content-save </v-icon>
       </v-btn>
       <v-btn
-        color="grey darken-2"
-        fab
-        text
+        color="#f4f4f4"
+        class="ma-2"
         @click="
           $store.dispatch('resetEditionForm', {
             storeName: 'lesson',
             stateName: 'details',
           })
         "
-      >
-        <v-icon> mdi-arrow-u-down-left </v-icon>
+        >Rétablir
+        <v-icon class="ma-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
     </div>
   </div>
@@ -85,13 +85,22 @@ export default {
       'Dimanche',
     ],
   }),
+  computed: {
+    valid() {
+      return this.$store.state.lesson.form.valid
+    },
+    hasModifications() {
+      if (this.$store.state.lesson.form.payload === undefined) return false
+      return Object.keys(this.$store.state.lesson.form.payload).length > 0
+    },
+  },
   async created() {
     this.$store.dispatch('resetEditionForm', {
       storeName: 'lesson',
       stateName: 'details',
     })
     await this.$store.dispatch('lesson/setDetails', {
-      lessonId: this.$route.query.id,
+      lessonId: this.$route.params.id,
     })
   },
 
@@ -110,16 +119,6 @@ export default {
 
     addToPayload(field, value) {
       this.payload = { ...this.payload, [field]: value }
-    },
-  },
-
-  computed: {
-    valid() {
-      return this.$store.state.lesson.form.valid
-    },
-    hasModifications() {
-      if (this.$store.state.lesson.form.payload === undefined) return false
-      return Object.keys(this.$store.state.lesson.form.payload).length > 0
     },
   },
 }

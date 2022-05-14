@@ -1,8 +1,8 @@
 <template>
   <div>
     <Title value="Listes des cours">
-      <router-link class="text-decoration-none" to="professor/lesson/new">
-        <v-btn style="color: white" color="teal lighten-2"
+      <router-link class="text-decoration-none" to="/professor/lesson/new">
+        <v-btn style="color: white" color="#53b3e6"
           >Ajouter un cours
         </v-btn>
       </router-link>

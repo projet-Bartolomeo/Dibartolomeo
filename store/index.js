@@ -11,11 +11,27 @@ export const mutations = {
 export const getters = {
     getStateFromString: (state) => (stateToConvert) => {
         const stateInformation = stateToConvert.split('.')
+        if(stateInformation.length === 2) {
+            return {
+                storeName: stateInformation[0],
+                fieldName: stateInformation[1],
+                value: state[stateInformation[0]][stateInformation[1]],
+            }
+        }
+        if(stateInformation.length === 3) {
+            return {
+                storeName: stateInformation[0],
+                stateName: stateInformation[1],
+                fieldName: stateInformation[2],
+                value: state[stateInformation[0]][stateInformation[1]][stateInformation[2]],
+            }
+        }
         return {
             storeName: stateInformation[0],
             stateName: stateInformation[1],
-            fieldName: stateInformation[2],
-            value: state[stateInformation[0]][stateInformation[1]][stateInformation[2]],
+            index: stateInformation[2],
+            fieldName: stateInformation[3],
+            value: state[stateInformation[0]][stateInformation[1]][stateInformation[2]][stateInformation[3]],
         }
     }
 }
@@ -49,19 +65,14 @@ export const actions = {
             })
         }
     },
-    resetEditionForm({ commit, rootState }, { storeName, stateName }) {
-        commit(`${storeName}/modify`,  { stateName, payload: rootState[storeName].form.oldValues })
+
+    resetEditionForm({ commit, rootState, dispatch }, { storeName, stateName }) {
+        const oldValues = rootState[storeName].form.oldValues
+        commit(`${storeName}/modify`, { stateName, payload: oldValues })
         commit(`${storeName}/set`, {
             stateName: 'form',
             lesson: { valid: true },
         })
-    },
-
-    studentResetEditionForm({ commit, rootState }, { storeName, stateName }) {
-        commit(`${storeName}/modify`,  { stateName, payload: rootState[storeName].form.oldValues })
-        commit(`${storeName}/set`, {
-            stateName: 'form',
-            student: { valid: true },
-        })
+        dispatch('picture/resetEditionForm')
     },
 }

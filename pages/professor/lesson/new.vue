@@ -1,17 +1,18 @@
 <template>
   <div>
+    <Title value="Ajouter un cours"> </Title>
     <LessonForm datas="new" />
-    <DataTableStudent datas="fromLesson" lesson isNew>
+    <DataTableStudent datas="fromLesson" lesson isnew>
       <v-btn
         style="color: white"
-        color="teal lighten-2"
+        color="#76d9a3"
         @click="
           $store.commit('overlay/open', {
             component: 'DataTableStudent',
             props: {
               datas: 'notInLesson',
               add: true,
-              isNew: true,
+              isnew: true,
             },
             title: 'Choisissez les élèves à ajouter à votre cours',
           })
@@ -20,17 +21,22 @@
       >
     </DataTableStudent>
     <div class="button-icons-container">
-      <v-btn v-if="valid" color="grey darken-2" fab text @click="create">
-        <v-icon> mdi-content-save </v-icon>
+      <v-btn
+        v-if="valid"
+        color="#76d9a3"
+        style="color: white"
+        class="ma-2"
+        @click="create"
+        >Enregistrer
+        <v-icon class="ml-2"> mdi-content-save </v-icon>
       </v-btn>
       <v-btn
         v-if="hasModifications"
-        color="grey darken-2"
-        fab
-        text
+        color="#f4f4f4"
+        class="ma-2"
         @click="$store.dispatch('lesson/resetNewForm')"
-      >
-        <v-icon> mdi-arrow-u-down-left </v-icon>
+        >Rétablir
+        <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
       </v-btn>
     </div>
   </div>
@@ -55,24 +61,7 @@ export default {
     time: null,
     menu2: false,
     modal2: false,
-    recurence: ['Unique', 'Chaque semaine'],
-    Age: ['Enfant', 'Adolescent', 'Adulte', 'Senior'],
-    jour: [
-      'Lundi',
-      'Mardi',
-      'Mercredi',
-      'Jeudi',
-      'Vendredi',
-      'Samedi',
-      'Dimanche',
-    ],
   }),
-  methods: {
-    create() {
-      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
-      this.$router.push('/professor/lesson/list')
-    },
-  },
   computed: {
     hasModifications() {
       if (this.$store.state.lesson.form.payload === undefined) return false
@@ -92,6 +81,12 @@ export default {
   },
   created() {
     this.$store.dispatch('lesson/setNew')
+  },
+  methods: {
+    create() {
+      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      this.$router.push('/professor/lesson/list')
+    },
   },
 }
 </script>

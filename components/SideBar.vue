@@ -1,57 +1,127 @@
 <template>
-  <v-navigation-drawer
-    app
-    left
-    style="background: linear-gradient(90deg, rgba(108,20,36,1) 18%, rgba(91,16,29,1) 91%);"
-  >
+  <v-navigation-drawer app left color="#ce1b52">
     <template #prepend>
       <v-list-item>
         <v-list-item-content>
-        <v-row class="mt-5 justify-center align-center" >
-            <v-img
-            src="/image/logo.png"
-            max-height="170"
-            max-width="220"
-          />
+          <v-row class="mt-5 justify-center align-center">
+            <v-img src="/image/logo.png" max-height="170" max-width="220" />
           </v-row>
         </v-list-item-content>
       </v-list-item>
     </template>
     <v-spacer></v-spacer>
     <v-list dense nav>
-      <v-list-item
-        v-for="item in items"
-        :key="item.title"
-        :to="item.route"
-        class="my-5"
-      >
-        <v-list-item-icon>
-          <v-icon style="color: white">{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content style="color: white">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+      <div v-for="item in routeList" :key="item.title" class="my-10 d-flex justify-center">
+        <NuxtLink class="text-decoration-none" :to="item.route">
+          <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded>{{ item.title }}</v-btn>
+        </NuxtLink>
+      </div>
+      <div v-if="$store.state.user.connected.type === 'professor'" class="my-10 d-flex justify-center">
+        <v-btn class="buttonSideBar" color="white" elevation="1" outlined rounded @click="logout">Déconnexion</v-btn>
+      </div>
     </v-list>
+    <template #append>
+      <div class="d-flex justify-center flex-wrap pb-12 px-12">
+        <a class="nuxtlink" href="https://www.pagesjaunes.fr/pros/08713989">A propos
+        </a>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/term-of-service">CGU
+        </NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/data-protection-policy">Politique de confidentialité</NuxtLink>
+
+        <div class="mx-1 white--text">|</div>
+
+        <NuxtLink class="nuxtlink" to="/politics/legal-notice">Mention légale</NuxtLink>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
+import { UserType } from '../enums/UserType'
 export default {
   data() {
     return {
       items: [
-        { title: 'Planning', icon: 'mdi-bulletin-board', route: '/professor' },
-        { title: 'Liste des cours', icon: 'mdi-image', route: '/professor/lesson/list' },
+        {
+          title: 'Planning',
+          route: '/professor/lesson/planning',
+          type: UserType.professor,
+        },
+        {
+          title: 'Liste des cours',
+          route: '/professor/lesson/list',
+          type: UserType.professor,
+        },
         {
           title: 'Liste des éleves',
-          icon: 'mdi-account',
           route: '/professor/student/list',
+          type: UserType.professor,
         },
-       /*  { title: 'Administration du site', icon: 'mdi-pencil-box-outline' }, */
+        {
+          title: 'Planning',
+          route: '/student/lesson/planning',
+          type: UserType.student,
+        },
+        {
+          title: 'Mon compte',
+          route: '/student/account',
+          type: UserType.student,
+        },
+        {
+          title: 'Mes cours',
+          route: '/student/lesson/list',
+          type: UserType.student,
+        },
       ],
-      permanent: true
+
+      permanent: true,
     }
+  },
+  methods: {
+    logout() {
+      this.$store.commit('user/logout')
+      this.$router.push('/')
+    }
+  },
+  computed: {
+    routeList() {
+      return this.items.filter(
+        (item) => this.$store.state.user.connected.type === item.type
+      )
+    },
   },
 }
 </script>
+
+<style>
+.nuxtlink {
+  font-size: 11px;
+  text-decoration: none;
+  color: white !important;
+  display: flex;
+  align-items: center;
+}
+
+.buttonSideBar {
+  width: 11vw;
+}
+
+@media (min-width: 1600px) {
+  .buttonSideBar {
+    width: 9vw;
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .buttonSideBar {
+    width: 16vw;
+  }
+}
+</style>

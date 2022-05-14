@@ -1,127 +1,143 @@
 <template>
   <div>
     <v-form v-model="valid">
-      <v-row class="justify-space-between ma-5">
-        <v-col class="pa-0">
-          <v-row class="ma-0 align-center d-flex">
-            <TextField
-              :get="`lesson.${$props.datas}.title`"
-              :rules="[(v) => !!v || 'Le titre est obligatoire']"
-              title
-              :open="open"
-              placeholder="Entrez le titre"
-            />
-          </v-row>
-          <v-row class="ma-0">
-            <p class="ma-0 align-center d-flex">
-              {{ lesson.studentIds ? lesson.studentIds.length : 0 }}/
-            </p>
-            <TextField
-              :suffix="$props.datas === 'new' ? '' : 'élèves'"
-              :get="`lesson.${$props.datas}.maximumStudents`"
-              :rules="[
-                (v) => !!v || 'Le nombre maximum d\'élèves est obligatoire',
-                (v) =>
-                  !isNaN(Number(v)) ||
-                  'Le nombre maximum d\'élèves doit etre un nombre',
-              ]"
-              number
-              :open="open"
-              placeholder="Entrez le nb max d'élèves"
-            />
-          </v-row>
+      <v-row class="justify-space-around">
+        <v-col
+          align-self="center"
+          cols="12"
+          class="col-sm-10 col-md-7 col-lg-9 col-xl-6"
+        >
+          <v-card class="pa-10 ma-6">
+            <v-row>
+              <v-row class="ma-0 align-center d-flex">
+                <p class="ma-0 pr-2">Nom :</p>
+                <TextField
+                  :get="`lesson.${$props.datas}.title`"
+                  :rules="[(v) => !!v || 'Le titre est obligatoire']"
+                  :open="open"
+                  placeholder="Entrez le nom du cours"
+                />
+              </v-row>
+              <v-row class="ma-0 align-center d-flex">
+                <p class="ma-0 pr-2">Nbr max d'élèves :</p>
+                <TextField
+                  :get="`lesson.${$props.datas}.maximumStudents`"
+                  :rules="[
+                    (v) => !!v || 'Le nombre maximum d\'élèves est obligatoire',
+                    (v) =>
+                      !isNaN(Number(v)) ||
+                      'Le nombre maximum d\'élèves doit etre un nombre',
+                  ]"
+                  number
+                  :open="open"
+                  placeholder="Entrez le nbr max d'élèves"
+                />
+              </v-row>
+            </v-row>
+          </v-card>
         </v-col>
-        <div class="d-flex">
-          <v-btn
-            v-if="$props.datas !== 'new'"
-            color="grey darken-2"
-            fab
-            text
-            @click="
-              $store.commit('overlay/open', {
-                component: 'LessonModificationForm',
-                props: {
-                  lesson,
-                  archive: true,
-                  redirectPath: '/professor/lesson/list',
-                },
-                title: lesson.recurrenceId ? 'Voulez-vous archiver :' : '',
-              })
-            "
-          >
-            <v-icon> mdi-delete </v-icon>
-          </v-btn>
-          <v-btn
-            v-if="$props.datas !== 'new'"
-            color="grey darken-2"
-            fab
-            text
-            @click="
-              $store.commit('overlay/open', {
-                component: 'MessageForm',
-                props: { recipients: [lesson], type: 'lesson' },
-                title: 'Tapez votre message',
-              })
-            "
-          >
-            <v-icon> mdi-message </v-icon>
-          </v-btn>
-          <v-btn
-            v-if="valid && $props.datas === 'new'"
-            color="grey darken-2"
-            fab
-            text
-            @click="create"
-          >
-            <v-icon> mdi-content-save </v-icon>
-          </v-btn>
-          <v-btn
-            v-if="$props.datas === 'new' && hasModifications"
-            color="grey darken-2"
-            fab
-            text
-            @click="$store.dispatch('lesson/resetNewForm')"
-          >
-            <v-icon> mdi-arrow-u-down-left </v-icon>
-          </v-btn>
-          <div v-if="$props.datas !== 'new' && hasModifications && valid">
+        <v-col
+          align-self="center"
+          cols="12"
+          class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
+        >
+          <div class="d-flex flex-column">
             <v-btn
-              color="grey darken-2"
-              fab
-              text
+              v-if="$props.datas !== 'new'"
+              color="#fa3257"
+              class="ma-2"
+              style="color: white"
               @click="
                 $store.commit('overlay/open', {
                   component: 'LessonModificationForm',
                   props: {
                     lesson,
-                    payload: $store.state.lesson.form.payload,
-                    modify: true,
+                    archive: true,
+                    redirectPath: '/professor/lesson/list',
                   },
-                  title: lesson.recurrenceId ? 'Voulez-vous enregistrer :' : '',
+                  title: lesson.recurrenceId ? 'Voulez-vous archiver :' : '',
                 })
               "
-            >
-              <v-icon> mdi-content-save </v-icon>
+              >Suprrimer
+              <v-icon class="ml-2"> mdi-delete </v-icon>
             </v-btn>
             <v-btn
-              color="grey darken-2"
-              fab
-              text
+              v-if="$props.datas !== 'new'"
+              color="#53b3e6"
+              class="ma-2"
+              style="color: white"
               @click="
-                $store.dispatch('resetEditionForm', {
-                  storeName: 'lesson',
-                  stateName: $props.datas,
+                $store.commit('overlay/open', {
+                  component: 'MessageForm',
+                  props: { recipients: [lesson], type: 'lesson' },
+                  title: 'Tapez votre message',
                 })
               "
-            >
-              <v-icon> mdi-arrow-u-down-left </v-icon>
+              >Message
+              <v-icon class="ml-2"> mdi-message </v-icon>
             </v-btn>
+            <v-btn
+              v-if="valid && $props.datas === 'new'"
+              color="#76d9a3"
+              class="ma-2"
+              style="color: white"
+              @click="create"
+              >Enregistrer
+              <v-icon class="ml-2"> mdi-content-save </v-icon>
+            </v-btn>
+
+            <v-btn
+              v-if="$props.datas === 'new' && hasModifications"
+              color="#f4f4f4"
+              class="ma-2"
+              @click="$store.dispatch('lesson/resetNewForm')"
+            >
+              Rétablir
+              <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
+            </v-btn>
+            <div
+              class="d-flex flex-column"
+              v-if="$props.datas !== 'new' && hasModifications && valid"
+            >
+              <v-btn
+                color="#76d9a3"
+                class="ma-2"
+                style="color: white"
+                @click="
+                  $store.commit('overlay/open', {
+                    component: 'LessonModificationForm',
+                    props: {
+                      lesson,
+                      payload: $store.state.lesson.form.payload,
+                      modify: true,
+                    },
+                    title: lesson.recurrenceId
+                      ? 'Voulez-vous enregistrer :'
+                      : '',
+                  })
+                "
+                >Enregistrer
+                <v-icon class="ml-2"> mdi-content-save </v-icon>
+              </v-btn>
+              <v-btn
+                color="#f4f4f4"
+                class="ma-2"
+                @click="
+                  $store.dispatch('resetEditionForm', {
+                    storeName: 'lesson',
+                    stateName: $props.datas,
+                  })
+                "
+                >Rétablir
+                <v-icon class="ml-2"> mdi-arrow-u-down-left </v-icon>
+              </v-btn>
+            </div>
           </div>
-        </div>
+        </v-col>
       </v-row>
-      <v-col>
-        <v-row class="justify-center">
-          <v-card width="450" class="ma-6">
+      <v-row class="justify-space-around">
+        <v-col cols="12" class="col-sm-10 col-md-5 col-lg-6 col-xl-4">
+          <v-card height="85%" class="ma-6">
             <v-col>
               <div
                 v-if="$props.datas === 'new'"
@@ -136,7 +152,7 @@
                       { text: 'Unique', value: 'unique' },
                     ]"
                     :open="open"
-                    :defaultValue="$props.datas === 'new' ? 'everyWeek' : ''"
+                    :defaultvalue="$props.datas === 'new' ? 'everyWeek' : ''"
                   />
                 </div>
               </div>
@@ -158,7 +174,7 @@
                       { text: 'Mixte', value: 'mixed' },
                     ]"
                     :open="open"
-                    :defaultValue="$props.datas === 'new' ? 'mixed' : ''"
+                    :defaultvalue="$props.datas === 'new' ? 'mixed' : ''"
                   />
                 </div>
               </div>
@@ -180,25 +196,31 @@
               </div>
             </v-col>
           </v-card>
+        </v-col>
+        <v-col cols="12" class="col-sm-10 col-md-5 col-lg-6 col-xl-4">
           <v-card
-            width="450"
+            height="85%"
             class="ma-6 pa-9 d-flex flex-column justify-start align-start"
           >
             <div>Jour du cours:</div>
             <UniqueDatePicker
               v-if="lesson.recurrence === 'unique'"
-              :getStart="`lesson.${$props.datas}.startDate`"
-              :getEnd="`lesson.${$props.datas}.endDate`"
+              :getstart="`lesson.${$props.datas}.startDate`"
+              :getend="`lesson.${$props.datas}.endDate`"
             />
             <EveryWeekDatePicker
               v-else
-              :getStart="`lesson.${$props.datas}.startDate`"
-              :getEnd="`lesson.${$props.datas}.endDate`"
+              :getstart="`lesson.${$props.datas}.startDate`"
+              :getend="`lesson.${$props.datas}.endDate`"
             />
+            <LessonPictureInput picture-datas="picture.lessonPictureSelected" />
           </v-card>
-        </v-row>
-        <v-row class="justify-center">
-          <v-card width="450" class="ma-6 pa-4">
+        </v-col>
+      </v-row>
+
+      <v-row class="justify-space-around">
+        <v-col cols="12" class="col-sm-10 col-md-5 col-lg-6 col-xl-4">
+          <v-card class="pa-4 ma-6">
             <div class="pa-3">
               <p v-if="$props.datas === 'new'" class="mb-0">
                 Description du cours (optionnel):
@@ -211,7 +233,9 @@
               />
             </div>
           </v-card>
-          <v-card width="450" class="ma-6 pa-4">
+        </v-col>
+        <v-col cols="12" class="col-sm-10 col-md-5 col-lg-6 col-xl-4">
+          <v-card class="pa-4 ma-6">
             <div class="pa-3">
               <p v-if="$props.datas === 'new'" class="mb-0">
                 Note pour le professeur (optionnel):
@@ -224,8 +248,8 @@
               />
             </div>
           </v-card>
-        </v-row>
-      </v-col>
+        </v-col>
+      </v-row>
     </v-form>
   </div>
 </template>
@@ -269,7 +293,11 @@ export default {
   },
   methods: {
     create() {
-      this.$store.dispatch('lesson/create', this.$store.state.lesson.new)
+      const lessonDatas = {
+        ...this.$store.state.lesson.new,
+        ...this.$store.state.lesson.form.payload,
+      }
+      this.$store.dispatch('lesson/create', { lessonDatas })
       this.$router.push('/professor/lesson/list')
     },
   },
