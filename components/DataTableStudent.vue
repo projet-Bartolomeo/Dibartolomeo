@@ -2,69 +2,37 @@
   <div>
     <v-card class="ma-4 mb-6">
       <v-card-title>
-        <v-text-field
-          v-model="search"
-          class="ma-2 text-field pa-0"
-          append-icon="mdi-magnify"
-          label="Rechercher un élève"
-          single-line
-          hide-details
-          clearable
-        ></v-text-field>
+        <v-text-field v-model="search" class="ma-2 text-field pa-0" append-icon="mdi-magnify"
+          label="Rechercher un élève" single-line hide-details clearable></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn
-          v-if="$props.message"
-          :disabled="selected.length === 0"
-          style="color: white"
-          color="#76d9a3"
-          @click="
-            $store.commit('overlay/open', {
-              component: 'MessageForm',
-              props: { recipients: selected, type: 'student' },
-              title: 'Tapez votre message',
-            })
-          "
-          >Envoyer message</v-btn
-        >
+        <v-btn v-if="$props.message" :disabled="selected.length === 0" style="color: white" color="#76d9a3" @click="
+          $store.commit('overlay/open', {
+            component: 'MessageForm',
+            props: { recipients: selected, type: 'student' },
+            title: 'Tapez votre message',
+          })
+        ">Envoyer message</v-btn>
         <slot></slot>
       </v-card-title>
     </v-card>
     <v-card class="ma-4">
-      <v-data-table
-        v-model="selected"
-        :headers="headers"
-        :items="student"
-        sort-by="calories"
-        class="elevation-1"
+      <v-data-table v-model="selected" :headers="headers" :items="student" sort-by="calories" class="elevation-1"
         :footer-props="{
           'items-per-page-text': 'élève par page',
-        }"
-        :search="search"
-        :single-select="singleSelect"
-        item-key="id"
-        :show-select="$props.message"
-      >
+        }" :search="search" :single-select="singleSelect" item-key="id" :show-select="$props.message">
         <template v-if="$props.add" #[`item.actions`]="{ item }">
           <v-icon class="mr-1" @click="addToLesson(item)"> mdi-plus </v-icon>
         </template>
         <template v-else #[`item.actions`]="{ item }">
           <div class="d-flex">
-            <v-icon
-              v-if="$props.message"
-              class="mr-1"
-              @click="
+            <v-icon v-if="$props.message" class="mr-1" @click="
                 $store.commit('overlay/open', {
                   component: 'MessageForm',
                   props: { recipients: [item], type: 'student' },
                   title: 'Tapez votre message',
                 })
-              "
-              >mdi-message</v-icon
-            >
-            <NuxtLink
-              class="nuxtlink d-flex justify-center align-center"
-              :to="`/professor/student/${item.id}`"
-            >
+              ">mdi-message</v-icon>
+            <NuxtLink class="nuxtlink d-flex justify-center align-center" :to="`/professor/student/${item.id}`">
               <v-icon @click="$store.commit('overlay/close')" class="mr-1">
                 mdi-pencil
               </v-icon>
@@ -179,6 +147,7 @@ export default {
           modify: true,
           payload,
           student,
+          isnew: this.$props.isnew
         },
         title: lessonState.recurrenceId
           ? 'Voulez-vous retirer cet élève :'
@@ -198,6 +167,7 @@ export default {
           modify: true,
           payload,
           student,
+          isnew: this.$props.isnew
         },
         title: lessonState.recurrenceId
           ? 'Voulez-vous ajouter cet élève :'
@@ -213,9 +183,11 @@ export default {
   word-break: break-word;
   text-align: center;
 }
+
 .nuxtlink {
   text-decoration: none;
 }
+
 .text-field {
   flex: none;
   display: flex;
